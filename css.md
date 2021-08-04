@@ -220,10 +220,6 @@ a标签有四种状态：链接访问前、链接访问后、鼠标滑过、激�
       clear: both;
       visibility: hidden;
     }
-    .clearfix {
-      *zoom: 1;
-      /*zoom 1 就是ie6 清除浮动方式  * ie7以下的版本才能识别 其他浏览器都不执行(略过)*/
-    }
     ```
 
 ## 清除浮动的原理
@@ -1131,3 +1127,4 @@ HTML代码如下：
 3. 调用一些 js 库，比如 FastClick
 
     > FastClick 是 FT Labs 专门为解决移动端浏览器 300 毫秒点击延迟问题所开发的一个轻量级的库。FastClick 的实现原理是在检测到 touchend 事件的时候，会通过 DOM 自定义事件立即出发模拟一个 click 事件，并把浏览器在 300ms 之后的 click 事件阻止掉。
+

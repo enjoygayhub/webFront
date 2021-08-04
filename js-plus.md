@@ -8,7 +8,7 @@
 
 + defer 异步延迟
 
-[设置父节点绑定事件，通过事件冒泡来触发子节点](https://davidwalsh.name/event-delegate)
+[事件代理](https://davidwalsh.name/event-delegate)
 
 [浮点数的存贮表示](https://zhuanlan.zhihu.com/p/75581822)
 
@@ -54,3 +54,10 @@ B.__proto__ ===A;
 B.prototype.__proto__ === A.prototype;
 
 ## [数据结构数组与类数组](http://www.360doc.com/content/18/0925/05/3175779_789416619.shtml)
+
+# Css
+
+[浮动元素的特点](https://juejin.cn/post/6844903891155288072)
+
+[外边距溢出问题](https://juejin.cn/post/6844904033509965831) [边距折叠问题](https://juejin.cn/post/6844903497045917710)
+
