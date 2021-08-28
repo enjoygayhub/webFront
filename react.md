@@ -3,8 +3,15 @@
 ### state
 
 + 不能直接修改，需要使用setState（）
+
 + 因为 `this.props` 和 `this.state` 可能会异步更新，不要依赖他们的值来更新下一个状态。可以让 `setState()` 接收一个函数而不是一个对象。这个函数用上一个 state 作为第一个参数，将此次更新被应用时的 props 做为第二个参数
+
+  ```jsx
+  this.setState((prestates,preprops) => ({state: prestates+preprops}));
+  ```
+
 + state更新会被合并，可以单独更新
+
 + `setState()` 并不总是立即更新组件。它会批量推迟更新。在调用 `setState()` 后立即读取 `this.state` 成为了隐患。为了消除隐患，使用 `componentDidUpdate` 或者 `setState` 的回调函数（`setState(updater, callback)`），这两种方式都可以保证在应用更新后触发。
 
 ### 事件处理
