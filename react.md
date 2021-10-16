@@ -172,6 +172,16 @@ store：只能有一个。创建store就是把所有reducer给它。export const
 
 ## router
 
+react-router 路由拦截
+
+<Prompt message={（location，action）=>{}} when= {}>
+
+Prompt 可以获得到路由跳转event事件，location.pathname可得到将要跳转的路由
+
+when得到true时则渲染Prompt组件，启用拦截
+
+message 得到true则表示允许跳转，即允许跳转，得到false表示不允许，得到字符串表示提示信息，会唤起浏览器的confirm提示。
+
 ## [context API](https://www.smashingmagazine.com/2020/01/introduction-react-context-api/#top)
 
 创建：React.createContext(); </ThemeContext.Provider>包裹使用数据的组件

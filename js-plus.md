@@ -61,3 +61,7 @@ B.prototype.__proto__ === A.prototype;
 
 [外边距溢出问题](https://juejin.cn/post/6844904033509965831) [边距折叠问题](https://juejin.cn/post/6844903497045917710)
 
+## js渲染10w数据优化
+
+[虚拟列表](https://blog.csdn.net/weixin_39932611/article/details/110746868?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-1&spm=1001.2101.3001.4242)
+

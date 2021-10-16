@@ -2,27 +2,14 @@
 
 - [JavaScript](#javascript)
   - [js 基本数据类型](#js-基本数据类型)
-  - [js 遍历对象和遍历数组的方式](#js-遍历对象和遍历数组的方式)
-    - [遍历对象](#遍历对象)
-    - [遍历数组](#遍历数组)
-  - [null 和 undefined 的区别](#null-和-undefined-的区别)
   - [其他值到字符串的转换规则](#其他值到字符串的转换规则)
   - [其他值到数字值的转换规则](#其他值到数字值的转换规则)
   - [其他值到布尔类型的值的转换规则](#其他值到布尔类型的值的转换规则)
-  - [{} 和 [] 的 valueOf 和 toString 的结果是什么](#-和--的-valueof-和-tostring-的结果是什么)
-  - [什么情况下会发生布尔值的隐式强制类型转换](#什么情况下会发生布尔值的隐式强制类型转换)
   - [|| 和 && 操作符的返回值](#-和--操作符的返回值)
   - [== 操作符的强制类型转换规则](#-操作符的强制类型转换规则)
   - [如何将字符串转化为数字，例如 '12.3b'](#如何将字符串转化为数字例如-123b)
   - [JavaScript 继承的几种实现方式](#javascript-继承的几种实现方式)
   - [eval 是做什么的](#eval-是做什么的)
-  - [事件对象中的clientX offsetX screenX pageX的区别](#事件对象中的clientx-offsetx-screenx-pagex的区别)
-  - [三种事件模型是什么](#三种事件模型是什么)
-  - [如何阻止事件冒泡](#如何阻止事件冒泡)
-  - [如何阻止事件默认行为](#如何阻止事件默认行为)
-  - [事件代理/事件委托 以及 优缺点](#事件代理事件委托-以及-优缺点)
-  - [load 和 DOMContentLoaded 事件的区别](#load-和-domcontentloaded-事件的区别)
-  - [js判断图片是否加载完毕的方式](#js判断图片是否加载完毕的方式)
   - [js 原型，原型链以及特点](#js-原型原型链以及特点)
   - [instanceof 的作用](#instanceof-的作用)
   - [Object.defineProperty 用法](#objectdefineproperty-用法)
@@ -30,7 +17,6 @@
   - [js 脚本 defer 和 async 的区别](#js-脚本-defer-和-async-的区别)
   - [async await](#async-await)
   - [Event Loop 事件循环](#event-loop-事件循环)
-  - [JS 跨域怎么做](#js-跨域怎么做)
   - [JSONP 怎么实现的](#jsonp-怎么实现的)
   - [JOSNP 有什么优缺点](#josnp-有什么优缺点)
   - [new 运算符的过程](#new-运算符的过程)
@@ -46,13 +32,7 @@
   - [JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题](#jsonparsejsonstringifyobj-实现深拷贝需要注意的问题)
   - [Promise 是做什么的，有哪些API](#promise-是做什么的有哪些api)
   - [Promise不兼容怎么解决](#promise不兼容怎么解决)
-  - [Ajax 基本流程](#ajax-基本流程)
-  - [Ajax 的 readyState 的几种状态分别代表什么](#ajax-的-readystate-的几种状态分别代表什么)
-  - [Ajax 禁用浏览器的缓存功能](#ajax-禁用浏览器的缓存功能)
   - [js 的几种模块规范](#js-的几种模块规范)
-  - [ES6 模块与 CommonJS 模块、AMD、CMD 的差异](#es6-模块与-commonjs-模块amdcmd-的差异)
-  - [webpack 的功能](#webpack-的功能)
-  - [webpack 常用插件](#webpack-常用插件)
   - [arguments怎么转化成真数组](#arguments怎么转化成真数组)
   - [js的对象的常用的方法](#js的对象的常用的方法)
   - [js的字符串的常用的方法](#js的字符串的常用的方法)
@@ -60,17 +40,54 @@
 
 ## js 基本数据类型
 
-> js 一共有六种基本数据类型，分别是 Undefined、Null、Boolean、Number、String，还有在 ES6 中新增的 Symbol 类型，代表创建后独一无二且不可变的数据类型，主要是为了解决可能出现的全局变量冲突的问题。
+> js 一共有7种**基本**数据类型，分别是 Undefined、Null、Boolean、Number、String。
+> <font color='red'>（注意大写字母开头）</font><font color='red'>（大写字母开头）</font><font color='red'>（大写字母开头）</font>
+> ES6 中新增的 Symbol 类型，代表创建后独一无二且不可变的数据类型，主要是为了解决可能出现的全局变量冲突的问题。
 >
-> ES5中有6种数据类型：
-> null,undefined,number,string,boolean,object。
-> **复杂类型**是指object即广义的对象类型，可由多个简单类型的值的合成，可以看作是一个存放各种值的容器。比如arr,object,regx等
-> **基础类型**指number,string,boolean。
-> **特殊类型**指null,undefined。
-> 基础类型和复杂类型的区别：
-> 基础类型将内容直接存储在**栈**中（大小固定位置连续的存储空间），记录的是该数据类型的值，即直接访问，基础类型赋值是复制（copy）； 复杂类型将内容存储在堆中，堆所对应的栈中记录的是**指针**（堆的地址），外部访问时先引出地址，再通过地址去找到值所存放的位置。复杂类型赋值是地址引用。
+> ES2020新增BigInt，用于处理任意精度整数的新数字基元n，比如3n。
 
-> js是解释性：不用编译；动态：不用声明类型，弱类型：类型转换，语言
+
+
+> **ES5中有6种数据类型**：
+> null,undefined,number,string,boolean,object。
+>
+> + **复杂类型**是指object即广义的对象类型，可由多个简单类型的值的合成，可以看作是一个存放各种值的容器。包括Array,Math，Date,RegExp,Function等
+> + **基础类型**指number,string,boolean，null,undefined。
+>
+> 基础类型和复杂类型的区别：
+>
+> + 基础类型将内容直接存储在**栈**中（大小固定位置连续的存储空间），记录的是该数据类型的值，即直接访问，基础类型赋值是复制（copy）； 
+> + 复杂类型将内容存储在堆中，堆所对应的栈中记录的是**指针**（堆的地址），外部访问时先引出地址，再通过地址去找到值所存放的位置。复杂类型赋值是地址引用。
+>
+> ```javascript
+> //经典考题1地址引用
+> let a = {name:'du',age:19};
+> let b =a;
+> console.log(b.name);//du
+> b.name = 'lee';
+> console.log(b.name);//lee
+> console.log(a.name);//lee a中的属性改变，说明a和b指向同一地址
+> ```
+>
+> ```javascript
+> //经典考题2
+> let a = {name:'du',age:19};
+> function change (obj){
+>  obj.age=29;  //obj作为对象参数，引用地址传入，修改age属性影响了原对象
+>  obj = {   //赋值操作，相当新建了一个对象让obj指向他
+>      name:'lee',
+>      age:39
+>  }
+>  return obj;  //返回新对象
+> }
+> let b=change(a);
+> console.log(a.age);//29，a中已改变
+> console.log(b.age);//39，b为新对象
+> ```
+>
+> 
+
+> js是一种解释性：不用编译；动态：不用声明类型，弱类型：类型转换，语言
 >
 > JavaScript数字全部是浮点数。 根据 IEEE 754标准中的64位二进制(binary64), 也称作双精度规范(double precision)来储存。这些字节按照以下规则分配：
 >
@@ -78,21 +95,41 @@
 > > 52 - 62 位是 指数（exponent ）
 > > 63 位 是 标志位 （sign）,结果二进制形式为是+- 1.f * 2<sup>e</sup>,最大**精确的**整数为2**53
 
+```js
+//经典考题
+0.1+0.1===0.2 //true
+0.1+0.2===0.3 //false
+```
 
+原理解析见[本文](https://juejin.cn/post/6991822067234504717)，帮助理解。
 
 ## null 和 undefined 的区别
 
-- undefined 和 null 都是基本数据类型，这两个基本数据类型分别都只有一个值，就是 undefined 和 null。
+- Undefined 和 Null 都是基本数据类型，这两个基本数据类型分别都只有一个值，就是 undefined 和 null。
 - undefined 代表的含义是未定义，null 代表的含义是空对象。一般变量声明了但还没有定义的时候会返回 undefined，null主要用于赋值给一些可能会返回对象的变量，作为初始化。
 - undefined 在 js 中不是一个保留字，这意味着我们可以使用 undefined 来作为一个变量名，这样的做法是非常危险的，它会影响我们对 undefined 值的判断。但是我们可以通过一些方法获得安全的 undefined 值，比如说 void 0。
 - 当我们对两种类型使用 typeof 进行判断的时候，null 类型化会返回 “object”，这是一个历史遗留的问题。
 - `undefined==null(true)` `undefined===null(false)`
 ## 判断数据类型的方式
 
-1. typeof  // typeof（null）===‘’object’；typeof（function）===‘function’；
-2. instanceof  //Object instanceof Object//true   
-3. Object.prototype.toString.call()
-4. .constructor===  //返回构造器，(2.1).constructor === Number//true
+1. typeof  缺陷：可以判断null以外的基础类型，复杂类型除funiton以外均判断为object
+
+   // typeof（null）===‘’object’；typeof（function）===‘function’；
+
+2. instanceof   可以准确判断复杂引用类型，但不能判断基础类型
+
+   //Object instanceof Object//true   
+
+3. Object.prototype.toString.call() ；可以判断所有类型，返回示例 ''[object Array]"
+
+   注意后面的类型一定是大写字母开头。
+
+   ```javascript
+   Object.prototype.toString.call(null);
+   //"[object Null]"
+   ```
+
+4. .constructor===  //返回构造器，例如(2.1).constructor === Number//true
 ## instanceof 的作用
 > instanceof 运算符用于判断构造函数的 prototype 属性是否出现在对象的原型链中的任何位置。
 
@@ -110,19 +147,18 @@
 
 ## 其他值到数字值的转换规则
 
-```js
 （1）undefined 类型的值转换为 NaN。
 （2）null 类型的值转换为 0。
 （3）Boolean 类型的值，true 转换为 1，false 转换为 0。
 （4）String 类型的值转换如同使用 Number() 函数进行转换，包含非数字值则转换为 NaN，空字符串为 0,"-Infinity"转化为-Infinity
 （5）Symbol 类型的值不能转换为数字，会报错。
 
-（6）对象（包括数组）会首先被转换为相应的基本类型值，如果返回的是非数字的基本类型值，则再遵循以上规则将其强制转换为数字。{}转换为NaN。[]转为0
-
+（6）对象（包括数组）会首先被转换为相应的基本类型值，如果返回的是非数字的基本类型值，则再遵循以上规则将其强制转换为数字。
+    <font color='red'>{}转换为NaN。[]转为0.</font>
+    <font color='red'>不要管相邻不相邻，都是陷阱。</font>
 为了将值转换为相应的基本类型值，抽象操作 ToPrimitive 会首先（通过内部操作 DefaultValue）检查该值是否有valueOf() 方法。
 如果有并且返回基本类型值，就使用该值进行强制类型转换。如果没有就使用 toString() 的返回值（如果存在）来进行强制类型转换。
 如果 valueOf() 和 toString() 均不返回基本类型值，会产生 TypeError 错误。
-```
 
 ## 其他值到布尔类型的值的转换规则
 
@@ -140,7 +176,7 @@ ES5 规范 9.2 节中定义了抽象操作 ToBoolean，列举了布尔强制类�
 //Boolen（‘ ’）为true，Boolen（[]）为true
 ```
 
-## {} 和 [] 的 valueOf 和 toString 的结果是什么
+## {} 和 [] 的 valueOf 和 toString 的结果
 
 ```js
 {} 的 valueOf 结果为 {} ，toString 的结果为 "[object Object]"
@@ -148,7 +184,7 @@ ES5 规范 9.2 节中定义了抽象操作 ToBoolean，列举了布尔强制类�
 [] 的 valueOf 结果为 [] ，toString 的结果为 ""
 ```
 
-## 什么情况下会发生布尔值的隐式强制类型转换
+## 布尔值的隐式强制类型转换的条件
 
 ```js
 （1） if (..) 语句中的条件判断表达式。
@@ -195,6 +231,45 @@ ES5 规范 9.2 节中定义了抽象操作 ToBoolean，列举了布尔强制类�
 （2）使用 parseInt() 方法，parseInt() 函数可解析一个字符串，并返回一个整数。还可以设置要解析的数字的基数。当基数的值为 0，或没有设置该参数时，parseInt() 会根据 string 来判断数字的基数。[1,2,3].map(parseInt) ===[1,NaN,NaN]
 
 （3）使用 parseFloat() 方法，该函数解析一个字符串参数并返回一个浮点数。
+
+## JS中的深拷贝与浅拷贝
+
+浅copy复制，创建一个新对象，接受原对象的值或者地址，改变新对象会引起原对象的变。
+
+
+
+```js
+let newObj = JSON.parse(JSON.stringify(oldObj));//缺点，函数和原型链上的属性和方法无法copy
+Object.assign(newobj,obj)//是把obj的可枚举属性拷贝给newobj，参数可以多个；但这种拷贝只具有一层赋值，地址是发生改变的，但如果obj里还包括其他引用类型，则地址不变；
+Object.create(prototype,propertiesObject)//使用指定的原型对象及其属性去创建一个新的对象
+Object.keys(obj)//返回一个由一个给定对象的自身可枚举属性组成的数组
+for in//遍历复制实现deep copy
+function deepCopy(obj){
+	if(Array.isArray(obj)){
+		var newobj=[];
+		}else{
+				var newobj={};
+			}
+	for(var i in obj){
+		if(typeof obj[i]=="object"){
+			newobj[i]=deepCopy(obj[i]);
+			}else{
+				newobj[i]=obj[i];
+				}
+			}
+		return newobj;
+}
+
+```
+
+## JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
+
+1. 如果obj里面有时间对象，则JSON.stringify后再JSON.parse的结果，只是字符串,不是时间对象；
+2. 如果obj里有RegExp、Error对象，则序列化的结果将只得到空对象；
+3. 如果obj里有函数，undefined，则序列化的结果会把函数或 undefined丢失；
+4. 如果obj里有NaN、Infinity和-Infinity，则序列化的结果会变成null
+5. JSON.stringify()只能序列化对象的可枚举的自有属性，例如 如果obj中的对象是有构造函数生成的， 则使用JSON.parse(JSON.stringify(obj))深拷贝后，会丢弃对象的constructor；
+6. 如果对象中存在循环引用的情况也无法正确实现深拷贝；
 
 ## eval 是做什么的
 
@@ -468,40 +543,7 @@ console.log(obj.perimeter()) // NaN
 
 - 只需使用1次的函数。
 
-## JS 实现对象的拷贝，一行代码
 
-```js
-let newObj = JSON.parse(JSON.stringify(oldObj));//缺点，函数和原型链上的属性和方法无法copy
-Object.assign(newobj,obj)//是把obj的可枚举属性拷贝给newobj，参数可以多个；但这种拷贝只具有一层赋值，地址是发生改变的，但如果obj里还包括其他引用类型，则地址不变；
-Object.create(prototype,propertiesObject)//使用指定的原型对象及其属性去创建一个新的对象
-Object.keys(obj)//返回一个由一个给定对象的自身可枚举属性组成的数组
-for in//遍历复制实现deep copy
-function deepCopy(obj){
-	if(Array.isArray(obj)){
-		var newobj=[];
-		}else{
-				var newobj={};
-			}
-	for(var i in obj){
-		if(typeof obj[i]=="object"){
-			newobj[i]=deepCopy(obj[i]);
-			}else{
-				newobj[i]=obj[i];
-				}
-			}
-		return newobj;
-}
-
-```
-
-## JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
-
-1. 如果obj里面有时间对象，则JSON.stringify后再JSON.parse的结果，只是字符串,不是时间对象；
-2. 如果obj里有RegExp、Error对象，则序列化的结果将只得到空对象；
-3. 如果obj里有函数，undefined，则序列化的结果会把函数或 undefined丢失；
-4. 如果obj里有NaN、Infinity和-Infinity，则序列化的结果会变成null
-5. JSON.stringify()只能序列化对象的可枚举的自有属性，例如 如果obj中的对象是有构造函数生成的， 则使用JSON.parse(JSON.stringify(obj))深拷贝后，会丢弃对象的constructor；
-6. 如果对象中存在循环引用的情况也无法正确实现深拷贝；
 
 ## Promise 是做什么的，有哪些API
 
@@ -926,7 +968,5 @@ async function timeTest() {
 }//总共3秒
 ```
 
-## js渲染10w数据优化
 
-[虚拟列表](https://blog.csdn.net/weixin_39932611/article/details/110746868?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-1&spm=1001.2101.3001.4242)
 
