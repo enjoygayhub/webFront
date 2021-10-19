@@ -2,41 +2,42 @@
 
 - [JavaScript](#javascript)
   - [js 基本数据类型](#js-基本数据类型)
-  - [其他值到字符串的转换规则](#其他值到字符串的转换规则)
-  - [其他值到数字值的转换规则](#其他值到数字值的转换规则)
-  - [其他值到布尔类型的值的转换规则](#其他值到布尔类型的值的转换规则)
-  - [|| 和 && 操作符的返回值](#-和--操作符的返回值)
-  - [== 操作符的强制类型转换规则](#-操作符的强制类型转换规则)
-  - [如何将字符串转化为数字，例如 '12.3b'](#如何将字符串转化为数字例如-123b)
+  
+  - [js 遍历对象和遍历数组的方式](#js 遍历对象和遍历数组的方式)
+  
+  - [JS中的深拷贝与浅拷贝](#JS中的深拷贝与浅拷贝)
+  
   - [JavaScript 继承的几种实现方式](#javascript-继承的几种实现方式)
-  - [eval 是做什么的](#eval-是做什么的)
+  
   - [js 原型，原型链以及特点](#js-原型原型链以及特点)
-  - [instanceof 的作用](#instanceof-的作用)
+  
   - [Object.defineProperty 用法](#objectdefineproperty-用法)
-  - [js 延迟加载的方式有哪些](#js-延迟加载的方式有哪些)
-  - [js 脚本 defer 和 async 的区别](#js-脚本-defer-和-async-的区别)
+  
   - [async await](#async-await)
+  
   - [Event Loop 事件循环](#event-loop-事件循环)
-  - [JSONP 怎么实现的](#jsonp-怎么实现的)
-  - [JOSNP 有什么优缺点](#josnp-有什么优缺点)
+  
   - [new 运算符的过程](#new-运算符的过程)
-  - [数组的 push() 和 pop() 方法的返回值是什么](#数组的-push-和-pop-方法的返回值是什么)
+  
   - [JS 作用域](#js-作用域)
+  
   - [ES6 新特性](#es6-新特性)
+  
   - [let 和 var 的区别](#let-和-var-的区别)
+  
   - [闭包的特性以及优缺点](#闭包的特性以及优缺点)
+  
   - [箭头函数与普通函数的区别](#箭头函数与普通函数的区别)
+  
   - [ES6 中箭头函数 VS 普通函数的 this 指向](#es6-中箭头函数-vs-普通函数的-this-指向)
+  
   - [ES6 class 和 ES5 函数的区别](#es6-class-和-es5-函数的区别)
-  - [JS 实现对象（都是简单类型的值）的深拷贝，一行代码](#js-实现对象都是简单类型的值的深拷贝一行代码)
-  - [JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题](#jsonparsejsonstringifyobj-实现深拷贝需要注意的问题)
+  
   - [Promise 是做什么的，有哪些API](#promise-是做什么的有哪些api)
-  - [Promise不兼容怎么解决](#promise不兼容怎么解决)
-  - [js 的几种模块规范](#js-的几种模块规范)
+  
   - [arguments怎么转化成真数组](#arguments怎么转化成真数组)
-  - [js的对象的常用的方法](#js的对象的常用的方法)
-  - [js的字符串的常用的方法](#js的字符串的常用的方法)
-  - [js的数组的常用的方法](#js的数组的常用的方法)
+  
+    
 
 ## js 基本数据类型
 
@@ -114,7 +115,7 @@
 
 1. typeof  缺陷：可以判断null以外的基础类型，复杂类型除funiton以外均判断为object
 
-   // typeof（null）===‘’object’；typeof（function）===‘function’；
+   // typeof（null）===‘’object’；typeof (()=>{} )）===‘function’；
 
 2. instanceof   可以准确判断复杂引用类型，但不能判断基础类型
 
@@ -232,34 +233,152 @@ ES5 规范 9.2 节中定义了抽象操作 ToBoolean，列举了布尔强制类�
 
 （3）使用 parseFloat() 方法，该函数解析一个字符串参数并返回一个浮点数。
 
+## js 遍历对象和遍历数组的方式
+
+### 遍历对象
+
+- Object.keys()
+
+> 返回一个数组,包括对象自身的(不含继承的)所有可枚举属性(不含Symbol属性).数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致 。
+
+```js
+let obj = {name: 'lee',sex: 'male',age: 18}
+Object.keys(obj).forEach(key => {
+    console.log(key, obj[key]);
+})
+```
+
+- for...in
+
+> 循环遍历对象自身的和继承的可枚举属性(不含Symbol属性).  
+
+- Object.getOwnPropertyNames()
+
+> 返回一个数组,包含对象自身的所有属性(不含Symbol属性,但是包括不可枚举属性).
+
+- Reflect.ownKeys()
+
+> 返回一个数组,包含对象自身的所有属性(包括Symbol属性和不可枚举属性).
+
+### 遍历数组
+
+- forEach()
+
+```js
+let arr = [1,2,,3];
+arr.forEach((v,k) => {
+    console.log(v);
+})//跳过空
+```
+
+- for...in
+
+```
+> 注意for...in遍历的是索引
+let arr = [1,2,,3];
+for(let ele in arr) {
+    console.log(ele);
+}
+//0 1 3
+```
+
+- for...of
+
+```js
+let arr = [1,2,,3];
+for(let ele of arr) {
+    console.log(ele);
+}
+//1,2,undefined,3
+```
+
+## js的对象的常用的方法
+
+```js
+Object.assign() //浅复制对象
+Object.entries() //返回自身可枚举的[key,value]
+Object.keys()，Object.values()
+Object.hasOwnProperty(key)//是否有这个属性 true/false
+Object.getOwnPropertyNames() //取得对象自身可枚举的属性名
+//for in 对对象进行遍历，可以拿到自身以及原型链上的可枚举的属性
+Object.freeze()//冻结一个对象，不可修改，不可删除。不可添加新的属性
+Object.prototype.toString()// 返回数组[object,object/array/function等]  
+//判断是数组还是对象就是用的这个方法
+```
+
+## js的字符串的常用的方法
+
+```js
+str.concat()//拼接
+str.includes()//判断字符串是否包含在另外一个字符串中
+str.indexOf()，str.lastIndexOf()
+str.split() //按特定的符号分割成字符串数组！
+str.toLowerCase() //转换成小写的形式
+str.toUpperCase() //转换成大写的形式
+str.trim()//去空格
+```
+
+## js的数组的常用的方法
+
+```js
+var arr = [0,1,2,3,4]
+
+arr.push()，arr.pop()， arr.shift()，arr.unshift()，arr.reverse()，arr.every()，arr.some()
+arr.forEach()不会迭代空元素，arr.filter()实现过滤，arr.map()返回数组，arr.reduce()前后
+arr.includes()，arr.indexOf()，arr.lastIndexOf() //索引正序，但是从后往前找
+arr.findIndex() //找索引，
+arr.find()  //找满足条件的元素
+arr.join()//默认以逗号隔开
+arr.splice(3,1,'o','i')//从索引3开始，删除1个，添加两个字符串。
+arr.flat() //数组降维 ，返回新数组
+arr.flat(1)
+arr.entries() //将数组返回一个对象，包含对象索引的键值对
+```
+
+## 数组的 push() 和 pop() 方法的返回值是什么
+
+- `push()`将一个或多个元素添加到数组的末尾，并返回该数组的新长度
+- `pop()`方法从数组中删除最后一个元素，并返回该元素的值
+
+# substring substr slice splice的区别。
+
+- substring(star,stop) ,star>stop时会交换两者；相等时返回空串；为负数时会将负数变为0，奇怪点较多。
+- substr(star,length),star为负数时，表示倒数位置；length<=0时，返回空串
+- slice(star,stop), 可以应用在数组和字符串；star>=stop时返回空串/数组；为负数时代表倒数位置
+- splice(start,length,items,只能用于数组，会改变原始数组；satr<0代表倒数，length<0返回空，length过大时截取全部。
+
 ## JS中的深拷贝与浅拷贝
 
 浅copy复制，创建一个新对象，接受原对象的值或者地址，改变新对象会引起原对象的变。
 
-
+深拷贝完全是另一个对象，
 
 ```js
-let newObj = JSON.parse(JSON.stringify(oldObj));//缺点，函数和原型链上的属性和方法无法copy
-Object.assign(newobj,obj)//是把obj的可枚举属性拷贝给newobj，参数可以多个；但这种拷贝只具有一层赋值，地址是发生改变的，但如果obj里还包括其他引用类型，则地址不变；
-Object.create(prototype,propertiesObject)//使用指定的原型对象及其属性去创建一个新的对象
-Object.keys(obj)//返回一个由一个给定对象的自身可枚举属性组成的数组
-for in//遍历复制实现deep copy
-function deepCopy(obj){
-	if(Array.isArray(obj)){
-		var newobj=[];
-		}else{
-				var newobj={};
-			}
-	for(var i in obj){
-		if(typeof obj[i]=="object"){
-			newobj[i]=deepCopy(obj[i]);
-			}else{
-				newobj[i]=obj[i];
-				}
-			}
-		return newobj;
-}
+Object.assign(newobj,obj)//ES6浅拷贝，遍历所有可枚举属性，然后赋值。把obj的可枚举属性拷贝给newobj，如果属性的值是复杂对象，则会指向同一地址，因此是浅拷贝
 
+let newobj = {...obj} //浅拷贝 同上
+
+let newObj = JSON.parse(JSON.stringify(oldObj));//简单的深拷贝，缺点见下
+
+Object.create(obj)//不能算是拷贝？该是继承，此方法使用指定的原型对象及其属性去创建一个新的对象
+
+```
+
+```javascript
+//自定义递归实现深拷贝
+const isComplexDataType = (obj)=>(typeof obj === "object" || typeof obj === 'function')&&(obj!==null);
+const deepClone = function (obj,hash=new WeakMap()){
+    if(obj.constructor===Date) return new Date(obj)//新建日期对象
+    if(obj.constructor===RegExp) return new RegExp(obj)//新建正则对象
+    if(hash.has(obj)) return hash.get(obj) //如果发生循环引用，则不再递归
+    let allDes = Object.getOwnPropertyDescriptors(obj) //得到所有键描述
+    let cloneObj = Object.create(Object.getPrototypeOf(obj),allDes)//使克隆的新对象继承原对象的原型,且有源对象键的所有特性
+    hash.set(obj,cloneObj)
+    for (let key of Reflect.ownKeys(obj)){
+        cloneObj[key] = (isComplexDataType(obj[key]) && typeof obj[key]!=='function')?deepClone(obj[key],hash):obj[key]
+    }
+    return cloneObj
+}
 ```
 
 ## JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
@@ -829,104 +948,8 @@ Ajax 即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），�
 - Array.prototype.slice.call(arguments);使用call 一个对象调用另一个函数的方法，slice切割数组并返回一个新的数组
 - [].slice.call() 因为[].slice === Array.prototype.slice
 - 遍历：arguments有length属性，所以，可以遍历arguments取出每一个元素，并放进新的数组中
-## js 遍历对象和遍历数组的方式
 
-### 遍历对象
-- Object.keys()
-> 返回一个数组,包括对象自身的(不含继承的)所有可枚举属性(不含Symbol属性).无序
 
-```js
-let obj = {name: 'lee',sex: 'male',age: 18}
-Object.keys(obj).forEach(key => {
-    console.log(key, obj[key]);
-})
-```
-- for...in
-> 循环遍历对象自身的和继承的可枚举属性(不含Symbol属性).   无序的
-
-- Object.getOwnPropertyNames()
-> 返回一个数组,包含对象自身的所有属性(不含Symbol属性,但是包括不可枚举属性).
-
-- Reflect.ownKeys()
-> 返回一个数组,包含对象自身的所有属性(包括Symbol属性和不可枚举属性).
-
-### 遍历数组
-- forEach()
-```js
-let arr = [1,2,,3];
-arr.forEach((v,k) => {
-    console.log(v);
-})//跳过空
-```
-- for...in
-```
-> 注意for...in遍历的是索引
-let arr = [1,2,,3];
-for(let ele in arr) {
-    console.log(ele);
-}
-//0 1 3
-```
-- for...of
-
-```js
-let arr = [1,2,,3];
-for(let ele of arr) {
-    console.log(ele);
-}
-//1,2,undefined,3
-```
-## js的对象的常用的方法
-
-```js
-Object.assign() //浅复制对象
-Object.entries() //返回自身可枚举的[key,value]
-Object.keys()，Object.values()
-Object.hasOwnProperty(key)//是否有这个属性 true/false
-Object.getOwnPropertyNames() //取得对象自身可枚举的属性名
-//for in 对对象进行遍历，可以拿到自身以及原型链上的可枚举的属性
-Object.freeze()//冻结一个对象，不可修改，不可删除。不可添加新的属性
-Object.prototype.toString()// 返回数组[object,object/array/function等]  
-//判断是数组还是对象就是用的这个方法
-```
-
-## js的字符串的常用的方法
-
-```js
-str.concat()//拼接
-str.includes()//判断字符串是否包含在另外一个字符串中
-str.indexOf()，str.lastIndexOf()
-str.split() //按特定的符号分割成字符串数组！
-str.toLowerCase() //转换成小写的形式
-str.toUpperCase() //转换成大写的形式
-str.trim()//去空格
-```
-
-## js的数组的常用的方法
-
-```js
-var arr = [0,1,2,3,4]
-
-arr.push()，arr.pop()， arr.shift()，arr.unshift()，arr.reverse()，arr.every()，arr.some()
-arr.forEach()不会迭代空元素，arr.filter()实现过滤，arr.map()返回数组，arr.reduce()前后
-arr.includes()，arr.indexOf()，arr.lastIndexOf() //索引正序，但是从后往前找
-arr.findIndex() //找索引，
-arr.find()  //找满足条件的元素
-arr.join()//默认以逗号隔开
-arr.splice(3,1,'o','i')//从索引3开始，删除1个，添加两个字符串。
-arr.flat() //数组降维 ，返回新数组
-arr.flat(1)
-arr.entries() //将数组返回一个对象，包含对象索引的键值对
-```
-## 数组的 push() 和 pop() 方法的返回值是什么
-
-- `push()`将一个或多个元素添加到数组的末尾，并返回该数组的新长度
-- `pop()`方法从数组中删除最后一个元素，并返回该元素的值
-# substring substr slice splice的区别。
-- substring(star,stop) ,star>stop时会交换两者；相等时返回空串；为负数时会将负数变为0，奇怪点较多。
-- substr(star,length),star为负数时，表示倒数位置；length<=0时，返回空串
-- slice(star,stop), 可以应用在数组和字符串；star>=stop时返回空串/数组；为负数时代表倒数位置
-- splice(start,length,items,只能用于数组，会改变原始数组；satr<0代表倒数，length<0返回空，length过大时截取全部。
 
 ## 原型链继承
 
