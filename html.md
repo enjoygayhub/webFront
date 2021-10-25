@@ -10,8 +10,6 @@
 
 ## HTML5 的新特性
 
-[参考链接](https://www.cnblogs.com/ainyi/p/9777841.html)
-
 1. 语义化标签:header、footer、section、nav、aside、article
 
 2. 增强型表单：input的多个type(color, date, datetime, email, month, number, range, search, tel, time, url, week)
@@ -84,13 +82,8 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 ## 行内元素 块级元素
 
 ```js
-HTML4中，元素被分成两大类：inline （内联元素）与 block （块级元素）。
-（1） 格式上，默认情况下，行内元素不会以新行开始，而块级元素会新起一行。
-（2） 内容上，默认情况下，行内元素只能包含文本和其他行内元素。块级元素可以包含行内元素和其他块级元素。
-（3） 行内元素与块级元素属性的不同，主要是盒模型属性上：行内元素设置 width 无效，height 无效（可以设置 line-height），设置 margin 和 padding 的上下不会对其他元素产生影响。
-（4）常见的行内元素有 a b span img strong sub sup button input label select textarea
-（5）常见的块级元素有  div p ul ol li dl dt dd h1 h2 h3 h4 h5 h6
-
+常见的行内元素有 a b span img strong sub sup button input label select textarea
+常见的块级元素有  div p ul ol li dl dt dd h1 h2 h3 h4 h5 h6
 ```
 
 ## canvas与SVG
@@ -100,6 +93,78 @@ HTML4中，元素被分成两大类：inline （内联元素）与 block （块�
 - canvas绘制位图,绘制出来的每一个图形的元素都是独立的DOM节点，能够方便的绑定事件或用来修改。canvas复杂度高会减慢渲染速度。canvas输出的是一整幅画布，就像一张图片一样，放大会失真。canvas不适合游戏应用。
 - svg输出的图形是矢量图形，后期可以修改参数来自由放大缩小，SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。svg最适合图像密集型的游戏，其中的许多对象会被频繁重绘
 
+## SVG
+
+引用：可以直接在html中编辑svg标签显示；也可以通过<object><img><iframe> 等标签引入.svg文件。还可以通过js动态创建。
+
+例子：
+
+```html
+<svg baseProfile="full" width="300" height="200" viewBox ="0 0 600 400>
+
+  <rect width="100%" height="100%" fill="red" />
+
+  <circle cx="150" cy="100" r="80" fill="green" />
+                                               
+  <ellipse cx="75" cy="75" rx="20" ry="5" stroke="red" fill="transparent" stroke-width="5"/>
+
+  <line x1="10" x2="50" y1="110" y2="150" stroke="orange" fill="transparent" stroke-width="5"/>   
+  <polyline points="60 110 65 120 70 115 75 130 80 125 85 140 90 135 95 150 100 145"
+      stroke="orange" fill="transparent" stroke-width="5"/>
+
+  <polygon points="50 160 55 180 70 180 60 190 65 205 50 195 35 205 40 190 30 180 45 180"
+      stroke="green" fill="transparent" stroke-width="5"/>
+
+  <path d="M20,230 Q40,205 50,230 T90,230" fill="none" stroke="blue" stroke-width="5"/>
+	
+  <text x="150" y="125" font-size="60" text-anchor="middle" fill="white">SVG</text>
+```
+
+viewBox ：可以控制绘制比例，例子中宽300高200，通过viewBox设定后以为该区域代表600X400,变相缩小了所有图形的1/2.
+
++ <rect> 中含义x：矩形左上角的x位置
+
+  y：矩形左上角的y位置
+
+  width：矩形的宽度
+
+  height：矩形的高度
+
+  rx：圆角的x方位的半径
+
+  ry：圆角的y方位的半径
+  
++ circle 中 r：圆的半径
+	cx：圆心的x位置
+	cy：圆心的y位置
+	
++ ellipse 中rx：椭圆的x半径
+	ry：椭圆的y半径
+	cx：椭圆中心的x位置
+	cy：椭圆中心的y位置
+	
++ line 直线 中 x1：起点的x位置
+	y1：起点的y位置
+	x2：终点的x位置
+	y2：终点的y位置
+	
++ Polyline是一组连接在一起的直线，折线。
+
++ `polygon`和折线很像，它们都是由连接一组点集的直线构成。不同的是，`polygon`的路径在最后一个点处自动回到第一个点。
+
++ `path`中最常见的形状。
+
+  - `fill`属性设置对象内部的颜色
+  - `stroke`属性设置绘制对象的线条的颜色。
+  - 属性`fill-opacity`控制填充色的不透明度，
+  - 属性`stroke-opacity`控制描边的不透明度。
+  - `stroke-linecap`属性的值有三种可能值：
+    - `butt`用直边结束线段，它是常规做法，线段边界90度垂直于描边的方向、贯穿它的终点。
+    - `square`的效果差不多，但是会稍微超出`实际路径`的范围，超出的大小由`stroke-width`控制。
+    - `round`表示边框的终点是圆角，圆角的半径也是由`stroke-width`控制的。
+  - `stroke-linejoin`属性，用来控制两条描边线段之间，用什么方式连接。
+    - 取值miter，直角；round，圆角；bevel：切线
+  - `stroke-dasharray`属性，将虚线类型应用在描边上，stroke-dasharray=‘’5，5‘’
 ## 事件对象中的clientX offsetX screenX pageX的区别
 
 - [clientX, clientY]
@@ -144,21 +209,44 @@ page为页面的意思，页面的高度一般情况client浏览器显示区域�
 兼容性：IE不支持，其他高级游览器支持。
 ```
 
-## 三种事件模型是什么
+## 事件模型以及三种事件绑定方法
 
-```js
-事件是用户操作网页时发生的交互动作或者网页本身的一些操作，现代浏览器一共有三种事件模型。
+现代浏览器事件模型二个过程：捕获；冒泡
+事件捕获阶段。捕获指的是事件从html根元素向下传播到实际点击的目标元素（指在dom文档树中向下层），依次检查经过的节点是否绑定了该事件监听函数，如果有且该事件是设定在捕获阶段执行，便执行。
 
-第一种事件模型是最早的 DOM0 级模型，这种模型不会传播，所以没有事件流的概念
-它可以在网页中直接定义监听函数，也可以通过 js 属性来指定监听函数。这种方式是所有浏览器都兼容的。
+冒泡阶段：捕获阶段结束后，反向再检查一次，冒泡回根元素
 
-第二种事件模型是 IE 事件模型，在该事件模型中，一次事件共有两个过程，事件处理阶段，和事件冒泡阶段。事件处理阶段会首先执行目标元素绑定的监听事件。然后是事件冒泡阶段，冒泡指的是事件从目标元素冒泡到 document，依次检查经过的节点是否绑定了事件监听函数，如果有则执行。
-这种模型通过 attachEvent 来添加监听函数，可以添加多个监听函数，会按顺序依次执行。
+现代浏览器中，默认情况下，所有事件处理程序都在冒泡阶段执行。
 
-第三种是 DOM2 级事件模型，在该事件模型中，一次事件共有三个过程，第一个过程是事件捕获阶段。捕获指的是事件从 document 一直向下传播到目标元素，依次检查经过的节点是否绑定了事件监听函数，如果有则执行。
-后面两个阶段和 IE 事件模型的两个阶段相同。
-这种事件模型，事件绑定的函数是 addEventListener，其中第三个参数可以指定事件是否在捕获阶段执行。默认是false，在冒泡阶段执行。
+事件绑定方法：
+
++ 行内事件，过时了，不建议使用,缺点行为与结构不分离
+
+```html
+<button onclick="alert('ok')">Press me</button> 
 ```
+
++ js中在元素节点上添加事件属性，缺点：重复定义后者会覆盖前者
+
+  ```js
+   document.querySelector('button').onclick=alert('ok')
+  ```
+
++ addEventListener（eventName，function，useCaptrue），常用，可取消
+
+  ```js
+  const btn = document.querySelector('button');
+  
+  function bgChange() {
+    const rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+    document.body.style.backgroundColor = rndCol;
+  }
+  
+  btn.addEventListener('click', bgChange);
+  btn.removeEventListener('click', bgChange);
+  ```
+
+ addEventListener，其中第三个参数可以指定事件是否在捕获阶段执行。默认是false，在冒泡阶段执行。
 
 ## 事件代理/事件委托 以及 优缺点
 
@@ -197,59 +285,26 @@ window.event.returnValue = false;
 return false;
 ```
 
-## load 和 DOMContentLoaded 事件的区别
+## load 和 DOMContentLoaded 的区别（从没遇到过考这个）
 
 - 当整个页面及所有依赖资源如样式表和图片都已完成加载时，将触发load事件。它与DOMContentLoaded不同，后者只要页面DOM加载完成就触发，无需等待依赖资源的加载。
 - 当纯HTML被完全加载以及解析时，DOMContentLoaded 事件会被触发，而不必等待样式表，图片或者子框架完成加载。
 
-## js判断图片是否加载完毕的方式
+## js判断图片是否加载完毕的方式（从没遇到过考这个）
 
 - load事件
 
 > 所有浏览器都支持img的load事件。
 
-```html
-<script>
-    document.getElementById('img').onload = function() {
-        document.getElementById('p').innerHTML = 'loaded';
-    }
-</script>
-```
-
 - readystatechange事件
 
 > readyState属性为complete和loaded则表明图片已经加载完毕。测试IE6-IE10支持该事件，其它浏览器不支持。
-
-```html
-<script>
-    var img = document.getElementById('img');
-    img.onreadystatechange = function () {
-        if (img.readyState == 'complete' || img.readyState == 'loaded') {
-            document.getElementById('p').innerHTML = 'readystatechange:loaded';
-        }
-    }
-</script>
-```
 
 - img 的 complete属性
 
 > 轮询不断监测img的complete属性，如果为true则表明图片已经加载完毕，停止轮询。该属性所有浏览器都支持。
 
-```html
-<script>
-    function imgLoad(img, callback) {
-        var timer = setInterval(function() {
-            if (img.complete) {
-                callback();
-                clearInterval(timer);
-            }
-        }, 50)
-    }
-    imgLoad(img, function() {
-        document.getElementById('p').innerHTML = '加载完毕';
-    })
-</script>
-```
+
 
 ## js 延迟加载的方式有哪些
 
@@ -273,7 +328,7 @@ return false;
 
   多个脚本的执行顺序无法保证。
 
-## 注意事项
+## 其他
 
 + 所有的文件夹名和文件都使用小写字母，且没有空格,建议使用中划线作为分割
 

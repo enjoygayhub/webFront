@@ -156,7 +156,6 @@
 
 （6）对象（包括数组）会首先被转换为相应的基本类型值，如果返回的是非数字的基本类型值，则再遵循以上规则将其强制转换为数字。
     <font color='red'>{}转换为NaN。[]转为0.</font>
-    <font color='red'>不要管相邻不相邻，都是陷阱。</font>
 为了将值转换为相应的基本类型值，抽象操作 ToPrimitive 会首先（通过内部操作 DefaultValue）检查该值是否有valueOf() 方法。
 如果有并且返回基本类型值，就使用该值进行强制类型转换。如果没有就使用 toString() 的返回值（如果存在）来进行强制类型转换。
 如果 valueOf() 和 toString() 均不返回基本类型值，会产生 TypeError 错误。
@@ -174,7 +173,7 @@ ES5 规范 9.2 节中定义了抽象操作 ToBoolean，列举了布尔强制类�
 • ""
 
 假值的布尔强制类型转换结果为 false。从逻辑上说，假值列表以外的都应该是真值。
-//Boolen（‘ ’）为true，Boolen（[]）为true
+//Boolen（' '）为true，Boolen（[]）为true
 ```
 
 ## {} 和 [] 的 valueOf 和 toString 的结果
@@ -358,27 +357,9 @@ Object.assign(newobj,obj)//ES6浅拷贝，遍历所有可枚举属性，然后�
 
 let newobj = {...obj} //浅拷贝 同上
 
-let newObj = JSON.parse(JSON.stringify(oldObj));//简单的深拷贝，缺点见下
-
 Object.create(obj)//不能算是拷贝？该是继承，此方法使用指定的原型对象及其属性去创建一个新的对象
 
-```
-
-```javascript
-//自定义递归实现深拷贝
-const isComplexDataType = (obj)=>(typeof obj === "object" || typeof obj === 'function')&&(obj!==null);
-const deepClone = function (obj,hash=new WeakMap()){
-    if(obj.constructor===Date) return new Date(obj)//新建日期对象
-    if(obj.constructor===RegExp) return new RegExp(obj)//新建正则对象
-    if(hash.has(obj)) return hash.get(obj) //如果发生循环引用，则不再递归
-    let allDes = Object.getOwnPropertyDescriptors(obj) //得到所有键描述
-    let cloneObj = Object.create(Object.getPrototypeOf(obj),allDes)//使克隆的新对象继承原对象的原型,且有源对象键的所有特性
-    hash.set(obj,cloneObj)
-    for (let key of Reflect.ownKeys(obj)){
-        cloneObj[key] = (isComplexDataType(obj[key]) && typeof obj[key]!=='function')?deepClone(obj[key],hash):obj[key]
-    }
-    return cloneObj
-}
+let newObj = JSON.parse(JSON.stringify(oldObj));//简单的深拷贝，缺点见下
 ```
 
 ## JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
@@ -389,6 +370,8 @@ const deepClone = function (obj,hash=new WeakMap()){
 4. 如果obj里有NaN、Infinity和-Infinity，则序列化的结果会变成null
 5. JSON.stringify()只能序列化对象的可枚举的自有属性，例如 如果obj中的对象是有构造函数生成的， 则使用JSON.parse(JSON.stringify(obj))深拷贝后，会丢弃对象的constructor；
 6. 如果对象中存在循环引用的情况也无法正确实现深拷贝；
+
+
 
 ## eval 是做什么的
 
@@ -404,32 +387,39 @@ const deepClone = function (obj,hash=new WeakMap()){
 ## js 原型，原型链以及特点
 
 ```JavaScript
-在 js 中我们是使用构造函数来新建一个对象的，每一个构造函数的内部都有一个 prototype 属性值，
-这个属性值是一个对象，这个对象包含了可以由该构造函数的所有实例共享的属性和方法。
-当我们使用构造函数新建一个实例后，在这个实例的内部将包含一个指针，
-这个指针指向构造函数的 prototype 属性对应的值，在 ES5 中这个指针被称为对象的原型。
-浏览器中都实现了 __proto__ 属性来让我们访问这个属性，它并不是规范中的。
+JavaScript 只有一种结构：对象。例子：
+function Class(){
+    this.name='name';
+}
+class = new Class();//小写class为Class类的实例；Class为构造函数
 
-ES5 中新增了一个 Object.getPrototypeOf() 方法，我们可以通过这个方法来获取对象的原型。
-当我们访问一个实例对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链的概念。
-原型链的尽头一般来说都是 Object.prototype 
+每个实例对象（object）都有一个私有属性（称之为 __proto__ ）指向它的构造函数的原型对象（prototype）。
+
+即class.__proto__ === Class.prototype; //true
+
+prototype中一般包含2个属性，一个是constructor，指向Class函数自身；一个是__proto__,指向更高一级的原型对象。可以在prototype中添加新的属性方法，实例上也能访问到。
+
+原型对象也有一个自己的原型对象（__proto__），层层向上直到一个对象的原型对象为 null。根据定义，null 没有原型，并作为这个原型链中的最后一个环节。
+
+ES5 中Object.getPrototypeOf() 方法来获取对象的原型。
+当访问一个实例对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链的概念。
 
 特点：
 JavaScript 对象是通过引用来传递的，我们创建的每个新对象实体中并没有一份属于自己的原型副本。当我们修改原型时，与之相关的对象也会继承这一改变。
 ```
-## JavaScript 继承的几种实现方式
+## JavaScript 继承的方式
 
-- 第一种是以原型链的方式来实现继承，但是这种实现方式存在的缺点是，在包含有引用类型的数据时，会被所有的实例对象所共享，容易造成修改的混乱。还有就是在创建子类型的时候不能向超类型传递参数。
+- 原型链继承，分清构造函数，原型，实例：1,每一个构造函数都有一个原型对象;2,原型对象包含一个指向构造函数的指针;3,实例中包含一个原型对象的指针。缺点，在包含有引用类型的数据时，会被所有的实例对象所共享，容易造成修改的混乱。
 
-- 第二种方式是使用借用构造函数的方式，这种方式是通过在子类型的函数中调用超类型的构造函数来实现的，这一种方法解决了不能向超类型传递参数的缺点，但是它存在的一个问题就是无法实现函数方法的复用，并且超类型原型定义的方法子类型也没有办法访问到。
+- 使用构造函数的方式。
 
-- 第三种方式是组合继承，组合继承是将原型链和借用构造函数组合起来使用的一种方式。通过借用构造函数的方式来实现类型的属性的继承，通过将子类型的原型设置为超类型的实例来实现方法的继承。这种方式解决了上面的两种模式单独使用时的问题，但是由于我们是以超类型的实例来作为子类型的原型，所以调用了两次超类的构造函数，造成了子类型的原型中多了很多不必要的属性。
+- 组合继承。
 
-- 第四种方式是原型式继承，原型式继承的主要思路就是基于已有的对象来创建新的对象，实现的原理是，向函数中传入一个对象，然后返回一个以这个对象为原型的对象。这种继承的思路主要不是为了实现创造一种新的类型，只是对某个对象实现一种简单继承，ES5 中定义的 Object.create() 方法就是原型式继承的实现。缺点与原型链方式相同。
+- 原型式继承。
 
-- 第五种方式是寄生式继承，寄生式继承的思路是创建一个用于封装继承过程的函数，通过传入一个对象，然后复制一个对象的副本，然后对象进行扩展，最后返回这个对象。这个扩展的过程就可以理解是一种继承。这种继承的优点就是对一个简单对象实现继承，如果这个对象不是我们的自定义类型时。缺点是没有办法实现函数的复用。
+- 寄生式继承。
 
-- 第六种方式是寄生式组合继承，组合继承的缺点就是使用超类型的实例做为子类型的原型，导致添加了不必要的原型属性。寄生式组合继承的方式是使用超类型的原型的副本来作为子类型的原型，这样就避免了创建不必要的属性。
+- 寄生组合继承。
 
 ## Object.defineProperty 用法
 
@@ -948,26 +938,6 @@ Ajax 即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），�
 - Array.prototype.slice.call(arguments);使用call 一个对象调用另一个函数的方法，slice切割数组并返回一个新的数组
 - [].slice.call() 因为[].slice === Array.prototype.slice
 - 遍历：arguments有length属性，所以，可以遍历arguments取出每一个元素，并放进新的数组中
-
-
-
-## 原型链继承
-
-```js
-function Person(age, gender) {
-  this.age = age;
-  this.gender = gender;
-};//父类构造器
-Person.prototype.greeting = function() {
-  alert('Hi! I\'m ' + this.name.first + '.');
-};//构造器原型上添加方法
-function Teacher( age, gender, subject) {
-  Person.call(this,age, gender);//调用父类构造器，call改变this指向子类
-  this.subject = subject;
-}
-Teacher.prototype = Object.create(Person.prototype);//继承原型对象
-Teacher.prototype.constructor = Teacher;//构造器指向自身
-```
 
 #### 递归setTimeout()和setInterval()有何不同
 
