@@ -17,11 +17,6 @@
   - [Vue中key属性用index为什么不行](#vue中key属性用index为什么不行)
   - [Vue的路由模式](#vue的路由模式)
   - [vue中\$router和\$route的区别](#vue中router和route的区别)
-  - [Vue diff算法详解](#vue-diff算法详解)
-  - [移动端适配的方法](#移动端适配的方法)
-  - [rem 原理](#rem-原理)
-  - [rem 和 em 的区别](#rem-和-em-的区别)
-  - [移动端 300ms 延迟的原因以及解决方案](#移动端-300ms-延迟的原因以及解决方案)
   - [Vue 和 React 数据驱动的区别](#vue-和-react-数据驱动的区别)
 
 ## MVVM 和 MVC的区别
@@ -262,57 +257,7 @@ key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 
 
 当我们选中某一个（比如第3个），再添加或删除内容的时候就能发现bug了
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-</head>
-<body>
-    <div id="app">
-        <span>ID:</span><input type="text" v-model="id">
-        <span>Name:</span><input type="text" v-model="name">
-        <button @click="handleClick">添加</button>
-
-        <div v-for="(item, index) in list" :key="index">
-            <input type="checkbox" />
-            <span @click="handleDelete(index)">{{item.id}} --- {{item.name}}</span>
-        </div>
-    </div>
-    <script>
-        let vm = new Vue({
-            el: '#app',
-            data: {
-                id: '',
-                name: '',
-                list: [
-                    {id: 1, name: '张三'},
-                    {id: 2, name: '李四'},
-                    {id: 3, name: '王五'},
-                    {id: 4, name: '赵六'},
-                ]
-            },
-            methods: {
-                handleClick() {
-                    this.list.unshift({
-                        id: this.id,
-                        name: this.name
-                    })
-                },
-                handleDelete(index) {
-                    this.list.splice(index, 1)
-                }
-            },
-        })
-    </script>
-</body>
-</html>
-
-```
 
 ## Vue的路由模式
 

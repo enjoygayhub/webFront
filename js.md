@@ -450,7 +450,20 @@ Object.defineProperty(obj, prop, descriptor)
 1. 创建一个空对象{}；
 2. 构造函数中的 this 指向该空对象
 3. 执行构造函数为这个空对象添加属性
-4. 判断构造函数有没有返回值，如果返回值是个对象，则返回这个对象；否则返回创建的“空对象”
+4. 判断构造函数有没有返回值，如果返回值是个对象，则返回这个对象；否则返回创建的对象
+
+```js
+function Child1(){this.name='child1';}
+
+var p = new Child1();
+
+p//Child1 {name: "child1"} 一个Child1的实例
+
+var p = Child1()  //不使用new
+
+p  //undefined 因为Chilid1函数结果返回值为undefined
+name  // child1方法中this指向window，所以window由了一个全局属性name
+```
 
 
 
