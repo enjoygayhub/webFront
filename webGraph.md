@@ -229,3 +229,46 @@ ctx.fill("evenodd");//
 ctx.fill("nonezero");//默认
 ```
 
+## 使用图片
+
+**`drawImage(image, x, y)`**
+
+其中 `image` 是 image 或者 canvas 对象，`x` 和 `y 是其在目标 canvas 里的起始坐标。`
+
+[`drawImage(image, x, y, width, height)`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage)
+
+这个方法多了2个参数：`width` 和 `height，`这两个参数用来控制 当向canvas画入时应该缩放的大小
+
+[`drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage)
+
+第一个参数和其它的是相同的，都是一个图像或者另一个 canvas 的引用。其它8个参数最好是参照右边的图解，前4个是定义图像源的切片位置和大小，后4个则是定义切片的目标显示位置和大小。
+
+# 变形
+
+[`save()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/save)
+
+保存画布(canvas)的所有状态
+
+[`restore()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/restore)
+
+save 和 restore 方法是用来保存和恢复 canvas 状态的，回到上一个状态
+
+```
+translate(x, y)
+```
+
+`translate `方法接受两个参数。x 是左右偏移量，y 是上下偏移量，如右图所示。
+
+- `rotate(angle)`
+
+  这个方法只接受一个参数：旋转的角度(angle)，它是顺时针方向的，以弧度为单位的值。
+
+旋转的中心点始终是 canvas 的原点，如果要改变它，我们需要用到 `translate `方法。
+
+```
+scale(x, y)
+```
+
+`scale ` 方法可以缩放画布的水平和垂直的单位。两个参数都是实数，可以为负数，x 为水平缩放因子，y 为垂直缩放因子，如果比1小，会缩小图形， 如果比1大会放大图形。默认值为1， 为实际大小。
+
+transform（a,b,c,d,e,f）合并上诉6种变形

@@ -359,7 +359,7 @@ let newobj = {...obj} //浅拷贝 同上
 
 Object.create(obj)//不能算是拷贝？该是继承，此方法使用指定的原型对象及其属性去创建一个新的对象
 
-let newObj = JSON.parse(JSON.stringify(oldObj));//简单的深拷贝，缺点见下
+let newObj = JSON.parse(JSON.stringify(oldObj));//不完全的深拷贝
 ```
 
 ## JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题

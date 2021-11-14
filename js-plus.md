@@ -132,6 +132,56 @@ const deepClone = function (obj,hash=new WeakMap()){
 
   ​		最终改造为寄生组合继承与ES6中的 extend关键字基本相同
 
+	## 实现new call apply bind
+
+```js
+function _new(ctor,...args) {
+	if(typeof ctor !== 'function') {
+		throw 'ctor must be a function';}
+	let obj = new Object();
+	obj.__proto__ = Object.create(ctor.prototype);
+	let res = ctor.apply(obj,...args);
+	let isObject = typeof res === 'object' && typeof res !== null;
+	let isFunction = typeof res === 'function';
+	return isObject || isFunction ? res : obj;
+}；
+```
+
+```js
+Function.prototype.call = function (context, ..args) {
+var context = context | window; 
+context.fn = this;
+var result = eval('context.fn(...args)'); 
+delete context.fn
+return result;
+}
+Function.prototype.apply = function (context, args) {
+let context = context | window;
+context.fn = this;
+let result = eval('context.fn(...args)'); 
+delete context.fn
+return result;}
+```
+
+```js
+Function.prototype.bind = function (context,...args) {
+if (typeof this !== "function"){
+throw new Error("this must be a function");
+}
+var self = this;
+var fbound = function () {
+self.apply(this instanceof self ? this : context,
+args.concat(Array.prototype.slice.cal(arguments)));
+}
+if(this. prototype) { 
+fbound.prototype = Object.create(this. prototype);
+}
+return fbound;
+}
+```
+
+
+
 ###  [重排与重绘，提升性能。](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)
 
  [defer与async](https://segmentfault.com/a/1190000006778717?utm_source=sf-related)
