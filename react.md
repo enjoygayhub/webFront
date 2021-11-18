@@ -205,7 +205,7 @@ render prop 是一个用于告知组件需要渲染什么内容的函数 prop。
 
 调用 `forceUpdate()` 将致使组件调用 `render()` 方法，此操作会跳过该组件的 `shouldComponentUpdate()`。但其子组件会触发正常的生命周期方法，避免使用该api
 
-## webpack
+
 
 ## [redux](https://www.redux.org.cn)
 
