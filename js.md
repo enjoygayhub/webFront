@@ -904,6 +904,29 @@ bar(); // yeah 隔1秒同时输出 lee fan
 >
 > 紧接着会从宏任务队列取一个宏任务放到执行栈中执行，此时可能会产生新的微任务，将微任务放到微任务队列中，当这个宏任务执行完后会继续执行微任务队列，如果没有产生就继续执行下一个宏任务。循环往复，直至所有任务执行完毕。
 
+```js
+async function async1(){
+    console.log('asy1 start');
+    await async2();
+    console.log("asy1 end");}
+async function async2(){console.log("async2");}
+async1();
+setTimeout(()=>{console.log('timeout')},0);
+new Promise(function(resolve){
+    console.log("promise1");
+    resolve();})
+    .then(function(){console.log('promise2')});
+console.log('script end');
+//结果
+//asy1 start
+//async2
+//promise1
+//script end
+//asy1 end
+//promise2
+//timeout
+```
+
 
 
 ## Ajax 基本流程

@@ -133,3 +133,25 @@ git merge origin/branch2
 
 ## 如果提示没有公钥，请看[这个](https://blog.csdn.net/weixin_30763455/article/details/99901544)
 
+## submododule 使用
+
+在主项目中，使用 `git submodule add <submodule_url>` 命令可以在项目中创建一个子模块。
+
+拉取主项目时 如果希望子模块代码也获取到，一种方式是在克隆主项目的时候带上参数 `--recurse-submodules`
+
+另外一种可行的方式是，在当前主项目中执行：
+
+> git submodule init
+> git submodule update
+
+在不同场景下子模块的更新方式如下：
+
+- 对于子模块，只需要管理好自己的版本，并推送到[远程分支](https://www.zhihu.com/search?q=远程分支&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A87053283})即可；
+
+- 对于父模块，若子模块版本信息未提交，需要更新子模块目录下的代码，并执行 `commit` 操作提交子模块版本信息；当主项目的子项目特别多时，可能会不太方便，此时可以使用 `git submodule` 的一个命令 `foreach` 执行：
+
+  > git submodule foreach 'git pull origin master'
+
+- 对于父模块，若子模块版本信息已提交，需要使用 `git submodule update` ，Git 会自动根据子模块版本信息更新所有子模块目录的相关代码。
+
+使用 `git submodule deinit` 命令卸载一个子模块
