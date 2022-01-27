@@ -180,6 +180,22 @@ return fbound;
 }
 ```
 
+## 实现add(1)(2,3)(4,5,6)
+
+```js
+function add(...args){
+    let arr =args;
+    function fn(...newArgs){
+        arr=[...args,...newArgs];
+        return fn;
+    }
+    fn.toString=fn.valueOf=function(){
+        return arr.reduce((acc,cur)=> acc+parseInt(cur))
+    }
+    return fn;
+}
+```
+
 
 
 ###  [重排与重绘，提升性能。](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)
