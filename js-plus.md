@@ -1,5 +1,76 @@
 #  js-plus
 
+## 隐式转换优先级
+
+Symbol.toPrimitive -> valueOf/toString
+
+1. 调用 obj[Symbol.toPrimitive](hint) 如果这个方法存在，则valueOf()和toString()失效,不存在则进行2，3，
+2. 如果 hint 是 "string"
+  ○ 尝试 obj.toString() 和 obj.valueOf()，无论哪个存在。
+3. 如果 hint 是 "number" 或者 "default"
+  ○ 尝试 obj.valueOf() 和 obj.toString()，无论哪个存在。
+如果都不返回基础类型则报错；
+
+另外 valueOf返回的是对象本身，因此除非自定义了它的返回值，否则会被忽略。
+对象到原始值的转换，是由许多期望以原始值作为值的内建函数和运算符自动调用的。
+期望（hint）这里有三种类型：
+● "string"（如对于 alert 和其他需要字符串的操作）
+● "number"（对于数学运算如一元+，移位运算，大于等于）
+● "default"（少数运算符二元+，==）
+
+```js
+var obj = {
+  [Symbol.toPrimitive](hint) {
+    if (hint == "number") {
+      return 10;
+    }
+    if (hint == "string") {
+      return "hello";
+    }
+    return true;
+  }
+};
+
+```
+严等===是比较引用，不会触发隐式转换。
+宽松等==， 如果只有一边是对象，会触发隐式转换。 否则，是等同于严等。
+
+
+
+## {} 和 [] 的 valueOf 和 toString 的结果，转换为原始值
+
+```js
+{} 的 valueOf 结果为 {} ，toString 的结果为 "[object Object]"
+
+[] 的 valueOf 结果为 [] ，toString 的结果为 ""
+//于是有
+[] +[] //as
+[].toString() +  [].toString()
+// '' + ''
+// ''
+[] + {}//as
+[].toString() +  {}.toString()
+// '' +  '[object Object]'
+// '[object Object]'
+{} + []// {}在前被解释为代码块，什么也不发生
++ []
+// 0
+```
+
+## 对象
+
+常规属性：字符串作为键，elements
+
+排序属性：数字或者数字字符串作为键 ，properties
+
+内属性：前10个常规属性：直接存储在对象本身；
+
+快属性：线性数据结构存储的属性，查找快，删除慢
+
+慢属性：非线性结构存储的大量属性键
+
+隐藏类：描述了对象的属性布局。map
+
 ## 实现深拷贝
 
 ```js
@@ -180,6 +251,21 @@ return fbound;
 }
 ```
 
+## 实现instanceof
+
+```js
+function instanceOf(instance, cclass) {
+    let proto = instance.__proto__
+    let prototype = cclass.prototype
+
+    while (proto) {
+        if (proto === prototype) return true
+        proto = proto.__proto__
+    }
+    return false;
+}
+```
+
 ## 实现add(1)(2,3)(4,5,6)
 
 ```js
@@ -196,7 +282,17 @@ function add(...args){
 }
 ```
 
+经典题：void (0) === void 0 === undefined === void(0); 
 
+void () ; //Uncaught SyntaxError: Unexpected token ')' ()无法解析
+
+[NaN].indexOf(NaN) === -1；// true NaN不与任何相等，所以indexOf判断不了；
+
+arr.includes(NaN) // true ,ES6的includes做了特殊处理，可以判断
+
+[-0].includes(+0) // true，故意不区分+0,-0，反正都是0
+
+[BigInt(+0)].includes(BigInt(-0))  // false，能区分大数0
 
 ###  [重排与重绘，提升性能。](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)
 
