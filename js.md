@@ -381,16 +381,28 @@ Object.create(obj)//不能算是拷贝？该是继承，此方法使用指定的
 
 let newObj = JSON.parse(JSON.stringify(oldObj));//不完全的深拷贝
 ```
+## JSON 
+  键只能是字符串，必须双引号包裹，值可以是10进制的数，字符串，数组，不能是Date，undefined，函数，
+  JSON.parse()：JSON.parse(text[, reviver])，将json串转为对象，可选参数reviver 为一个函数，如果 reviver 返回 undefined，则当前属性会从所属对象中删除，如果返回了其他值，则返回的值会成为当前属性新的属性值。
+  JSON.stringify()
+    将一个 JavaScript 对象或值转换为 JSON 字符串。  JSON.stringify(value[, replacer [, space]])
+    第二个参数 replacer 可选
+  如果该参数是一个函数：则在序列化过程中，被序列化的值的每个属性都会经过该函数的转换和处理；
+  如果该参数是一个数组：则只有包含在这个数组中的属性名才会被序列化到最终的 JSON 字符串中；
+  如果该参数为 null 或者未提供: ，则对象所有的属性都会被序列化。
+  第三个参数 space 可选
+  指定缩进用的空白字符串，用于美化输出（pretty-print）；
+
+  限制： 对于 undefined， symbol， 函数，这三种在作为对象的值、数组元素、单独的值时会不同。
+    ● 作为对象属性时被忽略。
+    ● 作为数组元素值时，转为null，（数组的长度不能变）
+    ● 作为单独的值， 返回 undefined
+  BigInt 会报错，Date类型会便成为字符串，如果有循环引用会报错，map和set类型，什么都不会有JSON.stringify(map)：{}
+
+  如果一个被序列化的对象拥有 toJSON 方法，那么JSON.stringify得到的就是该 toJSON 方法的返回值
 
 ## JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
-
-1. 如果obj里面有时间对象，则JSON.stringify后再JSON.parse的结果，只是字符串,不是时间对象；
-2. 如果obj里有RegExp、Error对象，则序列化的结果将只得到空对象；
-3. 如果obj里有函数，undefined，则序列化的结果会把函数或 undefined丢失；
-4. 如果obj里有NaN、Infinity和-Infinity，则序列化的结果会变成null
-5. JSON.stringify()只能序列化对象的可枚举的自有属性，例如 如果obj中的对象是有构造函数生成的， 则使用JSON.parse(JSON.stringify(obj))深拷贝后，会丢弃对象的constructor；
-6. 如果对象中存在循环引用的情况也无法正确实现深拷贝；
-
+  以上
 
 
 ## eval 是做什么的
