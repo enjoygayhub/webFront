@@ -151,8 +151,14 @@ HOC 不应该修改传入组件，而应该使用组合的方式，通过将组�
 
 
 ### JSX
+jsx是一种语法扩展，类html的模板语言，需要babel转义为js语法
+- jsx会被编译成React.createElement()语法，返回React Element的js对象
 
-- jsx会被编译成React.createElement()语法
+```js
+//createElement函数入参，type标时节点类型，config对象表示属性键值对，children对象记录组件标签之间的嵌套内容
+export function createElement(type, config, children){}
+
+```
 - 一个模块中导出许多组件时，可使用点语法获得组件
 - 自定义组件必须以大写字母开头
 - 大括号{}中可以嵌入JavaScript表达式，if 和for 不是表达式，所以必须在jsx以外使用
@@ -189,8 +195,12 @@ render prop 是一个用于告知组件需要渲染什么内容的函数 prop。
 
 组件实例被创建并插入 DOM 中时，其生命周期调用顺序如下：
 
-- constructor()  ： 初始化内部state，避免将porps的值赋值给state
+- constructor()  ： 初始化内部state，避免将props的值赋值给state
 - render()： 纯函数，返回boolean 或null时不渲染
+```jsx
+// element需要渲染的元素，container挂在的目标容器真实的dom，
+ReactDOM.render(elements,container,[callback])
+```
 - componentDidMount()： 网络请求数据，添加订阅
 
 触发更新后，生命周期为

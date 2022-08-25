@@ -155,6 +155,33 @@ function debounce(func, wait) {
           if (callNow) func.apply(context, args);
         };
       }
+// 防抖函数可取消版
+        function debounce(fn,time,immediate) {
+            let timer = null
+            let debounced = function () {
+                let context = this
+                let args = arguments
+                if(timer) clearTimeout(timer)  //清除前一个定时器
+                if (immediate) {  //为true立即执行
+                    let callNow = !timer
+                    timer = setTimeout(()=>{  
+                        timer = null
+                    },time || 500)
+                    if (callNow) fn.apply(context,args)
+                }
+                else {  //非立即执行
+                    timer = setTimeout(function(){
+                        fn.apply(context, args)
+                    }, time || 500);
+                }
+            }
+            debounced.cancel = function() { //取消防抖
+                clearTimeout(timer);
+                timer = null;
+            };
+            return debounced
+        }
+
 //节流时间戳版本
 function throttle(func, wait) {
     var previous = 0;

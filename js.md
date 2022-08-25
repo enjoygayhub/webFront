@@ -497,7 +497,10 @@ p  //undefined 因为Chilid1函数结果返回值为undefined
 name  // child1方法中this指向window，所以window由了一个全局属性name
 ```
 
+## 变量提升：
 
++ 函数声明优先与变量声明（函数与变量同名情况下函数有效），函数声明可被覆盖，（声明2次同名函数，后者覆盖前者）
++ 匿名函数不提升，不继承Function原型
 
 ## JS 作用域
 
@@ -541,7 +544,7 @@ var num1 = 1;
 function fun1 (){
     console.log(num1); var num1 = 2;console.log(num1);
 }
-fun1();//undefined,2  函数内作用域，尚未赋值
+fun1();//undefined,2  函数内作用域num1提升到函数作用域顶部，但尚未赋值
 num1;//1 全局num1不改变
 
 var num1 = 1;
@@ -552,6 +555,29 @@ fun1();//报错，暂时性死区，let不提升
 ```
 
 ES6 有块级作用域
+
+```js
+for(let j=0;j<2;j++){
+    console.log("for let:",j);
+}
+console.log("let:",j);// Uncaught ReferenceError: j is not defined
+```
+作用域也可以根据代码层次分层，以便子作用域可以访问父作用域，通常是指沿着链式的作用域链查找，而不能从父作用域引用子作用域中的变量和引用。
+```js
+var a = 1;
+
+function test() {
+    console.log(a);
+}
+
+function test1() {
+    var a = 2;
+    test();
+}
+
+test1()  // 1
+```
+作用域是在函数创建的时候就已经创建,因此这里结果是1而不是2.test执行时从作用域链出来找a=1。
 
 ## ES6 新特性
 
@@ -573,10 +599,11 @@ ES6 有块级作用域
 - let 是块级作用域，var 是函数作用域
 - var 存在变量提升，而 let 没有
 - let变量不能覆盖作用域中已定义的变量，const变量定义同时必须赋值
-- 在代码块内，使用 let 命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区” (TDZ)
+- 如果区块中存在let 或者 const ,这个区块对这些声明的变量，将形成一个封闭的作用域，不允许去父作用域查找。在代码块内，使用 let 命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区” (TDZ)
 
 ## 闭包的特性以及优缺点
 
+本质：当前环境中存在指向父级作用域的引用
 闭包有三个特性：
 
 - 函数嵌套函数；
