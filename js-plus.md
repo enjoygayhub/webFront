@@ -56,6 +56,43 @@ var obj = {
 + []
 // 0
 ```
+## Function.name,Function.length,Function.caller,arguments.callee
++ Function.name 用于获得函数名;
+  1 大多数情况包括函数声明式，匿名函数赋值给变量，.name都能取到函数名或变量名
+```js
+    function foo(){
+      return 0;
+    }
+    foo.name;//foo
+    foo=()=>{};
+    foo.name;//foo
+    "foo"
+```
+  2 被bind 之后的 函数名 ：name 值就是 "bound " + 函数名
+  3 使用new Function创建函数，name值是anonymous
+  ```js
+  const addFn = new Function("num1", "num2", "return num1 + num2");
+  addFn.name;// anonymous
+  ```
++ Function.length 用于获取形参个数
+  注：排除默认值，剩余参数，仅包含第一个具有默认值之前的参数个数
+  bind 之后的length = 函数的length - bind 的参数个数，最小值为0;
+  ```js
+  function sum(num1, num2 = 1, num3) {
+    return num1 + num2 + num3;
+  }
+    sum.length;//1
+    const boundSum1 = sum.bind(null, 1);
+    boundSum1.length;//0
+  ```
+  与arguments.length的区别，后者代表实参的长度。
+
++ Function.caller 可以获得调用该函数的函数，用于调用栈信息收集；
+如果一个函数f是在全局作用域内被调用的,则f.caller为null,相反,如果一个函数是在另外一个函数作用域内被调用的,则f.caller指向调用它的那个函数.
+非标准特性，严格模式下无效；
+
++ arguments.callee，用于递归调用匿名函数自身；
+  非标准特性，严格模式下无效；
 
 ## 对象
 
@@ -292,6 +329,8 @@ function add(...args){
 函数的作用域在函数创建时就已经确定了，而不是在函数调用时确定。
 1. 全局作用域在任何函数外或者代码块之外的顶层作用域就是全局作用域，而里面的变量成为全局变量
 2. 在函数内的作用域就是函数作用域,函数内部的变量，在全局作用域或者块级作用域中，都无法访问。只能在函数内部才可以访问。所以函数内的变量也称为局部变量。
+
+
 经典题：void (0) === void 0 === undefined === void(0); 
 
 void () ; //Uncaught SyntaxError: Unexpected token ')' ()无法解析
