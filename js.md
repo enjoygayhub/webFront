@@ -653,7 +653,7 @@ test1()  // 1
 ES6 箭头函数中 this
 
 1.  默认指向定义它时，所处上下文的对象的 this 指向；
-    偶尔没有上下文对象，this 就指向 window
+    换个说法是上层作用域的this, 或者说继承了上一层作用域的this,  如果其上层作用域是全局作用域，或者本身在全局上下文中执行，那么this就指向window。
 
 
 ```js
@@ -700,11 +700,19 @@ const obj = {
   diameter() {
     return this.radius * 2//diameter是普通函数，里面的this指向直接调用它的对象obj。
   },
-  perimeter: () => 2 * Math.PI * this.radius,//这里上下文没有函数对象，就默认为window。
+  perimeter: () => 2 * Math.PI * this.radius,//这里箭头与radius在同一层级，所以它的上一级作用域是window而不是obj
+  getRadius：function(){
+    return ()=> this.radius;  // 箭头在新的function函数作用域内，他的上一级正好是obj内，可以这么理解
+  }
 }
 console.log(obj.diameter()) // 20
 console.log(obj.perimeter()) // NaN
+console.log(obj.getRadius()()) // 10
 ```
+注：
+非严格模式下，使用call改变this指向时，如果传参数为null和undefined，等同于默认window；
+可以看到bind 以后，再次通过call改变this,是不生效的。
+同样，多次bind 也是一次生效。
 
 ## ES6 class 和 ES5 函数的区别
 
