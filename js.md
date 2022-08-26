@@ -419,26 +419,35 @@ let newObj = JSON.parse(JSON.stringify(oldObj));//不完全的深拷贝
 ## js 原型，原型链以及特点
 
 ```JavaScript
-JavaScript 只有一种结构：对象。例子：
+
 function Class(){
     this.name='name';
 }
 class = new Class();//小写class为Class类的实例；Class为构造函数
 
-每个实例对象（object）都有一个私有属性（称之为 __proto__ ）指向它的构造函数的原型对象（prototype）。
+```
 
+每个实例对象（object）都有一个私有属性（称之为 __proto__ ），非web标准却被大多数浏览器支持，指向它的构造函数的原型。
 即class.__proto__ === Class.prototype; //true
+
+此外普通函数或者Class类，本质是也是对象，所以作为构造函数来看有Class.prototype，作位对象来看也有Class.__proto__
+函数都是由Function原生构造创建的，所以函数的__proto__ 等于Function.prototype。
+
+Function,Object,Regexp, Error等是函数，Function.constructor === Function ; Object.constructor === Function
+所以有Function.__proto__ === Function.prototype；Object.__proto__ === Function.prototype
 
 prototype中一般包含2个属性，一个是constructor，指向Class函数自身；一个是__proto__,指向更高一级的原型对象。可以在prototype中添加新的属性方法，实例上也能访问到。
 
-原型对象也有一个自己的原型对象（__proto__），层层向上直到一个对象的原型对象为 null。根据定义，null 没有原型，并作为这个原型链中的最后一个环节。
+原型对象也有自己的原型__proto__，层层向上直到一个对象的原型对象为 null。根据定义，null 没有原型，并作为这个原型链中的最后一个环节。
+Object.prototype.__proto__ === null;
 
 ES5 中Object.getPrototypeOf() 方法来获取对象的原型。
 当访问一个实例对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链的概念。
 
 特点：
 JavaScript 对象是通过引用来传递的，我们创建的每个新对象实体中并没有一份属于自己的原型副本。当我们修改原型时，与之相关的对象也会继承这一改变。
-```
+
+特别的对象：Object.create(null);没有原型
 ## JavaScript 继承的方式
 
 - 原型链继承，分清构造函数，原型，实例：1,每一个构造函数都有一个原型对象;2,原型对象包含一个指向构造函数的指针;3,实例中包含一个原型对象的指针。缺点，在包含有引用类型的数据时，会被所有的实例对象所共享，容易造成修改的混乱。
