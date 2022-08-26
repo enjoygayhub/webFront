@@ -319,6 +319,62 @@ function add(...args){
 }
 ```
 
+### 柯里化和偏函数
+1. 柯里化是将一个多参数转换为单参数的函数，将一个N元函数转换为N个一元函数。
+2. 偏函数是固定一部分参数（一个或者多个参数），将 一个N元函数转换成一个N-X函数。用于延迟执行
+3. 反柯里化的作用就是扩大适用性，使原来作为特定对象所拥有的功能的函数可以被任意对象所用
+
+```js
+// 一个求和的柯里化
+const curry = function (fn) {
+    let curArgs = [];
+    return function () {
+        if (arguments.length === 0) {
+            return fn.apply(this, curArgs);
+        }
+        curArgs = curArgs.concat([...arguments]);
+        return arguments.callee;
+    }
+};
+
+function calcSum() {
+    return [...arguments].reduce((pre, value, index) => { return pre + value }, 0);
+}
+
+const add = curry(calcSum);
+
+console.log("执行添加：", add(2, 3)(5)(8));
+
+console.log("手动调用：", add())
+
+// 一个偏函数实现的
+function partial(fn) {
+    const args = [].slice.call(arguments, 1);
+    return function () {
+        const newArgs = args.concat([...arguments]);
+        return fn.apply(this, newArgs);
+    };
+};
+
+const pCalcSum = partial(calcSum, 10);
+
+console.log(pCalcSum(11, 12));
+console.log(pCalcSum(15, 20));
+
+// 反科里
+function unCurry(fn) {
+    return function (context) {
+        return fn.apply(context, Array.prototype.slice.call(arguments, 1));
+    }
+}
+
+// 反柯里化
+const toString = unCurry(Object.prototype.toString);
+toString({});
+toString(() => { });
+toString(1);
+```
+
 ### 执行上下文 调用栈，作用域
 
 + 执行上下文 为可执行代码块提供了的必要准备工作，比如变量对象的定义、作用域链的扩展、提供调用者的对象引用等信息。
