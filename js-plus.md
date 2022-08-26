@@ -330,6 +330,14 @@ function add(...args){
 1. 全局作用域在任何函数外或者代码块之外的顶层作用域就是全局作用域，而里面的变量成为全局变量
 2. 在函数内的作用域就是函数作用域,函数内部的变量，在全局作用域或者块级作用域中，都无法访问。只能在函数内部才可以访问。所以函数内的变量也称为局部变量。
 
+# es6中类的继承 
+```js
+class B extends A {};
+
+B.__proto__ === A; //B的原型为A;
+B.prototype.__proto__ === A.prototype; // 相当于B的实例经过2层原型链路找到A：b.__proto__.__proto__ === A.prototype;
+```
+使用extends实现继承时：父类中的箭头函数和非函数类的属性不会存在原型链中，子类无法从原型链上访问到
 
 经典题：void (0) === void 0 === undefined === void(0); 
 
@@ -342,6 +350,8 @@ arr.includes(NaN) // true ,ES6的includes做了特殊处理，可以判断
 [-0].includes(+0) // true，故意不区分+0,-0，反正都是0
 
 [BigInt(+0)].includes(BigInt(-0))  // false，能区分大数0
+
+
 
 ###  [重排与重绘，提升性能。](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)
 
@@ -379,6 +389,7 @@ arr.includes(NaN) // true ,ES6的includes做了特殊处理，可以判断
    3. 合理利用浏览器缓存：图片懒加载：使用iconfont代替图片图标：
    4. 尽量使用id;合理缓存DOM对象：
    5. 避免各种形式重排重绘：
+
 # [响应式布局](https://juejin.im/post/5caaa230e51d452b672f9703)
 
 - 设置viewport
@@ -388,14 +399,6 @@ arr.includes(NaN) // true ,ES6的includes做了特殊处理，可以判断
 - 图片的适配（图片的响应式）
 - 结合flex，grid，BFC，栅格系统等已经成型的方案
 
-# es6中类的继承 
-```js
-class B extends A {};
-
-B.__proto__ === A; //B的原型为A;
-B.prototype.__proto__ === A.prototype; // 相当于B的实例经过2层原型链路找到A：b.__proto__.__proto__ === A.prototype;
-```
-
 
 ## [数据结构数组与类数组](http://www.360doc.com/content/18/0925/05/3175779_789416619.shtml)
 
@@ -403,7 +406,9 @@ B.prototype.__proto__ === A.prototype; // 相当于B的实例经过2层原型链
 
 [浮动元素的特点](https://juejin.cn/post/6844903891155288072)
 
-[外边距溢出问题](https://juejin.cn/post/6844904033509965831) [边距折叠问题](https://juejin.cn/post/6844903497045917710)
+[外边距溢出问题](https://juejin.cn/post/6844904033509965831) 
+
+[边距折叠问题](https://juejin.cn/post/6844903497045917710)
 
 ## js渲染10w数据优化
 
