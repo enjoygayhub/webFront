@@ -387,10 +387,15 @@ arr.includes(NaN) // true ,ES6的includes做了特殊处理，可以判断
 - 百分比布局
 - 图片的适配（图片的响应式）
 - 结合flex，grid，BFC，栅格系统等已经成型的方案
-# es6中类的继承
+
+# es6中类的继承 
+```js
 class B extends A {};
-B.__proto__ ===A;
-B.prototype.__proto__ === A.prototype;
+
+B.__proto__ === A; //B的原型为A;
+B.prototype.__proto__ === A.prototype; // 相当于B的实例经过2层原型链路找到A：b.__proto__.__proto__ === A.prototype;
+```
+
 
 ## [数据结构数组与类数组](http://www.360doc.com/content/18/0925/05/3175779_789416619.shtml)
 
