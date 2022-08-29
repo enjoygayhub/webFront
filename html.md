@@ -93,13 +93,18 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 - canvas绘制位图,绘制出来的每一个图形的元素都是独立的DOM节点，能够方便的绑定事件或用来修改。canvas复杂度高会减慢渲染速度。canvas输出的是一整幅画布，就像一张图片一样，放大会失真。canvas不适合游戏应用。
 - svg输出的图形是矢量图形，后期可以修改参数来自由放大缩小，SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。svg最适合图像密集型的游戏，其中的许多对象会被频繁重绘
 
+## Element的clientWidth offsetWidth scrollWidth
+  + 元素宽度clientWidth= width + 左右padding  (不包含border,margin,滚动条)
+  + 元素布局宽度offsetWidth=width + 左右padding + 左右border + 滚动条（不包含margin）
+  + 元素内容宽度scrollWidth 测量元方式和clientWidth计算方式相同。区别在于包括由于overflow溢出而在屏幕上不可见的内容。
+
 ## 事件对象中的clientX offsetX screenX pageX的区别
 
 - [clientX, clientY]
 
 ```txt
 client直译就是客户端，客户端的窗口就是指游览器的显示页面内容的窗口大小（不包含工具栏、导航栏等等）
-[clientX, clientY]就是鼠标距游览器显示窗口的长度
+[clientX, clientY]就是鼠标距浏览器显示窗口的距离
 
 兼容性：IE和主流游览器都支持。
 ```
@@ -108,7 +113,7 @@ client直译就是客户端，客户端的窗口就是指游览器的显示页�
 
 ```txt
 offset意为偏移量
-[offsetX, offsetY]是被点击的元素距左上角为参考原点的长度，而IE、FF和Chrome的参考点有所差异。
+[offsetX, offsetY]是被点击的**元素**距左上角为参考原点的长度，而IE、FF和Chrome的参考点有所差异。
 
 Chrome下，offsetX offsetY是包含边框的
 IE、FF是不包含边框的，如果鼠标进入到border区域，为返回负值
@@ -120,7 +125,7 @@ IE、FF是不包含边框的，如果鼠标进入到border区域，为返回负�
 
 ```txt
 screen顾名思义是屏幕
-[screenX, screenY]是用来获取鼠标点击位置到屏幕显示器的距离，距离的最大值需根据屏幕分辨率的尺寸来计算。
+[screenX, screenY]是用来获取鼠标点击位置在屏幕显示器种的距离，距离的最大值需根据屏幕分辨率的尺寸来计算。
 
 兼容性：所有游览器都支持此属性。
 ```
@@ -130,11 +135,8 @@ screen顾名思义是屏幕
 ```txt
 page为页面的意思，页面的高度一般情况client浏览器显示区域装不下，所以会出现垂直滚动条。
 
-[pageX, pageY]是鼠标距离页面初始page原点的长度。
+[pageX, pageY]是鼠标距离页面初始page原点的长度，包括滚动的区域。
 
-在IE中没有pageX、pageY取而代之的是event.x、event.y。x和y在webkit内核下也实现了，所以火狐不支持x，y。
-
-兼容性：IE不支持，其他高级游览器支持。
 ```
 
 ## 事件模型以及三种事件绑定方法
@@ -256,6 +258,33 @@ return false;
 
   多个脚本的执行顺序无法保证。
 
+## DOM与Node节点
+  属性nodeType：识别节点类型，最常见的4种如下
+  + 元素阶段如div span的 nodeType=1；
+  + 文本类容Text的 nodeType=3；
+  + 注释内容Comment nodeType=8；
+  + 文档模型Document nodeType = 9；
+  查询方式：
+  + querySelector 返回匹配的第一个元素Element
+  + querySelectorAll 返回NodeList，返回的是镜像节点，即使后续节点发生变化也不会实时更新
+  + getElementById
+  + getElementsByClassName
+  + getElementsByTagName 返回的是匹配的元素集合HTMLCollection。
+  + getElementsByName 返回的NodeList
+
+  Node.contains() 返回的是一个布尔值，来表示传入的节点是否为该节点的后代节点
+
+  Element.getBoundingClientRect() 返回元素的大小及其相对于可视化窗口（视口）的位置。
+
+  Node.cloneNode() 克隆一个元素节点会拷贝它所有的属性以及属性值,当然也就包括了属性上绑定的事件(比如onclick="alert(1)"),但不会拷贝那些使用addEventListener()方法或者node.onclick = fn这种用JavaScript动态绑定的事件
+
+  Node.appendChild() 将一个节点附加到指定父节点的子节点列表的末尾处
+
+  Element.append() 方法在父节点最后一个子节点之后插入一组 Node 对象或 DOMString 对象。被插入的 DOMString 对象等价为 Text 节点.
+
+  Node.childNodes() 返回节点的子节点集合，包括元素节点、文本节点还有属性节点
+
+  Element.children() 只返回节点的元素子节点集合, 即 nodeType为1的节点。
 ## 其他
 
 + 所有的文件夹名和文件都使用小写字母，且没有空格,建议使用中划线作为分割
