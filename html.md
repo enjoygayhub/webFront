@@ -150,7 +150,7 @@ page为页面的意思，页面的高度一般情况client浏览器显示区域�
 
 事件绑定方法：
 
-+ 行内事件，过时了，不建议使用,缺点行为与结构不分离
++ 行内事件，过时了，不建议使用,没有捕获与冒泡，节点复制后事件丢失
 
 ```html
 <button onclick="alert('ok')">Press me</button> 
@@ -162,7 +162,7 @@ page为页面的意思，页面的高度一般情况client浏览器显示区域�
    document.querySelector('button').onclick=alert('ok')
   ```
 
-+ addEventListener（eventName，function，useCaptrue），常用，可取消
++ addEventListener（eventName，function，useCapture），常用，可取消
 
   ```js
   const btn = document.querySelector('button');
@@ -171,12 +171,17 @@ page为页面的意思，页面的高度一般情况client浏览器显示区域�
     const rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
     document.body.style.backgroundColor = rndCol;
   }
-  
+  // 此处为click没有on
   btn.addEventListener('click', bgChange);
+  // 取消
   btn.removeEventListener('click', bgChange);
   ```
 
- addEventListener，其中第三个参数可以指定事件是否在捕获阶段执行。默认是false，在冒泡阶段执行。
+ addEventListener，其中第三个参数useCapture可以指定事件是否在捕获阶段执行。默认是false，在冒泡阶段执行。
+ 现代浏览器中，第三个参数可传对象option：{capture:boolean,once:boolean,passive:boolean,signal:AbortSignal}。
+ capture效果同useCapture，once为true时事件仅执行一次，这两个常用，兼容性良好，下面2个兼容性不好
+ passive为true时，事件的preventDefault()无效，用于优化滚屏性能，signal可以用于设置移除监听。
+注：capture选项不相同，事件回调函数可以被重复添加
 
 ## 事件代理/事件委托 以及 优缺点
 
@@ -195,24 +200,28 @@ page为页面的意思，页面的高度一般情况client浏览器显示区域�
 2. 事件委托有对子元素的查找过程，委托层级过深，可能会有性能问题
 3. 频繁触发的事件如 mousemove、mouseout、mouseover等，不适合事件委托
 
-## 如何阻止事件冒泡
+## 如何阻止事件默认行为与阻止事件冒泡；target 和 currentTarget
 
 ```js
-// w3c
-e.stopPropagation()
-// IE
-e.cancelBubble = true
-```
-
-## 如何阻止事件默认行为
-
-```js
-//谷歌及IE8以上
-e.preventDefault();
-//IE8及以下
-window.event.returnValue = false;
-//无兼容问题（但不能用于节点直接onclick绑定函数）
-return false;
+//阻止默认的行为，比如有href属性的a标签不会跳转，checkbox的选中不会生效等。
+document.querySelector('a').addEventListener("click", function(e){
+            e.preventDefault();
+        })
+// 停止事件传播
+document.querySelector('a').addEventListener("click", function(e){
+            e.stopPropagation()
+        })
+document.addEventListener("click", function(ev){
+        //target:  触发事件的元素。 事件代理中常用来判断时哪个子节点触发的
+        console.log("ev.target:", ev.target) 
+        // 比如判断子节点是否有属性data-id等于1
+        if(e.target.getAttribute('data-id')=='1'){
+          //todo
+        }
+        // currentTarget: 事件本身绑定在的元素。事件代理中通常将事件绑定在父节点上
+        console.log("ev.currentTarget:", ev.currentTarget) 
+      })
+      
 ```
 
 ## load 和 DOMContentLoaded 的区别（从没遇到过考这个）
