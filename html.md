@@ -179,7 +179,7 @@ page为页面的意思，页面的高度一般情况client浏览器显示区域�
 
  addEventListener，其中第三个参数useCapture可以指定事件是否在捕获阶段执行。默认是false，在冒泡阶段执行。
  现代浏览器中，第三个参数可传对象option：{capture:boolean,once:boolean,passive:boolean,signal:AbortSignal}。
- capture效果同useCapture，once为true时事件仅执行一次，这两个常用，兼容性良好，下面2个兼容性不好
+ capture效果同useCapture，once为true时事件仅执行一次，这两个常用，兼容性良好，下面2个兼容性不好，也不常用
  passive为true时，事件的preventDefault()无效，用于优化滚屏性能，signal可以用于设置移除监听。
 注：capture选项不相同，事件回调函数可以被重复添加
 
