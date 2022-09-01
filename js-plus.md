@@ -408,6 +408,7 @@ arr.includes(NaN) // true ,ES6的includes做了特殊处理，可以判断
 [BigInt(+0)].includes(BigInt(-0))  // false，能区分大数0
 
 ### 自定义事件
+
 实现自定义事件方式有三种
 1. document.createEvent (废弃)
 2. new Event()
@@ -439,6 +440,7 @@ setTimeout(() => {
 // 事件可以在任何元素触发，不仅仅是document
 ```
 
+### 
 ###  [重排与重绘，提升性能。](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)
 
  [defer与async](https://segmentfault.com/a/1190000006778717?utm_source=sf-related)

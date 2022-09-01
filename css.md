@@ -399,13 +399,36 @@ DOM 的变化影响到了预算内宿的几何属性比如宽高，浏览器重�
 
 ## vw 和 vh 的概念
 
-vw（Viewport Width）、vh(Viewport Height)是基于视图窗口的单位，是css3的一部分，基于视图窗口的单位，除了vw、vh还有vmin、vmax。
+vw（Viewport Width）、vh(Viewport Height)是基于视图窗口的单位
 
 - vw:1vw 等于视口宽度的1%
 - vh:1vh 等于视口高度的1%
 - vmin: 选取 vw 和 vh 中最小的那个,即在手机竖屏时，1vmin=1vw
 - vmax:选取 vw 和 vh 中最大的那个 ,即在手机竖屏时，1vmax=1vh
 
+### js操作css样式
+1. 直接修改节点style属性
+```js
+// style属性名是驼峰语法
+  const el = document.getElementById("test-div");
+  el.style.backgroundColor = "red";
+  el.style.fontSize = "30px";
+// style.cssText 批量赋值
+  el.style.cssText ="background-color: green !important; font-size: 40px;"
+
+  //style是一个只读属性，表面能赋值成功，但不会生效
+  el.style =  {color:"red"}
+```
+2. 节点className属性，classList
+```js
+// 修改class类名
+  el.className='classA';
+// classList下有add增, remove删, contains查, toggle转换
+  el.classList.toggle("test-div");
+  el.classList.add('class-add');
+ 
+```
+3. 动态创建style标签或link标签
 
 
 # 下面内容不常考
