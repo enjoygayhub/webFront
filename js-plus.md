@@ -440,6 +440,26 @@ setTimeout(() => {
 // 事件可以在任何元素触发，不仅仅是document
 ```
 
-### 
+### 发布订阅
+```js
+// 自定义事件+回调版本
+window._on = window.addEventListener;
+window._off = window.removeEventListener;
+window._emit = (type, data) => window.dispatchEvent(new CustomEvent(type, { detail: data }));;
+window._once = (type, callback) => window.addEventListener(type, callback, { once: true, capture: true });
 
+// 可实例传参版本
+        class EventEmitter extends EventTarget {
+            on = (type, listener, options) => this.addEventListener(type, function wrap(e) {
+                return (listener.__wrap__ = wrap, listener.apply(this, e.detail || []))
+            }, options)
+
+            off = (type, listener) => this.removeEventListener(type, listener.__wrap__);
+
+            emit = (type, ...args) => this.dispatchEvent(new CustomEvent(type, { detail: args }));
+
+            once = (type, listener) => this.on(type, listener, { once: true, capture: true });
+        }
+
+```
 
