@@ -386,7 +386,7 @@ toString(1);
 1. 全局作用域在任何函数外或者代码块之外的顶层作用域就是全局作用域，而里面的变量成为全局变量
 2. 在函数内的作用域就是函数作用域,函数内部的变量，在全局作用域或者块级作用域中，都无法访问。只能在函数内部才可以访问。所以函数内的变量也称为局部变量。
 
-# es6中类的继承 
+### es6中类的继承 
 ```js
 class B extends A {};
 
@@ -407,7 +407,37 @@ arr.includes(NaN) // true ,ES6的includes做了特殊处理，可以判断
 
 [BigInt(+0)].includes(BigInt(-0))  // false，能区分大数0
 
+### 自定义事件
+实现自定义事件方式有三种
+1. document.createEvent (废弃)
+2. new Event()
+3. new CustomEvent()
+```js
 
+// bubbles: 表示该事件是否冒泡
+// cancelable: 表示该事件能否被取消
+var myEvent = new Event("event1", { "bubbles": true, "cancelable": false });
+// CustomEvent创建事件,比Event多一个传入参数detail
+let myCustomEvent = new CustomEvent("event2", {
+    "bubbles": true, "cancelable": false,
+    detail: { des: "开始事件描述" },
+  });
+function listener(ev) {
+    console.log("收到事件", ev.type);
+}
+//在document 上添加监听事件
+document.addEventListener("event1", listener);
+document.addEventListener("event2", listener);
+setTimeout(() => {
+    //触发event1 事件
+    document.dispatchEvent(myEvent);
+    //触发event2事件
+    document.dispatchEvent(myCustomEvent);
+    ////移除start 监听
+    document.removeEventListener("event1", listener);
+}, 2000);
+// 事件可以在任何元素触发，不仅仅是document
+```
 
 ###  [重排与重绘，提升性能。](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)
 
