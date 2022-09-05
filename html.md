@@ -98,46 +98,35 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
   + 元素布局宽度offsetWidth=width + 左右padding + 左右border + 滚动条（不包含margin）
   + 元素内容宽度scrollWidth 测量元方式和clientWidth计算方式相同。区别在于包括由于overflow溢出而在屏幕上不可见的内容。
 
-## 事件对象中的clientX offsetX screenX pageX的区别
+## 事件对象中的clientX offsetX screenX pageX，
 
 - [clientX, clientY]
 
 ```txt
-client直译就是客户端，客户端的窗口就是指游览器的显示页面内容的窗口大小（不包含工具栏、导航栏等等）
-[clientX, clientY]就是鼠标距浏览器显示窗口的距离
+client客户端，客户端窗口就是指游览器的显示页面内容的窗口大小（不包含工具栏、导航栏等等）
+[clientX, clientY]就是鼠标点击位置距客户端窗口左边界和上边界的距离
+```
+- [screenX, screenY]
 
-兼容性：IE和主流游览器都支持。
+```txt
+screen是屏幕
+[screenX, screenY]是用来获取鼠标点击位置在屏幕显示器的距离，根据屏幕分辨率来计算，多显示器分屏也能叠加。
 ```
 
 - [offsetX, offsetY]
 
 ```txt
 offset意为偏移量
-[offsetX, offsetY]是被点击的**元素**距左上角为参考原点的长度，而IE、FF和Chrome的参考点有所差异。
-
-Chrome下，offsetX offsetY是包含边框的
-IE、FF是不包含边框的，如果鼠标进入到border区域，为返回负值
-
-兼容性：IE9+,chrome,FF都支持此属性。
-```
-
-- [screenX, screenY]
-
-```txt
-screen顾名思义是屏幕
-[screenX, screenY]是用来获取鼠标点击位置在屏幕显示器种的距离，距离的最大值需根据屏幕分辨率的尺寸来计算。
-
-兼容性：所有游览器都支持此属性。
+[offsetX, offsetY]是鼠标点击的点距离与点击的**元素**的左边界和上边界的距离。边界计算不包含margin border
 ```
 
 - [pageX, pageY]
 
 ```txt
-page为页面的意思，页面的高度一般情况client浏览器显示区域装不下，所以会出现垂直滚动条。
-
-[pageX, pageY]是鼠标距离页面初始page原点的长度，包括滚动的区域。
-
+page为页面的意思。在没有由于滚动而隐藏的区域时pageX, pageY与clientX, clientY大小一样
+[pageX, pageY]是鼠标点击的点距离client边界的距离，包括由于滚动隐藏的不可见的空间距离。
 ```
+其中page与offset常用属性。
 
 ## 事件模型以及三种事件绑定方法
 
