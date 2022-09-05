@@ -92,7 +92,10 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 - HTML5 的 canvas 元素使用 JavaScript 在网页上绘制图像。画布是一个矩形区域，您可以控制其每一像素。canvas 拥有多种绘制路径、矩形、圆形、字符以及添加图像、动画的方法
 - canvas绘制位图,绘制出来的每一个图形的元素都是独立的DOM节点，能够方便的绑定事件或用来修改。canvas复杂度高会减慢渲染速度。canvas输出的是一整幅画布，就像一张图片一样，放大会失真。canvas不适合游戏应用。
 - svg输出的图形是矢量图形，后期可以修改参数来自由放大缩小，SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。svg最适合图像密集型的游戏，其中的许多对象会被频繁重绘
-
+## window的screenX, screenY,outerHeight/innerHeight outerWidth/innerWidth
+  screenX, screenY 浏览器的边界到系统屏幕左和顶边界的距离
+  innerHeight，innerWidth 浏览器显示页面内容的窗口大小（不包含工具栏、导航栏等等），亦为下面的client
+  outerHeight，outerWidth 表示整个浏览器窗口的宽度，包括边框、菜单栏, 底部状态栏从,侧边栏
 ## Element的clientWidth offsetWidth scrollWidth
   + 元素宽度clientWidth= width + 左右padding  (不包含border,margin,滚动条)
   + 元素布局宽度offsetWidth=width + 左右padding + 左右border + 滚动条（不包含margin）
