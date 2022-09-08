@@ -286,15 +286,15 @@ document.addEventListener("click", function(ev){
   Node.childNodes() 返回节点的子节点集合，包括元素节点、文本节点还有属性节点
 
   Element.children() 只返回节点的元素子节点集合, 即 nodeType为1的节点。
-## 其他
+## 其他，一些window的内容
 
-+ 所有的文件夹名和文件都使用小写字母，且没有空格,建议使用中划线作为分割
++ window对象的focus和blur事件可以监听窗口在浏览器tab页中是否聚焦，visibilitychange事件可以判断时候触发显示或隐藏
++ window.devicePixelRatio 设备像素比，返回当前显示设备的物理像素分辨率与CSS 像素分辨率之比，PC上一般是1，既1px等于1物理像素，手机上可能大于2，1px会有更多的物理像素去显示
++ window.matchMedia() 表示指定的媒体查询字符串是否匹配的结果。
++ window.getSelection() 表示用户选择的文本范围或光标的当前位置。
++ var name = prompt() 输入函数
 
-+ google font 字体，可以通过link载入；line-height = 1；可设置为数字，效果为数字乘以字体大小
-
-+ var vaible = document.querySelector();vaible.getAttribute();.setAttribute()  设置属性
-
-+ var name = prompt() 输入函数，localStorage.setItem();localStorage.getItem() 本地存储
++ localStorage.setItem();localStorage.getItem() 本地存储
 
 + 无论你在HTML元素的内容中使用多少空格(包括空白字符，包括换行)，当渲染这些代码的时候，HTML解释器会将连续出现的空白字符减少为一个单独的空格符。
 

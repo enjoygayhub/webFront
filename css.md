@@ -431,6 +431,8 @@ vw（Viewport Width）、vh(Viewport Height)是基于视图窗口的单位
 3. 动态创建style标签或link标签
 
 
+# line-height = 1；可设置为数字，效果为数字乘以字体大小
+
 # 下面内容不常考
 
 # 下面内容不常考
