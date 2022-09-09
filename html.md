@@ -1,12 +1,5 @@
 # HTML
 
-- [HTML](#html)
-  - [HTML5 的新特性](#html5-的新特性)
-  - [localStorage，sessionStorage，cookie 的区别](#localstoragesessionstoragecookie-的区别)
-  - [DOCTYPE的作用是什么](#doctype的作用是什么)
-  - [语义化标签的作用](#语义化标签的作用)
-  - [行内元素 块级元素](#行内元素-块级元素)
-  - [canvas与SVG](#canvas与svg)
 
 ## HTML5 的新特性
 
@@ -47,7 +40,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 
 ## localStorage，sessionStorage，cookie 的区别
 
-```js
+```txt
 共同点：都是保存在浏览器端，同源限制。
 区别：
 (1) cookie数据始终在同源的http请求中携带（即使不需要），即cookie在浏览器和服务器间来回传递
@@ -67,7 +60,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 
 ## DOCTYPE的作用是什么
 
-```js
+```txt
 (1) <!DOCTYPE>声明一般位于第一行，处于 <html> 标签前。作用：告诉浏览器以什么样的模式来解析文档。DOCTYPE 不存在或格式不正确会导致文档以兼容模式呈现。
 (2) 一般指定了之后会以标准模式来进行文档解析，否则就以兼容模式进行解析。在标准模式下，浏览器的解析规则都是按照最新的标准进行解析的;在兼容模式下，浏览器会以向后兼容的方式来模拟老式浏览器的行为，以保证一些老的网站的正确访问。
 ```
@@ -81,7 +74,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 
 ## 行内元素 块级元素
 
-```js
+```txt
 常见的行内元素有 a b span img strong sub sup button input label select textarea
 常见的块级元素有  div p ul ol li dl dt dd h1 h2 h3 h4 h5 h6
 ```
@@ -92,6 +85,11 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 - HTML5 的 canvas 元素使用 JavaScript 在网页上绘制图像。画布是一个矩形区域，您可以控制其每一像素。canvas 拥有多种绘制路径、矩形、圆形、字符以及添加图像、动画的方法
 - canvas绘制位图,绘制出来的每一个图形的元素都是独立的DOM节点，能够方便的绑定事件或用来修改。canvas复杂度高会减慢渲染速度。canvas输出的是一整幅画布，就像一张图片一样，放大会失真。canvas不适合游戏应用。
 - svg输出的图形是矢量图形，后期可以修改参数来自由放大缩小，SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。svg最适合图像密集型的游戏，其中的许多对象会被频繁重绘
+
+
+# Bom & Dom
+
+
 ## window的screenX, screenY,outerHeight/innerHeight outerWidth/innerWidth
   screenX, screenY 浏览器的边界到系统屏幕左和顶边界的距离
   innerHeight，innerWidth 浏览器显示页面内容的窗口大小（不包含工具栏、导航栏等等），亦为下面的client
@@ -212,30 +210,9 @@ document.addEventListener("click", function(ev){
         }
         // currentTarget: 事件本身绑定在的元素。事件代理中通常将事件绑定在父节点上
         console.log("ev.currentTarget:", ev.currentTarget) 
-      })
+})
       
 ```
-
-## load 和 DOMContentLoaded 的区别（从没遇到过考这个）
-
-- 当整个页面及所有依赖资源如样式表和图片都已完成加载时，将触发load事件。它与DOMContentLoaded不同，后者只要页面DOM加载完成就触发，无需等待依赖资源的加载。
-- 当纯HTML被完全加载以及解析时，DOMContentLoaded 事件会被触发，而不必等待样式表，图片或者子框架完成加载。
-
-## js判断图片是否加载完毕的方式（从没遇到过考这个）
-
-- load事件
-
-> 所有浏览器都支持img的load事件。
-
-- readystatechange事件
-
-> readyState属性为complete和loaded则表明图片已经加载完毕。测试IE6-IE10支持该事件，其它浏览器不支持。
-
-- img 的 complete属性
-
-> 轮询不断监测img的complete属性，如果为true则表明图片已经加载完毕，停止轮询。该属性所有浏览器都支持。
-
-
 
 ## js 延迟加载的方式有哪些
 
@@ -298,7 +275,7 @@ document.addEventListener("click", function(ev){
 
 + 无论你在HTML元素的内容中使用多少空格(包括空白字符，包括换行)，当渲染这些代码的时候，HTML解释器会将连续出现的空白字符减少为一个单独的空格符。
 
-+ ```html
+ ```html
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="my.css">
   <script src="my-js-file.js"></script>
@@ -307,7 +284,4 @@ document.addEventListener("click", function(ev){
   <blockquote cite = ''>块级引用</blockquote> <q cite = ''>行内引用</q><cite></cite>
   ```
 
-使用iframe时，注意安全：
-
-- 尽量使用https
-- 使用sandbox属性，限制其功能
++ 使用iframe时，注意安全：尽量使用https,使用sandbox属性，限制其功能
