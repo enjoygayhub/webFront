@@ -87,7 +87,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 - svg输出的图形是矢量图形，后期可以修改参数来自由放大缩小，SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。svg最适合图像密集型的游戏，其中的许多对象会被频繁重绘
 
 
-# Bom & Dom
+# Dom & Bom  
 
 
 ## window的screenX, screenY,outerHeight/innerHeight outerWidth/innerWidth
@@ -237,6 +237,7 @@ document.addEventListener("click", function(ev){
   多个脚本的执行顺序无法保证。
 
 ## DOM与Node节点
+
   属性nodeType：识别节点类型，最常见的4种如下
   + 元素阶段如div span的 nodeType=1；
   + 文本类容Text的 nodeType=3；
@@ -263,6 +264,7 @@ document.addEventListener("click", function(ev){
   Node.childNodes() 返回节点的子节点集合，包括元素节点、文本节点还有属性节点
 
   Element.children() 只返回节点的元素子节点集合, 即 nodeType为1的节点。
+
 ## 其他，一些window的内容
 
 + window对象的focus和blur事件可以监听窗口在浏览器tab页中是否聚焦，visibilitychange事件可以判断时候触发显示或隐藏
@@ -285,3 +287,24 @@ document.addEventListener("click", function(ev){
   ```
 
 + 使用iframe时，注意安全：尽量使用https,使用sandbox属性，限制其功能
+
+## Location
+
+Location下的属性：
+```js
+window.location.protocol = 'https';
+window.location.host = '127.0.0.1:5500';
+window.location.hostname = '127.0.0.1';
+window.location.port = '5500';
+window.location.pathname = 'test/path';
+window.location.search = 'wd=ff';
+window.location.hash = '/home';
+window.location.href = 'http://127.0.0.1:5500/liveSeverTest.html';
+
+window.location.reload() ;//重新加载文档,参数为false或者不传，浏览器可能从缓存中读取页面。参数为true,强制从服务器重新下载文档。
+window.location.replace(url);//跳转但没有历史
+//hash属性可触发hashchange事件
+```
+
+js中的URL对象与之类似；也有相关属性；
+encodeURI和encodeURIComponent 用于编码URL，变成带%的肉眼识别不了的一长串。
