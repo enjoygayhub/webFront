@@ -320,3 +320,16 @@ navigator.clipboard 访问剪切板（读取均为异步）
 navigator.mediaDevices 媒体信息设备，可用于恭喜屏幕
 
 navigator.cookieEnabled（表示当前页面是否启用了cookie）
+
+## history
+
+直接动作：
+history.back()	向后移动一页
+history.forward()	向前移动一页
+history.go()	向前或者向后移动指定页数,默认参数0，会刷新当前页
+history.length()	当前会话中的历史页面数
+直接控制栈：
+history.pushState()	向当前浏览器会话的历史堆栈中添加一个状态
+history.replaceState()	修改当前历史记录状态
+history.state	返回在会话栈顶的状态值的拷贝
+window.onpopstate	当活动历史记录条目更改时，将触发popstate事件
