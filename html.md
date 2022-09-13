@@ -307,4 +307,16 @@ window.location.replace(url);//跳转但没有历史
 ```
 
 js中的URL对象与之类似；也有相关属性；
-encodeURI和encodeURIComponent 用于编码URL，变成带%的肉眼识别不了的一长串。
+encodeURI(url)和encodeURIComponent(url) 用于编码URL，变成带%的肉眼识别不了的一长串。
+
+## Navigator
+
+navigator.userAgent 浏览器信息（userAgent 是可以模拟，不一定可靠）
+
+navigator.onLine 当前网络的状态
+
+navigator.clipboard 访问剪切板（读取均为异步）
+
+navigator.mediaDevices 媒体信息设备，可用于恭喜屏幕
+
+navigator.cookieEnabled（表示当前页面是否启用了cookie）
