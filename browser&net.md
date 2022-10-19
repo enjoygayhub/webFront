@@ -244,6 +244,13 @@ C类  255个 192.168.0.0--192.168.255.255
 > cookie 保管在客户端，不占用服务器资源。对于并发用户十分多的网站，cookie 是很好的选择。
 > session 是保管在服务器端的，每个用户都会产生一个 session。假如并发访问的用户十分多，会产生十分多的 session，耗费大量的内存。
 
+## Ajax， fetch，XHR
+
+Ajax 是一种技术集合，所以Fetch也是Ajax的一个子集，在之前，我们常说Ajax 默认是指以XHR为核心的技术合集
+XHR 以 XMLHttpRequest对象为核心
+同源下：XHR，fetch 都支持cookie,非同源：无论xhr还是fetch都是不自动带cookie
+无论fetch 还是 XHR 都是在网络错误才会触发error
+
 ## 什么是浏览器的同源政策
 
 ```HTTP
@@ -251,7 +258,7 @@ C类  255个 192.168.0.0--192.168.255.255
 域的协议、域名、端口号必须相同，否则则不属于同一个域。
 
 同源政策主要限制了三个方面
-第一当前域下的 js 脚本不能够访问其他域下的 cookie、localStorage 和 indexDB。
+第一当前域下的 js 脚本不能够访问其他域下的localStorage 和 indexDB。
 第二当前域下的 js 脚本不能够操作访问其他域下的 DOM。
 第三当前域下 ajax 无法发送跨域请求。
 
@@ -270,15 +277,10 @@ C类  255个 192.168.0.0--192.168.255.255
 2. CORS (跨域资源共享)
    CORS的基本思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。
    普通跨域请求：只需服务端设置 `Access-Control-Allow-Origin` 即可，前端无须设置，若要带 cookie 请求：前后端都需要设置。前端设置`withCredentials`为true,后端设置`Access-Control-Allow-Credentials`为true,同时`Access-Control-Allow-Origin`不能设置为`*`
+3. nginx反向代理,服务端请求不受浏览器限制，既访问同源服务端，服务端再去寻找正在的地址拿到数据再返回
+4. webpack正向代理， 客户端配置正向代理，替换表面访问地址。
+5. WebSocket协议跨域
 
-## 跨域方法
-
-1、 通过jsonp跨域
-5、 window.postMessage()跨域
-6、 跨域资源共享（CORS）
-7、 nginx代理跨域
-8、 nodejs中间件代理跨域
-9、 WebSocket协议跨域
 
 ## WebSocket 协议
 
