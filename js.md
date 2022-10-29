@@ -743,7 +743,7 @@ console.log(obj.getRadius()()) // 10
 
 
 
-## Promise 是做什么的，有哪些API
+## Promise 是做什么的
 
 ### Promise用法
 
@@ -789,9 +789,12 @@ getJSON('/posts.json').then(function(posts) {
 
 > 上面代码中，getJSON()方法返回一个 Promise 对象，如果该对象状态变为resolved，则会调用then()方法指定的回调函数；如果异步操作抛出错误，状态就会变为rejected，就会调用catch()方法指定的回调函数，处理这个错误。另外，then()方法指定的回调函数，如果运行中抛出错误，也会被catch()方法捕获。
 
+### Promise.prototype.finally() 
+    Promise结束后无论成功失败都执行，仍返回Promise
+
 ### Promise.all()
 
-> Promise.all()方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。
+> Promise.all() 参数中全部Promise执行成功，返回所有成功的数组，任一失败则返回失败的。
 
 ```js
 const p = Promise.all([p1, p2, p3]);
@@ -807,9 +810,11 @@ const p = Promise.all([p1, p2, p3]);
 >
 > （2）只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
 
+### Promise.allSettled()
+    与all类似，等所有传入的promise执行结束，返回所有结果，
 ### Promise.race()
 
-> Promise.race()方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。
+> Promise.race()方法返回最快的有结果的promise，无论成功或失败。
 
 ```js
 const p = Promise.race([p1, p2, p3]);
@@ -817,10 +822,14 @@ const p = Promise.race([p1, p2, p3]);
 
 > 上面代码中，只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
 
+### Promise.any()
+
+> Promise.any()方法返回第一个成功的promise。
+
 ### Promise.resolve()
 
 > 有时需要将现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用。
->
+
 > Promise.resolve()等价于下面的写法。
 
 ```js
@@ -875,15 +884,6 @@ function promisify(fn, reverse) {
 }
 ```
 
-
-
-## Promise不兼容怎么解决
-
-用一些第三方的库来解决兼容性问题：
-
-1. babel-polyfill
-2. ES6-Promise
-3. bluebird
 # callback和Promise的区别是什么？
 
 callback
