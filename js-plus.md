@@ -463,3 +463,10 @@ window._once = (type, callback) => window.addEventListener(type, callback, { onc
 
 ```
 
+### ES6 Promise 注意事项
+
+异常捕获可以通过 Promise catch 捕获，或在window上监听 unhandledrejection 事件捕获。
+在then中以第二参数传入处理reject后，不影响后续then的执行
+then中resolve之后 再报错throw new Error，则resolve无效，
+then传入非函数，则当前then无效，且穿透。
+Promise.all,Promise.race等 有实例reject以后，其他的Promise实例并没有停止
