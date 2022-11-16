@@ -445,7 +445,7 @@ setTimeout(() => {
 // 自定义事件+回调版本
 window._on = window.addEventListener;
 window._off = window.removeEventListener;
-window._emit = (type, data) => window.dispatchEvent(new CustomEvent(type, { detail: data }));;
+window._emit = (type, data) => window.dispatchEvent(new CustomEvent(type, { detail: data }));
 window._once = (type, callback) => window.addEventListener(type, callback, { once: true, capture: true });
 
 // 可实例传参版本
@@ -470,3 +470,26 @@ window._once = (type, callback) => window.addEventListener(type, callback, { onc
 then中resolve之后 再报错throw new Error，则resolve无效，
 then传入非函数，则当前then无效，且穿透。
 Promise.all,Promise.race等 有实例reject以后，其他的Promise实例并没有停止
+
+### Error对象
+
+重要的属性：
+● name
+new Error().name      // Error
+new TypeError().name  // TypeError
+● message
+  错误文本消息
+● stack
+  错误堆栈信息。
+
+RangeError：当一个值不在其所允许的范围或者集合中。
+ReferenceError：一个不存在的变量被引用时发生的错误
+SyntaxError：解析语法上不合法的代码的错误。
+TypeError：值的类型非预期类型时发生的错误。
+URIError：URI处理函数而产生的错误。
+
+捕获错误：
+1. try catch
+2. window.onerror 捕获全局错误
+3. window.addEventListener('error') 全局错误和静态资源加载错误
+4. unhandledrejection 未捕获的promise错误

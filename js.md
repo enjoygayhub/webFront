@@ -1053,6 +1053,8 @@ Ajax 即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），�
 
 #### 递归setTimeout()和setInterval()有何不同
 
+1. setTimeout 递归循环可以保障，每次至少延迟某些特定时间执行。
+2. setInvertal，每次定时触发执行回调函数， 不关心前一个回调函数是否执行。
 前者可以保证每次调用的间隔不变；后者包括了执行的时间
 
 ```js
