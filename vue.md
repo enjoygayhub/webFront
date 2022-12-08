@@ -116,18 +116,125 @@ key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 
 第一种方法：params传参，url中会显示参数， 页面刷新数据不会丢失。www.123.com/#/test/1/2
 第二种方法：query传参，url中会显示参数，例如www.123.com/#/test?type=1?arg=2
 
-#### 为什么需要虚拟DOM，它有什么好处?
+## 为什么需要虚拟DOM，它有什么好处?
 
 ​    Web界面由DOM树(树的意思是数据结构)来构建，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，虚拟DOM就是为了**解决浏览器性能问题**而被设计出来的。若一次操作中有10次更新DOM的动作，虚拟DOM不会立即操作DOM，而是将这10次更新的diff内容保存到本地一个JS对象中，最终将这个JS对象一次性attach到DOM树上，再进行后续操作，避免大量无谓的计算量。用JS对象模拟DOM节点的好处是，页面的更新可以先全部反映在JS对象(虚拟DOM)上，操作内存中的JS对象的速度显然要更快，等更新完成后，再将最终的JS对象映射成真实的DOM，交由浏览器去绘制。
 
-## 请求器和拦截器
 
-请求拦截器
-请求拦截器的作用是在请求发送前进行一些操作，例如在每个请求体里加上token，统一做了处理如果以后要改也非常容易。
 
-比如axios，都只是对ajax进行了统一的封装，先将请求时要添加给请求头的那些数据（token、后端要的加密码…具体要看实际情况）先执行一遍，都赋值给一个变量，然后再统一传给ajax执行，这就是所谓的请求拦截
+## vue3.0 setup api
 
-响应拦截器：
-响应拦截器的作用是在接收到响应后进行一些操作，例如在服务器返回登录状态失效，需要重新登录的时候，跳转到登录页。
-请求结果返回后，先不直接导出，而是先对响应码等等进行处理，处理好后再导出给后续流程
+### ref 和 reactive
+ref: 用来给基本数据类型绑定响应式数据，访问时需要通过 .value 的形式， template中会自动解析,不需要 .value
+reactive: 用来给 复杂数据类型 绑定响应式数据，直接访问即可
 
+### toRef、toRefs、toRaw
+toRef(object,key) ：结构object中的key属性,如果object为响应式的，那么返回的结果也是响应式的
+toRefs(object) ： 循环调用toRef
+toRaw(object)：  将响应式对象修改为普通对象
+computed: 得到计算属性
+
+### watch WatchEffect
+watch(data,()=>{},{})： 监听响应式状态发生变化的，当响应式状态发生变化时，就会触发一个回调函数。
+观测部分数据如下：
+watch(() => info.obj, (newV, oldV) => {
+  console.log(newV, oldV)
+}, {
+  deep: true
+})
+
+WatchEffect：会立即执行传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数。
+注意：异步方式创建的监听器需要手动执行卸载，停止监听。
+
+### defineProps  withDefaults
+子组件接受参数:
+defineProps<{
+  msg: string,
+  list: number[]
+}>()
+
+带默认值：
+withDefaults(defineProps<Props>(), {
+  msg: '张麻子',
+  list: () => [4, 5, 6]
+})
+
+### defineEmits defineExpose 
+子组件接受父组件方法
+const emits = defineEmits(['handleClick'])
+子组件暴露自身方法和属性
+defineExpose({
+  name,
+  handleClick
+})
+
+### slot
+  用于渲染模板化内容
+### 异步组件 Suspense
+  const Children = defineAsyncComponent(() => import('./Children.vue'))
+
+1、使用 <Suspense></Suspense> 包裹所有异步组件相关代码
+2、<template v-slot:default></template> 插槽包裹异步组件
+3、<template v-slot:fallback></template> 插槽包裹渲染异步组件渲染之前的内容
+
+### Teleport 
+Teleport 是一种能够将我们的模板渲染至指定DOM节点，不受父级style、v-show等属性影响，但data、prop数据依旧能够共用的技术
+主要解决的问题：因为Teleport节点挂载在其他指定的DOM节点下，完全不受父级style样式影响
+使用：通过to 属性插入到指定元素位置，如 body，html，自定义className等等。
+
+### keep-alive 缓存组件
+初次进入时： onMounted> onActivated
+退出后触发 deactivated
+再次进入：只会触发 onActivated
+
+事件挂载的方法等，只执行一次的放在 onMounted中；组件每次进去执行的方法放在 onActivated中
+
+### v-model
+const emit = defineEmits(['update:modelValue'])
+子组件内可以emit('update:modelValue', 'new')更新数据
+
+### 自定义指令
+
+### 自定义hooks
+获取宽高
+```ts
+import { onMounted, onUnmounted, ref } from "vue";
+
+function useWindowResize() {
+  const width = ref(0);
+  const height = ref(0);
+  function onResize() {
+    width.value = window.innerWidth;
+    height.value = window.innerHeight;
+  }
+  onMounted(() => {
+    window.addEventListener("resize", onResize);
+    onResize();
+  });
+  onUnmounted(() => {
+    window.removeEventListener("resize", onResize);
+  });
+  return {
+    width,
+    height
+  };
+}
+
+export default useWindowResize;
+
+```
+
+### v-bind CSS变量注入
+```js
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  const color = ref('red')
+</script>
+<style scoped>
+  span {
+    /* 使用v-bind绑定组件中定义的变量 */
+    color: v-bind('color');
+  }  
+</style>
+
+```
