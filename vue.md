@@ -65,7 +65,7 @@ View的变化会自动更新到ViewModel,ViewModel的变化也会自动同步到
   > 视图更新前
 - onUpdated:
   > 视图更新后
-- onBeforeUnmounted:
+- onBeforeUnmount:
   > 卸载前
 - onUnmounted:
   > 销毁后。
