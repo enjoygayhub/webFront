@@ -1,6 +1,6 @@
-# 其实是高级
+# 一些知识，非面试问题
 
-# 一些简写
+## 一些简写
 
 + font ：style| weight |size/line-height |family ;字号字体必有，字体必须最后
 
