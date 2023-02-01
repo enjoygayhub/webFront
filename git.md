@@ -159,3 +159,7 @@ git merge origin/branch2
 
 
 ## 构建本地远程项目关系 看[这个](https://cloud.tencent.com/developer/article/1504684)
+
+## .gitignore
+
+添加.gitignore文件，在文件中添加不想上传git管理的文件名即可，[参见](https://juejin.cn/post/6998911250323390501)
