@@ -1,6 +1,6 @@
 #  js-plus
 
-## 隐式转换优先级
+### 隐式转换优先级
 
 Symbol.toPrimitive -> valueOf/toString
 
@@ -37,7 +37,7 @@ var obj = {
 
 
 
-## {} 和 [] 的 valueOf 和 toString 的结果，转换为原始值
+### {} 和 [] 的 valueOf 和 toString 的结果，转换为原始值
 
 ```js
 {} 的 valueOf 结果为 {} ，toString 的结果为 "[object Object]"
@@ -56,7 +56,7 @@ var obj = {
 + []
 // 0
 ```
-## Function.name,Function.length,Function.caller,arguments.callee
+### Function.name,Function.length,Function.caller,arguments.callee
 + Function.name 用于获得函数名;
   1 大多数情况包括函数声明式，匿名函数赋值给变量，.name都能取到函数名或变量名
 ```js
@@ -94,7 +94,7 @@ var obj = {
 + arguments.callee，用于递归调用匿名函数自身；
   非标准特性，严格模式下无效；
 
-## 对象
+### 对象
 
 常规属性：字符串作为键，elements
 
@@ -108,7 +108,7 @@ var obj = {
 
 隐藏类：描述了对象的属性布局。map
 
-## 实现深拷贝
+### 实现深拷贝
 
 ```js
 //自定义递归实现深拷贝
@@ -127,7 +127,7 @@ const deepClone = function (obj,hash=new WeakMap()){
 }
 ```
 
-## JavaScript 继承
+### JavaScript 继承
 
 - 原型链继承
 
@@ -240,7 +240,7 @@ const deepClone = function (obj,hash=new WeakMap()){
 
   ​		最终改造为寄生组合继承与ES6中的 extend关键字基本相同
 
-	## 实现new call apply bind
+### 实现new call apply bind
 
 ```js
 function _new(ctor,...args) {
@@ -288,7 +288,7 @@ return fbound;
 }
 ```
 
-## 实现instanceof
+### 实现instanceof
 
 ```js
 function instanceOf(instance, cclass) {
@@ -303,7 +303,7 @@ function instanceOf(instance, cclass) {
 }
 ```
 
-## 实现add(1)(2,3)(4,5,6)
+### 实现add(1)(2,3)(4,5,6)
 
 ```js
 function add(...args){
@@ -316,6 +316,33 @@ function add(...args){
         return arr.reduce((acc,cur)=> acc+parseInt(cur))
     }
     return fn;
+}
+```
+### 实现primisfy
+
+参考[简单实现](https://juejin.cn/post/6844904024928419848)
+promisify(fn, reverse)
+
+- fn <function> 有回调函数作为参数的函数
+- reverse <Boolean> 默认False。当fn的回调函数参数在前时(如setTimeout)，设为True。
+
+```js
+function promisify(fn, reverse) {
+  if ({}.toString.call(fn) !== '[object Function]') throw new TypeError('Only normal function can be promisified');
+  return function (...args) {
+    return new Promise((resolve, reject) => {
+      const callback = function (...args) {
+        if ({}.toString.call(args[0]) === '[object Error]') return reject(args[0]);
+        resolve(args);
+      };
+      try {
+        if (reverse === true) fn.apply(null, [callback, ...args]);
+        else fn.apply(null, [...args, callback]);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }
 ```
 

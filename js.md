@@ -1,43 +1,5 @@
 # JavaScript
 
-- [JavaScript](#javascript)
-  - [js 基本数据类型](#js-基本数据类型)
-  
-  - [js 遍历对象和遍历数组的方式](#js 遍历对象和遍历数组的方式)
-  
-  - [JS中的深拷贝与浅拷贝](#JS中的深拷贝与浅拷贝)
-  
-  - [JavaScript 继承的几种实现方式](#javascript-继承的几种实现方式)
-  
-  - [js 原型，原型链以及特点](#js-原型原型链以及特点)
-  
-  - [Object.defineProperty 用法](#objectdefineproperty-用法)
-  
-  - [async await](#async-await)
-  
-  - [Event Loop 事件循环](#event-loop-事件循环)
-  
-  - [new 运算符的过程](#new-运算符的过程)
-  
-  - [JS 作用域](#js-作用域)
-  
-  - [ES6 新特性](#es6-新特性)
-  
-  - [let 和 var 的区别](#let-和-var-的区别)
-  
-  - [闭包的特性以及优缺点](#闭包的特性以及优缺点)
-  
-  - [箭头函数与普通函数的区别](#箭头函数与普通函数的区别)
-  
-  - [ES6 中箭头函数 VS 普通函数的 this 指向](#es6-中箭头函数-vs-普通函数的-this-指向)
-  
-  - [ES6 class 和 ES5 函数的区别](#es6-class-和-es5-函数的区别)
-  
-  - [Promise 是做什么的，有哪些API](#promise-是做什么的有哪些api)
-  
-  - [arguments怎么转化成真数组](#arguments怎么转化成真数组)
-  
-    
 
 ## js 基本数据类型
 
@@ -359,7 +321,7 @@ arr.entries() //将数组返回一个对象，包含对象索引的键值对
 - `push()`将一个或多个元素添加到数组的末尾，并返回该数组的新长度
 - `pop()`方法从数组中删除最后一个元素，并返回该元素的值
 
-# substring substr slice splice的区别。
+## substring substr slice splice的区别。
 
 - substring(star,stop) ,star>stop时会交换两者；相等时返回空串；为负数时会将负数变为0，奇怪点较多。
 - substr(star,length),star为负数时，表示倒数位置；length<=0时，返回空串
@@ -855,34 +817,6 @@ p.then(null, function (s) {
 
 > 上面代码生成一个 Promise 对象的实例p，状态为rejected，回调函数会立即执行。
 
-## 实现primisfy
-
-参考[简单实现](https://juejin.cn/post/6844904024928419848)
-
-#### promisify(fn, reverse)
-
-- fn <function> 有回调函数作为参数的函数
-- reverse <Boolean> 默认False。当fn的回调函数参数在前时(如setTimeout)，设为True。
-
-```js
-function promisify(fn, reverse) {
-  if ({}.toString.call(fn) !== '[object Function]') throw new TypeError('Only normal function can be promisified');
-  return function (...args) {
-    return new Promise((resolve, reject) => {
-      const callback = function (...args) {
-        if ({}.toString.call(args[0]) === '[object Error]') return reject(args[0]);
-        resolve(args);
-      };
-      try {
-        if (reverse === true) fn.apply(null, [callback, ...args]);
-        else fn.apply(null, [...args, callback]);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-}
-```
 
 # callback和Promise的区别是什么？
 
