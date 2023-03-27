@@ -70,15 +70,18 @@ js 中现在比较成熟的有四种模块加载方案。
 
 ## 构建项目流程
 
-1. 新建项目文件夹spider，vscode打开文件夹
+### 普通脚本
+1. 新建项目文件夹，vscode打开文件夹,
 2. 唤起cmd终端，输入git init 初始化git，
-3. 输入npm init 初始化包管理工具，按提示输入项目信息
+3. 输入npm init -y 初始化包管理工具，按提示输入项目信息,
 4. 输入npm install typescript --save -d ：安装ts在开发环境，
-5. 输入tsc init 初始化ts配置，修改tsconfig.json 相关配置
-6. 输入tsc 可编译ts为js
-7. 添加gitignore，readme等文件
+5. 输入tsc init 初始化ts配置，修改tsconfig.json 相关配置，如配置rootDir,outDir等
+6. 输入tsc 可编译ts为js,
+7. 添加gitignore，readme等文件,
 
-+ 构建工具 webpack等，构建webpack配置，针对开发/生产环境不同配置
+### webpack + babel + react + redux + router
+
+1. [webpack + react参见](https://juejin.cn/post/7111922283681153038);
 
 
 # webpack
