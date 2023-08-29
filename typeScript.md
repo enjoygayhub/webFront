@@ -39,3 +39,51 @@ Symbol 和 symbol
 
 联合类型（union types）指的是多个类型组成的一个新类型，使用符号|表示。
 交叉类型（intersection types）指的多个类型组成的一个新类型，交叉类型常常用来为对象类型添加新属性
+
+## 类中修饰符
+属性readonly 修饰符，就表示该属性是只读的。实例对象不能修改这个属性。
+类可以使用 extends 关键字继承另一个类（这里又称“基类”）的所有属性和方法。
+public修饰符表示这是公开成员，外部可以自由访问。
+private修饰符表示私有成员，只能用在当前类的内部，类的实例和子类都不能使用该成员。
+protected修饰符表示该成员是保护成员，只能在类的内部使用该成员，实例无法使用该成员，但是子类内部可以使用。
+类的内部可以使用static关键字，定义静态成员。静态成员是只能通过类本身使用的成员，不能通过实例对象使用。
+关键字abstract，表示该类不能被实例化，只能当作其他类的模板
+
+## 泛型
+类型参数的约束条件采用下面的形式。<TypeParameter extends ConstraintType>
+```typeScript
+function comp<T extends { length: number }>(
+  a: T,
+  b: T
+) {
+  if (a.length >= b.length) {
+    return a;
+  }
+  return b;
+}
+```
+
+泛型使用注意点：
+1）尽量少用泛型。（2）类型参数越少越好。（3）类型参数需要出现两次。（4）泛型可以嵌套。
+
+## Enum 枚举
+
+Enum 成员默认不必赋值，系统会从零开始逐一递增，
+多个同名的 Enum 结构会自动合并。
+
+keyof 运算符可以取出 Enum 结构的所有成员名，作为联合类型返回。
+in 运算符可以取出所有的  Enum 结构的所有成员的值
+
+数值 Enum 存在反向映射，即可以通过成员值获得成员名。比如 Color[0]
+```typeScript
+enum Color {
+        Red,
+        Green,
+        Blue
+      }
+
+type foo = keyof typeof Color
+
+type oo = {[key in Color]:any}
+```
+
