@@ -1,4 +1,4 @@
-# 一些知识，非面试问题
+# 一些学习笔记
 
 ## 一些简写
 
@@ -122,95 +122,6 @@ document.querySelectorAll('mark').forEach(mark => {
 //还有preconnect 预TCP链接，proload：预先http请求，prerender预渲染
 ```
 
-## dom操作性能消耗的原理
-
-渲染引擎与js引擎互斥的单线程，操作系统切换线程执行会保存上下文
-
-直接操作dom是便会带来性能损耗
-
-```javascript
-// 防抖函数，非立即执行版本
- function debounce(func, wait) {
-  let timeout;
-  return function () {
-    const context = this;
-    const args = [...arguments];
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      func.apply(context, args)
-    }, wait);
-  }
-}
-// 防抖函数，立即执行版本
-function debounce(func, wait) {
-        let timeout;
-        return function () {
-          const context = this;
-          const args = [...arguments];
-          if (timeout) clearTimeout(timeout);
-          const callNow = !timeout;
-          timeout = setTimeout(() => {
-            timeout = null;
-          }, wait);
-          if (callNow) func.apply(context, args);
-        };
-      }
-// 防抖函数可取消版
-        function debounce(fn,time,immediate) {
-            let timer = null
-            let debounced = function () {
-                let context = this
-                let args = arguments
-                if(timer) clearTimeout(timer)  //清除前一个定时器
-                if (immediate) {  //为true立即执行
-                    let callNow = !timer
-                    timer = setTimeout(()=>{  
-                        timer = null
-                    },time || 500)
-                    if (callNow) fn.apply(context,args)
-                }
-                else {  //非立即执行
-                    timer = setTimeout(function(){
-                        fn.apply(context, args)
-                    }, time || 500);
-                }
-            }
-            debounced.cancel = function() { //取消防抖
-                clearTimeout(timer);
-                timer = null;
-            };
-            return debounced
-        }
-
-//节流时间戳版本
-function throttle(func, wait) {
-    var previous = 0;
-    return function() {
-        let now = Date.now();
-        let context = this;
-        let args = arguments;
-        if (now - previous > wait) {
-            func.apply(context, args);
-            previous = now;
-        }
-    }
-}
-content.onmousemove = throttle(count,1000);
-//节流定时器
-function throttle(func, wait) {
-    let timeout;
-    return function() {
-        let context = this;
-        let args = arguments;
-        if (!timeout) {
-            timeout = setTimeout(() => {
-                timeout = null;
-                func.apply(context, args)
-            }, wait)
-        }
-    }
-}
-```
 
 ## 从html到DOM
 
