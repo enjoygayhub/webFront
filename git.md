@@ -126,7 +126,7 @@ git merge origin/branch2
 
 ## 如果提示没有公钥，请看[这个](https://blog.csdn.net/weixin_30763455/article/details/99901544)
 
-## submododule 使用
+## submodule 使用
 
 在主项目中，使用 `git submodule add <submodule_url>` 命令可以在项目中创建一个子模块。
 
