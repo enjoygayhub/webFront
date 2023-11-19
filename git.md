@@ -2,29 +2,26 @@
 
 ## 下载安装
 
-从git官网下载安装包，安装完毕后就可以使用命令行的 git 工具，在开始菜单里找到"Git"->"Git Bash"，会弹出 Git 命令窗口，你可以在该窗口进行 Git 相关命令行的操作。
+从git官网下载安装包，安装完毕后就可以使用命令行的 git 工具
 
-```js
-具体可参考https://www.runoob.com/git/git-install-setup.html
-```
 
 ## 全局配置环境
 
 配置个人用户名和电子邮箱
 
 ```js
-git config –globle user.name “runoob”
-git config –globle user.email text@runoob.com
+git config --global user.name yourName
+git config --global user.email number@qq.com
 ```
 
-配置完毕后，可以通过$ git config –list命令查看所有的配置信息。
-也可直接查询某个环境变量的信息。
+## 从远程分支拉取项目
 
-```js
-git config user.name
-git config user.email
 ```
-
+$ git clone SSH/HTTPS地址 -b <分支名>
+```
+  如果Recv failure: Connection was reset
+  尝试关闭代理 $ git config --global --unset https.proxy
+  然后打开cmd输入指令刷新dns：$ ipconfig/flushdns 
 ## 查看工作区状态
 
 ```js
@@ -85,11 +82,7 @@ git checkout -- <file>
 git reset --hard HEAD^
 ```
 
-## 从远程分支拉取项目
 
-```js
-git clone SSH/HTTPS地址 -b <分支名>
-```
 
 ## 分支管理
 
