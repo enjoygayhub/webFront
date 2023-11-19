@@ -22,6 +22,8 @@ $ git clone SSH/HTTPS地址 -b <分支名>
   如果Recv failure: Connection was reset
   尝试关闭代理 $ git config --global --unset https.proxy
   然后打开cmd输入指令刷新dns：$ ipconfig/flushdns 
+
+
 ## 查看工作区状态
 
 ```js
@@ -60,6 +62,7 @@ git pull
 ```js
 git push
 ```
+推送失败 可以尝试[这里](https://zhuanlan.zhihu.com/p/654998555);
 
 ## 撤销修改
 
@@ -81,7 +84,6 @@ git checkout -- <file>
 ```js
 git reset --hard HEAD^
 ```
-
 
 
 ## 分支管理
