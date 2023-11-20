@@ -68,21 +68,6 @@ js 中现在比较成熟的有四种模块加载方案。
 静态网络服务器：返回的文件是托管文件的原样；
 动态网络服务器：普通是包括静态的应用服务器和数据库；例如将数据库内容填充到HTML模板生成浏览器所收到的文档内容,早期前后端不分离的项目就是这也。
 
-## 构建项目流程
-
-### 普通脚本
-1. 新建项目文件夹，vscode打开文件夹,
-2. 唤起cmd终端，输入git init 初始化git，
-3. 输入npm init -y 初始化包管理工具，按提示输入项目信息,
-4. 输入npm install typescript --save -d ：安装ts在开发环境，
-5. 输入tsc init 初始化ts配置，修改tsconfig.json 相关配置，如配置rootDir,outDir等
-6. 输入tsc 可编译ts为js,
-7. 添加gitignore，readme等文件,
-
-### webpack + babel + react + redux + router
-
-1. [webpack + react参见](https://juejin.cn/post/7111922283681153038);
-
 
 # webpack
 
@@ -166,3 +151,7 @@ loader带参数执行的顺序: pre -> normal -> inline -> post
 
    
 
+
+# vite
+  比webpack快，配置也方便，更新也很快。
+  [我的vite4.0学习笔记](https://juejin.cn/post/7200681438315036733)

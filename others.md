@@ -133,3 +133,13 @@ document.querySelectorAll('mark').forEach(mark => {
 6. 布局，计算盒子模型大小位置
 7. 绘制，遍历布局树，生成图层，合成页面
 
+
+## 构建普通ts脚本项目
+
+1. 新建项目文件夹，vscode打开文件夹,
+2. 唤起cmd终端，输入git init 初始化git，
+3. 输入npm init -y 初始化包管理工具，按提示输入项目信息,
+4. 输入npm install typescript --save -d ：安装ts在开发环境，
+5. 输入tsc init 初始化ts配置，修改tsconfig.json 相关配置，如配置rootDir,outDir等
+6. 输入tsc 可编译ts为js,
+7. 添加gitignore，readme等文件,

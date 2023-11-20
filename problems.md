@@ -1,0 +1,10 @@
+# 记录项目中遇到的问题与解决
+
+### 重写video标签自带的快进快退功能 
+    [掘金](https://juejin.cn/post/7277029942297853989)
+
+### El-menu 随着路由切换，菜单每次都是重新展开，或者展开的项错误。
+    default-active需为计算属性;
+    设置 :default-active="activeMenu" router=true
+    
+    虽然不知道原理是啥，把vue-router中配置路由createRouter参数里的routes里的name属性去掉就正常了。
