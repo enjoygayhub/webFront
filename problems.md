@@ -8,3 +8,5 @@
     设置 :default-active="activeMenu" router=true
     
     虽然不知道原理是啥，把vue-router中配置路由createRouter参数里的routes里的name属性去掉就正常了。
+
+### map中循环发布网络请求会bug，一次性堆积太多请求，使用for循环加await才能达到阻塞效果
