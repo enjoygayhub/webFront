@@ -12,3 +12,5 @@
 ### map中循环发布网络请求会bug，一次性堆积太多请求，使用for循环加await才能达到阻塞效果
 
 ### puppeteer 启动的浏览器，仍然被发现不是真实环境，原因：navigator.webdriver 值 为true，在原型上将其删除navigator.__proto__ .webdriver
+
+### structuredClone() 结构化克隆深拷贝，兼容问题报错
