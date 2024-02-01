@@ -14,3 +14,5 @@
 ### puppeteer 启动的浏览器，仍然被发现不是真实环境，原因：navigator.webdriver 值 为true，在原型上将其删除navigator.__proto__ .webdriver
 
 ### structuredClone() 结构化克隆深拷贝，兼容问题报错
+
+### 页面公告要展示文本换行，可以将div改成textarea，disbale掉编辑
