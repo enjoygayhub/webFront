@@ -16,3 +16,12 @@
 ### structuredClone() 结构化克隆深拷贝，兼容问题报错
 
 ### 页面公告要展示文本换行，可以将div改成textarea，disbale掉编辑
+
+### navigator.wakeLock 可以设定屏幕保持唤醒状态
+    ···
+    function tryKeepScreenAlive(minutes) {
+  navigator.wakeLock.request("screen").then(lock => {
+    setTimeout(() => lock.release(), minutes * 60 * 1000);
+  });
+}
+···
