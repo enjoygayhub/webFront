@@ -25,3 +25,6 @@
   });
 }
 ···
+
+### URL.parse() 替代 new URL()
+  new URL() When parameter can’t parse it throws an error.
