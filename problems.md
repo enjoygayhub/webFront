@@ -28,3 +28,5 @@
 
 ### URL.parse() 替代 new URL()
   new URL() When parameter can’t parse it throws an error.
+
+### vue3中可以使用<component :is="xxx"></component> 动态组件
