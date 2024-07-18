@@ -29,7 +29,8 @@
 ### URL.parse() 替代 new URL()
   new URL() When parameter can’t parse it throws an error.
 
-### vue3中可以使用<component :is="tab[currentTab]"></component> 动态组件
+### vue3动态组件
+使用<component :is="tab[currentTab]"><component> 
 
 ### 多行文本溢出显示省略号
     
