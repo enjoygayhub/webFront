@@ -50,7 +50,7 @@
 >
 > 
 
-> js是一种解释性：不用编译；动态：不用声明类型，弱类型：类型转换，语言
+> js是一种解释性：不用编译；动态：不用声明类型；弱类型：有类型转换的语言
 >
 > JavaScript数字全部是浮点数。 根据 IEEE 754标准中的64位二进制(binary64), 也称作双精度规范(double precision)来储存。这些字节按照以下规则分配：
 >
@@ -109,7 +109,7 @@
 （3）Number 类型的值直接转换，那些极小和极大的数字会使用指数形式。
 （4）Symbol 类型的值直接转换，但是只允许显式强制类型转换，使用隐式强制类型转换会产生错误。
 （5）对普通对象来说，除非自行定义 toString() 方法，否则会调用 toString()（Object.prototype.toString()）来返回内部属性 [[Class]] 的值，如"[object Object]"。如果对象有自己的 toString() 方法，字符串化时就会调用该方法并使用其返回值。
-[]转为‘’
+  (6) []转为‘’
 ```
 
 ## 其他值到数字值的显式转换，如Number()
@@ -174,7 +174,7 @@ typeof NaN是数字,NaN !== NaN,不可以被删除`delete`，不可以被改写�
 
 Number.isNaN()是严格判断, 必须严格等于`NaN`。`**是不是NaN这个值**`
 
-isNaN()是通过内部的 toNumber 转换结果来判定的,对象本身的valueof方法返回的只可以影响判断结果。`**Number转换的返回值是不是NaN**`
+isNaN()是通过内部的 toNumber 转换结果来判定的,对象本身的valueOf方法返回的值可以影响判断结果。`**Number转换的返回值是不是NaN**`
 
 ## || 和 && 操作符的返回值
 
@@ -280,10 +280,10 @@ Object.assign() //浅复制对象
 Object.entries() //返回自身可枚举的[key,value]
 Object.keys()，Object.values()
 Object.hasOwnProperty(key)//是否有这个属性 true/false
-Object.getOwnPropertyNames() //取得对象自身可枚举的属性名
+Object.getOwnPropertyNames() //取得对象自身的属性名，包括不可枚举属性，但不包括使用 symbol 值作为名称的属性
 //for in 对对象进行遍历，可以拿到自身以及原型链上的可枚举的属性
 Object.freeze()//冻结一个对象，不可修改，不可删除。不可添加新的属性
-Object.prototype.toString()// 返回数组[object,object/array/function等]  
+Object.prototype.toString()// 返回数组[object,Object/Array/Function等]，注意要.call()改变指向才行  
 //判断是数组还是对象就是用的这个方法
 ```
 
@@ -363,9 +363,6 @@ let newObj = JSON.parse(JSON.stringify(oldObj));//不完全的深拷贝
 
   如果一个被序列化的对象拥有 toJSON 方法，那么JSON.stringify得到的就是该 toJSON 方法的返回值
 
-## JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
-  以上
-
 
 ## eval 是做什么的
 
@@ -385,7 +382,7 @@ let newObj = JSON.parse(JSON.stringify(oldObj));//不完全的深拷贝
 function Class(){
     this.name='name';
 }
-class = new Class();//小写class为Class类的实例；Class为构造函数
+classA = new Class();//小写classA为Class类的实例；Class为构造函数
 
 ```
 
@@ -414,15 +411,6 @@ JavaScript 对象是通过引用来传递的，我们创建的每个新对象实
 
 - 原型链继承，分清构造函数，原型，实例：1,每一个构造函数都有一个原型对象;2,原型对象包含一个指向构造函数的指针;3,实例中包含一个原型对象的指针。缺点，在包含有引用类型的数据时，会被所有的实例对象所共享，容易造成修改的混乱。
 
-- 使用构造函数的方式。
-
-- 组合继承。
-
-- 原型式继承。
-
-- 寄生式继承。
-
-- 寄生组合继承。
 
 ## Object.defineProperty 用法
 
@@ -445,8 +433,7 @@ Object.defineProperty(obj, prop, descriptor)
   当且仅当该属性的 configurable 键值为 true 时，该属性的描述符才能够被改变，同时该属性也能从对应的对象上被删除。
   默认为 false。
   - enumerable
-  当且仅当该属性的 enumerable 键值为 true 时，该属性才会出现在对象的枚举属性中。
-  - 默认为 false。
+  当且仅当该属性的 enumerable 键值为 true 时，该属性才会出现在对象的枚举属性中。默认为 false。
 
 ## new 运算符的过程
 
@@ -462,10 +449,6 @@ var p = new Child1();
 
 p//Child1 {name: "child1"} 一个Child1的实例
 
-var p = Child1()  //不使用new
-
-p  //undefined 因为Chilid1函数结果返回值为undefined
-name  // child1方法中this指向window，所以window由了一个全局属性name
 ```
 
 ## 变量提升：
@@ -624,7 +607,7 @@ test1()  // 1
 ES6 箭头函数中 this
 
 1.  默认指向定义它时，所处上下文的对象的 this 指向；
-    换个说法是上层作用域的this, 或者说继承了上一层作用域的this,  如果其上层作用域是全局作用域，或者本身在全局上下文中执行，那么this就指向window。
+    换个说法是上层作用域的this, 或者说继承了上一层作用域的this, 如果其上层作用域是全局作用域，或者本身在全局上下文中执行，那么this就指向window。
 
 
 ```js
@@ -988,7 +971,8 @@ Ajax 即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），�
 #### 递归setTimeout()和setInterval()有何不同
 
 1. setTimeout 递归循环可以保障，每次至少延迟某些特定时间执行。
-2. setInvertal，每次定时触发执行回调函数， 不关心前一个回调函数是否执行。
+2. setInterval，每次定时触发执行回调函数， 不关心前一个回调函数是否执行。
+
 前者可以保证每次调用的间隔不变；后者包括了执行的时间
 
 ```js

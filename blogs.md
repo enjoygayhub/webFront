@@ -43,18 +43,9 @@ css Sprites
 
    1. 减少HTTP资源请求次数,使用可缓存的AJAX：使用静态资源CDN来存储文件：推荐使用异步JavaScript资源;消除阻塞渲染的CSS及JavaScript：
    2. 减少DOM元素数量和深度：减少使用关系型样式表的写法：
-   3. 合理利用浏览器缓存：图片懒加载：使用iconfont代替图片图标：
+   3. 合理利用浏览器缓存：图片懒加载：使用iconFont代替图片图标：
    4. 尽量使用id;合理缓存DOM对象：
    5. 避免各种形式重排重绘：
-
-## [响应式布局](https://juejin.im/post/5caaa230e51d452b672f9703)
-
-- 设置viewport
-- 媒体查询
-- 字体的适配（字体单位）
-- 百分比布局
-- 图片的适配（图片的响应式）
-- 结合flex，grid，BFC，栅格系统等已经成型的方案
 
 
 ## [数据结构数组与类数组](http://www.360doc.com/content/18/0925/05/3175779_789416619.shtml)
@@ -71,91 +62,5 @@ css Sprites
 
 ## dom操作性能消耗的原理
 
-渲染引擎与js引擎互斥的单线程，操作系统切换线程执行会保存上下文
-
-直接操作dom是便会带来性能损耗
-
-```javascript
-// 防抖函数，非立即执行版本
- function debounce(func, wait) {
-  let timeout;
-  return function () {
-    const context = this;
-    const args = [...arguments];
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      func.apply(context, args)
-    }, wait);
-  }
-}
-// 防抖函数，立即执行版本
-function debounce(func, wait) {
-        let timeout;
-        return function () {
-          const context = this;
-          const args = [...arguments];
-          if (timeout) clearTimeout(timeout);
-          const callNow = !timeout;
-          timeout = setTimeout(() => {
-            timeout = null;
-          }, wait);
-          if (callNow) func.apply(context, args);
-        };
-      }
-// 防抖函数可取消版
-        function debounce(fn,time,immediate) {
-            let timer = null
-            let debounced = function () {
-                let context = this
-                let args = arguments
-                if(timer) clearTimeout(timer)  //清除前一个定时器
-                if (immediate) {  //为true立即执行
-                    let callNow = !timer
-                    timer = setTimeout(()=>{  
-                        timer = null
-                    },time || 500)
-                    if (callNow) fn.apply(context,args)
-                }
-                else {  //非立即执行
-                    timer = setTimeout(function(){
-                        fn.apply(context, args)
-                    }, time || 500);
-                }
-            }
-            debounced.cancel = function() { //取消防抖
-                clearTimeout(timer);
-                timer = null;
-            };
-            return debounced
-        }
-
-//节流时间戳版本
-function throttle(func, wait) {
-    var previous = 0;
-    return function() {
-        let now = Date.now();
-        let context = this;
-        let args = arguments;
-        if (now - previous > wait) {
-            func.apply(context, args);
-            previous = now;
-        }
-    }
-}
-content.onmousemove = throttle(count,1000);
-//节流定时器
-function throttle(func, wait) {
-    let timeout;
-    return function() {
-        let context = this;
-        let args = arguments;
-        if (!timeout) {
-            timeout = setTimeout(() => {
-                timeout = null;
-                func.apply(context, args)
-            }, wait)
-        }
-    }
-}
-```
+渲染引擎与js引擎互斥的单线程，操作系统切换线程执行会保存上下文，直接操作dom是便会带来性能损耗
 

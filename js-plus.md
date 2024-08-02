@@ -108,7 +108,7 @@ var obj = {
 
 隐藏类：描述了对象的属性布局。map
 
-### 实现深拷贝
+### 实现完美深拷贝
 
 ```js
 //自定义递归实现深拷贝
@@ -206,7 +206,7 @@ const deepClone = function (obj,hash=new WeakMap()){
       cloneObj.getFriends = function(){return this.friends;};
       return cloneObj;
   }
-  let child5 = Object.create(parent5);//{getFriends：f()}
+  let child5 = clone(parent5);//{getFriends：f()}
   child5.__proto__ === parent5 //true
   //对比上面的原型式，多了一个自定义属性。
   ```
@@ -240,84 +240,7 @@ const deepClone = function (obj,hash=new WeakMap()){
 
   ​		最终改造为寄生组合继承与ES6中的 extend关键字基本相同
 
-### 实现new call apply bind
 
-```js
-function _new(ctor,...args) {
-	if(typeof ctor !== 'function') {
-		throw 'ctor must be a function';}
-	let obj = new Object();
-	obj.__proto__ = Object.create(ctor.prototype);
-	let res = ctor.apply(obj,...args);
-	let isObject = typeof res === 'object' && typeof res !== null;
-	let isFunction = typeof res === 'function';
-	return isObject || isFunction ? res : obj;
-}；
-```
-
-```js
-Function.prototype.call = function (context, ..args) {
-var context = context | window; 
-context.fn = this;
-var result = eval('context.fn(...args)'); 
-delete context.fn
-return result;
-}
-Function.prototype.apply = function (context, args) {
-let context = context | window;
-context.fn = this;
-let result = eval('context.fn(...args)'); 
-delete context.fn
-return result;}
-```
-
-```js
-Function.prototype.bind = function (context,...args) {
-if (typeof this !== "function"){
-throw new Error("this must be a function");
-}
-var self = this;
-var fbound = function () {
-self.apply(this instanceof self ? this : context,
-args.concat(Array.prototype.slice.cal(arguments)));
-}
-if(this. prototype) { 
-fbound.prototype = Object.create(this. prototype);
-}
-return fbound;
-}
-```
-
-### 实现instanceof
-
-```js
-function instanceOf(instance, cclass) {
-    let proto = instance.__proto__
-    let prototype = cclass.prototype
-
-    while (proto) {
-        if (proto === prototype) return true
-        proto = proto.__proto__
-    }
-    return false;
-}
-```
-
-### 实现add(1)(2,3)(4,5,6)
-
-```js
-function add(...args){
-    let arr =args;
-    function fn(...newArgs){
-        arr=[...args,...newArgs];
-        return fn;
-    }
-    fn.toString=fn.valueOf=function(){
-        return arr.reduce((acc,cur)=> acc+parseInt(cur))
-    }
-    return fn;
-}
-```
 ### 实现primisfy
 
 参考[简单实现](https://juejin.cn/post/6844904024928419848)

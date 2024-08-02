@@ -194,7 +194,7 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
 
 - flex-direction 属性决定主轴的方向（即项目的排列方向）。
 - flex-wrap 属性定义，如果一条轴线排不下，如何换行。
-- flex-flow 属性是 flex-direction 属性和 flex-wrap 属性的简写形式，默认值为 rownowrap。
+- flex-flow 属性是 flex-direction 属性和 flex-wrap 属性的简写形式，默认值为 nowrap。
 - justify-content 属性定义了项目在主轴上的对齐方式。
 - align-items 属性定义项目在交叉轴上如何对齐。
 - align-content 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
@@ -230,7 +230,7 @@ DOM 的变化影响到了预算内宿的几何属性比如宽高，浏览器重�
 减少重绘重排的方法有：
 
 - 不在布局信息改变时做 DOM 查询，
-- 使用 csstext,className 一次性改变属性
+- 使用 cssText,className 一次性改变属性
 - 使用 fragment
 - 对于多次重排的元素，比如说动画。使用绝对定位脱离文档流，使其不影响其他元素
 
@@ -397,13 +397,8 @@ vw（Viewport Width）、vh(Viewport Height)是基于视图窗口的单位
 3. 动态创建style标签或link标签
 
 
-# line-height = 1；可设置为数字，效果为数字乘以字体大小
+## line-height = 1；可设置为数字，效果为数字乘以字体大小
 
-# 下面内容不常考
-
-# 下面内容不常考
-
-# 下面内容不常考
 
 ## 控制继承的属性
 
@@ -411,7 +406,9 @@ vw（Viewport Width）、vh(Viewport Height)是基于视图窗口的单位
 + initial 设置属性值和浏览器默认样式相同。
 + unset 将属性重置为自然值，如果属性是自然继承那么就是 `inherit`，否则和 `initial`一样
 
-，组合选择器，中任一选择器失效，那么均失效简单介绍使用图片 base64 编码的优点和缺点
+，组合选择器，中任一选择器失效，那么均失效
+
+简单介绍使用图片 base64 编码的优点和缺点
 
 ```css
 base64编码是一种图片处理格式，通过特定的算法将图片编码成一长串字符串，在页面上显示的时候，可以用该字符串来代替图片的url属性。
@@ -466,7 +463,7 @@ base64编码是一种图片处理格式，通过特定的算法将图片编码�
 ## transition 和 animation 的区别
 
 ```css
-transition关注的是CSSproperty的变化，property值和时间的关系是一个三次贝塞尔曲线。
+transition关注的是CSS property的变化，property值和时间的关系是一个三次贝塞尔曲线。
 
 animation作用于元素本身而不是样式属性，可以使用关键帧的概念，应该说可以实现更自由的动画效果。
 ```
@@ -558,14 +555,7 @@ li:nth-of-type(even) { background:#ffcc00;} /* 偶数行 */
 - nth-child() 就是根据元素的个数来计算的
 - nth-of-type() 是根据类型来计算的，也就是 `li:nth-of-type(2)` 表示的是第 2 个 li 标签
 
-## 一个满屏品字布局如何设计
 
-```css
-简单的方式：
-上面的div宽100%，
-下面的两个div分别宽50%，
-然后用float或者inline使其不换行即可
-```
 
 ## CSS 画三角形
 
@@ -590,7 +580,6 @@ div {
   border-left-color: red;
 }
 ```
-
 
 ## CSS 实现两列固定，中间自适应的布局
 
@@ -668,9 +657,6 @@ HTML代码如下：
   }
   ```
 
-  
-   
-  
 
 ## 屏幕里面内容未占满的时候footer固定在屏幕可视区域的底部。占满的时候显示在网页的最底端
 
@@ -697,6 +683,7 @@ HTML代码如下：
         height: 300px;
         margin-top: -300px;
         background-color: #ccc;
+    }
 </style>
 
 <div class="page">
@@ -729,15 +716,8 @@ HTML代码如下：
 
     > FastClick 是 FT Labs 专门为解决移动端浏览器 300 毫秒点击延迟问题所开发的一个轻量级的库。FastClick 的实现原理是在检测到 touchend 事件的时候，会通过 DOM 自定义事件立即出发模拟一个 click 事件，并把浏览器在 300ms 之后的 click 事件阻止掉。
 
-## link 和 @import 的区别 （不常考）
 
-1. link 是 HTML 标签，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等；@import 是 CSS 提供的语法，只有导入样式表的作用。
-2. 加载页面时，link 标签引入的 CSS 被同时加载；@import 引入的 CSS 将在页面加载完毕后被加载。
-3. @import 是 CSS2.1 才有的语法，故只可在 IE5+ 才能识别；link 标签作为 HTML 元素，不存在兼容性问题。
-4. 可以通过 JS 操作 DOM ，插入 link 标签来改变样式；由于 DOM 方法是基于文档的，无法使用@import 的方式插入样式。
-5. link 引入的样式权重大于@import 引入的样式。
-
-## CSS 选择器的解析规则（不常考）
+## CSS 选择器的解析规则
 
 从右向左，这样会提高查找选择器所对应的元素的效率
 
@@ -753,12 +733,12 @@ a标签有四种状态：链接访问前、链接访问后、鼠标滑过、激�
 
 当链接访问过时，情况基本同上，只不过需要将:link换成:visited。
 
-这个顺序能不能变？可以，但也只有:link和:visited可以交换位置，因为一个链接要么访问过要么没访问过，不可能同时满足，也就不存在覆盖的问题。
+只有:link和:visited可以交换位置。
 ```
 
 
 
-## CSS 清除浮动的方式 （什么年代了 还在用浮动?）
+## CSS 清除浮动的方式 （现在已经没人用浮动了?）
 
 1. 额外标签法
    

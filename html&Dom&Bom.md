@@ -13,7 +13,7 @@
    - keygen 规定用于表单的密钥对生成器字段。
    - output 定义不同类型的输出，比如脚本的输出。
 
-4. 新增表单属性：placehoder, required, min和max, step, height 和 width, autofocus, multiple
+4. 新增表单属性：placeholder, required, min和max, step, height 和 width, autofocus, multiple
 
 5. 音频视频：
 
@@ -58,19 +58,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
     cookie也是在所有同源窗口中都是共享的
 ```
 
-## DOCTYPE的作用是什么
 
-```txt
-(1) <!DOCTYPE>声明一般位于第一行，处于 <html> 标签前。作用：告诉浏览器以什么样的模式来解析文档。DOCTYPE 不存在或格式不正确会导致文档以兼容模式呈现。
-(2) 一般指定了之后会以标准模式来进行文档解析，否则就以兼容模式进行解析。在标准模式下，浏览器的解析规则都是按照最新的标准进行解析的;在兼容模式下，浏览器会以向后兼容的方式来模拟老式浏览器的行为，以保证一些老的网站的正确访问。
-```
-
-## 语义化标签的作用
-
-- 去掉或样式丢失的时候能让页面呈现清晰的结构
-- 方便其他设备解析（如屏幕阅读器、盲人阅读器、移动设备）以意义的方式来渲染网页
-- 有利于SEO
-- 便于团队开发和维护，遵循W3C标准，可以减少差异化
 
 ## 行内元素 块级元素
 
@@ -97,7 +85,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 ## Element的clientWidth offsetWidth scrollWidth
   + 元素宽度clientWidth= width + 左右padding  (不包含border,margin,滚动条)
   + 元素布局宽度offsetWidth=width + 左右padding + 左右border + 滚动条（不包含margin）
-  + 元素内容宽度scrollWidth 测量元方式和clientWidth计算方式相同。区别在于包括由于overflow溢出而在屏幕上不可见的内容。
+  + 元素内容宽度scrollWidth 测量方式和clientWidth计算方式相同。区别在于包括由于overflow溢出而在屏幕上不可见的内容。
 
 ## 事件对象中的clientX offsetX screenX pageX，
 
@@ -214,18 +202,6 @@ document.addEventListener("click", function(ev){
       
 ```
 
-## js 延迟加载的方式有哪些
-
-> js 延迟加载，也就是等页面加载完成之后再加载 JavaScript 文件。 js 延迟加载有助于提高页面加载速度。
-
-一般有以下几种方式：
-
-- defer 属性
-- async 属性
-- 动态创建 DOM 方式
-- 使用 setTimeout 延迟方法
-- 让 JS 最后加载
-
 ##  defer 和 async 的区别
 
 - defer 属性表示延迟执行引入的 JavaScript，即这段 JavaScript 加载时 HTML 并未停止解析，这两个过程是并行的。当整个 document 解析完毕后再执行脚本文件，在 DOMContentLoaded 事件触发之前完成。
@@ -317,7 +293,7 @@ navigator.onLine 当前网络的状态
 
 navigator.clipboard 访问剪切板（读取均为异步）
 
-navigator.mediaDevices 媒体信息设备，可用于恭喜屏幕
+navigator.mediaDevices 媒体信息设备，可用于控制屏幕
 
 navigator.cookieEnabled（表示当前页面是否启用了cookie）
 

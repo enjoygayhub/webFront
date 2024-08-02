@@ -44,7 +44,7 @@
   - 多边形，参数为顶点位置
   	
   	```css
-  	polygon( [<fill-rule>,]? [<shape-arg> <shape-arg>]
+  	polygon( [<fill-rule>,]? [<shape-arg> <shape-arg>] )
   	```
   	
   - path()

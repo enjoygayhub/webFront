@@ -23,7 +23,7 @@ js 中现在比较成熟的有四种模块加载方案。
 ## ES6 模块与 CommonJS 模块、AMD、CMD 的差异
 
 > CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。CommonJS 模块输出的是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。ES6 模块的运行机制与 CommonJS 不一样。JS 引擎对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。
->
+
 > CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。CommonJS 模块就是对象，即在输入时是先加载整个模块，生成一个对象，然后再从这个对象上面读取方法，这种加载称为“运行时加载”。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
 
 
@@ -52,9 +52,6 @@ js 中现在比较成熟的有四种模块加载方案。
 ```
 
 
-
-
-
 ### 热更新方案：
 
 本地模式热更新方便开发：自动刷新整个页面，页面整体无刷新而只更新部分；
@@ -63,7 +60,7 @@ js 中现在比较成熟的有四种模块加载方案。
 2. live Reload
 3. hot module replacement，热替换：loader中实现了相关api，开发中通过websocket通知更改
 
-大概流程是我们用webpack-dev-server启动一个服务之后，浏览器和服务端是通过websocket进行长连接，webpack内部实现的watch就会监听文件修改，只要有修改就webpack会重新打包编译到内存中，然后webpack-dev-server依赖中间件webpack-dev-middleware和webpack之间进行交互，每次热更新都会请求一个携带hash值的json文件和一个js，websocker传递的也是hash值，内部机制通过hash值检查进行热更新
+大概流程是我们用webpack-dev-server启动一个服务之后，浏览器和服务端是通过websocket进行长连接，webpack内部实现的watch就会监听文件修改，只要有修改就webpack会重新打包编译到内存中，然后webpack-dev-server依赖中间件webpack-dev-middleware和webpack之间进行交互，每次热更新都会请求一个携带hash值的json文件和一个js，websocket传递的也是hash值，内部机制通过hash值检查进行热更新
 
 ### Source Map
 

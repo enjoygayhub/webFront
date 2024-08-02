@@ -29,13 +29,15 @@
 ### URL.parse() 替代 new URL()
   new URL() When parameter can’t parse it throws an error.
 
-### vue3动态组件
-使用<component :is="tab[currentTab]"><component> 
 
-### 多行文本溢出显示省略号
-    
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+###  css columns
+
+[css columns](https://juejin.cn/post/7295057643608899621) 设置columns：3;或者columns: 100px;实现分栏布局。配和scroll-snap可以实现swiper吸附效果
+
+
+## textarea 随内容自动增高，而不是固定高度，出现滚动条
+```css
+    textarea {
+        form-sizing: normal;
+    }
+``` 

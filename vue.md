@@ -114,7 +114,7 @@ key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 
 
 参数传递方式：
 第一种方法：params传参，url中会显示参数， 页面刷新数据不会丢失。www.123.com/#/test/1/2
-第二种方法：query传参，url中会显示参数，例如www.123.com/#/test?type=1?arg=2
+第二种方法：query传参，url中会显示参数，例如www.123.com/#/test?type=1&arg=2
 
 ## 为什么需要虚拟DOM，它有什么好处?
 
@@ -167,6 +167,9 @@ defineExpose({
   name,
   handleClick
 })
+
+### 动态组件component :is
+使用<component :is="tab[currentTab]"><component> 
 
 ### slot
   用于渲染模板化内容
