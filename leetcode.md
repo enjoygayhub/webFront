@@ -658,10 +658,7 @@ first = "flower"
 ## 15. [三数之和](https://leetcode-cn.com/problems/3sum)
 
 ```js
-/**
- * @param {number[]} nums
- * @return {number[][]}
- */
+
 var threeSum = function(nums) {
     var ans = [];
     nums.sort((a,b) => a-b);
@@ -1946,25 +1943,7 @@ var maxProfit = function (prices) {
 };
 ```
 
-- 暴力循环
 
-```txt
-两层循环没啥好讲
-```
-
-```js
-var maxProfit = function(prices) {
-    let max = 0;
-    for(let i=0;i<prices.length;i++) {
-        for(let j=i+1;j<prices.length;j++) {
-            if (prices[j] - prices[i] > max) {
-                max = prices[j] - prices[i];
-            }
-        }
-    }
-    return max
-};
-```
 
 ## 122. [买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii)
 

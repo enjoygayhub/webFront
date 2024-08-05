@@ -957,8 +957,7 @@ Ajax 即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），�
 1. 在 ajax 发送请求前加上 `xhr.setRequestHeader("If-Modified-Since","0")`。
 2. 在 ajax 发送请求前加上 `xhr.setRequestHeader("Cache-Control","no-cache")`。
 3. 在 URL 后面加上一个随机数： `"fresh=" + Math.random()`;。
-4. 在 URL 后面加上时间搓：`"nowtime=" + new Date().getTime()`;。
-5. 如果是使用 jQuery，直接这样就可以了`$.ajaxSetup({cache:false})`。这样页面的所有 ajax 都会执行这条语句就是不需要保存缓存记录。
+
 
 ## arguments怎么转化成真数组
 

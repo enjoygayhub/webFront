@@ -37,7 +37,7 @@ css Sprites
 
 2. 建立tcp连接，请求资源，服务端判断缓存时间，可选择返回304
 
-3. 下载网页，渲染：生成DOM树，遇到js文件会解释执行阻塞渲染过程，图片和css异步加载，css规则树与dom合并成render渲染树，布局绘制。
+3. 下载网页，生成DOM树，遇到js文件会解释执行阻塞渲染过程，图片异步加载，css规则树与dom合并成render渲染树，布局绘制。
 
 ## [页面性能提升](https://www.jianshu.com/p/d9c20eafa67e)
 
@@ -51,10 +51,6 @@ css Sprites
 ## [数据结构数组与类数组](http://www.360doc.com/content/18/0925/05/3175779_789416619.shtml)
 
 [浮动元素的特点](https://juejin.cn/post/6844903891155288072)
-
-[外边距溢出问题](https://juejin.cn/post/6844904033509965831) 
-
-[边距折叠问题](https://juejin.cn/post/6844903497045917710)
 
 ## js渲染10w数据优化
 

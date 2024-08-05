@@ -153,9 +153,24 @@ loader带参数执行的顺序: pre -> normal -> inline -> post
    const req = require.context('!!svg-sprite-loader!!../../images/svgIcons', false, /.svg$/)
    ```
 
-   
+### webpack 是怎么处理 commonjs/esm 
 
+Webpack 通过解析 require 调用来处理 CommonJS 模块，将模块打包成 IIFE（立即执行函数表达式）
+Webpack 通过解析 import 和 export 语句来处理 ES 模块，并支持 Tree Shaking 和动态导入按需加载，可以用于代码分割，提高性能。
 
 # vite
-  比webpack快，配置也方便，更新也很快。
-  [我的vite4.0学习笔记](https://juejin.cn/post/7200681438315036733)
+
+### hmr热更新
+模块映射:
+Vite 服务器在开发模式下将模块直接映射到浏览器。
+每个模块都由一个唯一的 URL 映射，例如 /@fs/path/to/module.js。
+
+模块更新:
+当文件发生变化时，Vite 服务器会检测到文件的变化，并重新编译受影响的模块。
+Vite 服务器会通过websocket发送更新信号给浏览器，通知浏览器哪些模块已经发生变化。
+
+模块替换:
+浏览器接收到更新信号后，会请求新的模块文件。
+新的模块文件会替换旧的模块文件，而不会刷新整个页面。
+浏览器会重新执行已更改的模块，并更新相关状态。
+
