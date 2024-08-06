@@ -38,7 +38,7 @@ type obj = {​
 }​
 
 type excludeUndefined<T> =  ​​​T extends undefined ? never : T
-​```
+```
 
 
 6. render Check 组件， 点击 button， executed 会不会打印
@@ -46,7 +46,7 @@ type excludeUndefined<T> =  ​​​T extends undefined ? never : T
 function Check(){
     const [ toggle, setToggle ] = useState(false);
         return <div>
-            <Button onClick={()=>{setToggle(!toggle)}} />
+            <Button onClick={()=>{setToggle(t=>!t)}} />
         </div>   
     
     function Button({ onClick }){
@@ -54,7 +54,6 @@ function Check(){
         return <button onClick={onClick}>toggle</button>
     }
 }
-    
 ```
 
 7. 怎么让外层元素，包裹两个元素，不溢出

@@ -1,3 +1,12 @@
+
+## [页面性能提升](https://www.jianshu.com/p/d9c20eafa67e)
+
+   1. 减少HTTP资源请求次数,使用可缓存的AJAX：使用静态资源CDN来存储文件：推荐使用异步JavaScript资源;消除阻塞渲染的CSS及JavaScript：
+   2. 减少DOM元素数量和深度：减少使用关系型样式表的写法：
+   3. 合理利用浏览器缓存：图片懒加载：使用iconFont代替图片图标：
+   4. 尽量使用id;合理缓存DOM对象：
+   5. 避免各种形式重排重绘：
+
 ## [图片加载优化方案](https://blog.csdn.net/qq_33539213/article/details/106189209)
 
 当图片太多时：可以将图片服务与应用服务分离；图片服务器采用独立域名 ,css、js和图片就可以并发请求了
@@ -14,7 +23,7 @@ css Sprites
 
  [defer与async](https://segmentfault.com/a/1190000006778717?utm_source=sf-related)
 
-+ async 无序异步解析，会阻塞
++ async 异步解析，会阻塞运行，无序
 
 + defer 异步延迟
 
@@ -39,14 +48,6 @@ css Sprites
 
 3. 下载网页，生成DOM树，遇到js文件会解释执行阻塞渲染过程，图片异步加载，css规则树与dom合并成render渲染树，布局绘制。
 
-## [页面性能提升](https://www.jianshu.com/p/d9c20eafa67e)
-
-   1. 减少HTTP资源请求次数,使用可缓存的AJAX：使用静态资源CDN来存储文件：推荐使用异步JavaScript资源;消除阻塞渲染的CSS及JavaScript：
-   2. 减少DOM元素数量和深度：减少使用关系型样式表的写法：
-   3. 合理利用浏览器缓存：图片懒加载：使用iconFont代替图片图标：
-   4. 尽量使用id;合理缓存DOM对象：
-   5. 避免各种形式重排重绘：
-
 
 ## [数据结构数组与类数组](http://www.360doc.com/content/18/0925/05/3175779_789416619.shtml)
 
@@ -58,5 +59,5 @@ css Sprites
 
 ## dom操作性能消耗的原理
 
-渲染引擎与js引擎互斥的单线程，操作系统切换线程执行会保存上下文，直接操作dom是便会带来性能损耗
+渲染引擎与js引擎是互斥的单线程，操作系统切换线程执行会保存上下文，直接操作dom是便会带来性能损耗
 
