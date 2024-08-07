@@ -102,16 +102,6 @@ V8 引擎会对 IR 进行优化，包括常量折叠、死代码消除等优化�
 编译后的本地机器码可以直接在目标平台上执行。
 
 
-### 热更新方案：
-
-本地模式热更新方便开发：自动刷新整个页面，页面整体无刷新而只更新部分；
-
-1. watch 模式
-2. live Reload
-3. hot module replacement，热替换：loader中实现了相关api，开发中通过websocket通知更改
-
-大概流程是我们用webpack-dev-server启动一个服务之后，浏览器和服务端是通过websocket进行长连接，webpack内部实现的watch就会监听文件修改，只要有修改就webpack会重新打包编译到内存中，然后webpack-dev-server依赖中间件webpack-dev-middleware和webpack之间进行交互，每次热更新都会请求一个携带hash值的json文件和一个js，websocket传递的也是hash值，内部机制通过hash值检查进行热更新
-
 ### Source Map
 
 编译过程中，生成的产物代码中被转换的部分与源代码中相应部分的映射关系表

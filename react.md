@@ -250,6 +250,26 @@ useEffect 是 React Hooks 中的一个非常重要的 Hook，用于处理副作�
 第二个参数是一个依赖数组，它告诉 React 哪些值的变化会导致副作用函数重新运行。
 如果依赖数组为空（[]），副作用函数仅在组件挂载时运行一次，并在组件卸载时清理。
 
+### useLayoutEffect 与 useEffect 的区别
+
+useLayoutEffect 在浏览器进行布局和绘制之前同步执行，会阻塞浏览器绘制。
+用于读取 DOM 布局信息（如元素尺寸），确保某些副作用在浏览器更新 UI 之前发生
+
+### useReducer
+useReducer 是 React Hooks 中的一个 Hook，用于在函数组件中管理复杂的状态逻辑。它类似于 Redux 的 reducer，但适用于函数组件。
+
+reducer 函数:
+你提供一个 reducer 函数，这个函数接收当前的状态和动作，并返回新的状态。
+dispatch 函数:
+你提供一个 dispatch 函数，这个函数用于分发动作，并触发状态更新。
+initialState:
+你提供一个初始状态值。
+state:
+你获取当前的状态值。
+dispatch:
+你获取一个用于分发动作的函数。
+
+
 
 ### useMemo
 useMemo 接收一个函数和一个依赖数组作为参数。它会在每次渲染时调用该函数，并根据依赖数组中的值来判断是否需要重新计算函数的结果。
@@ -269,13 +289,24 @@ useCallback 用于返回一个被优化过的函数引用，这个函数只有�
 当你需要传递一个函数作为 prop 到子组件，并且这个函数的依赖项很少改变时。
 当函数作为回调被频繁创建时，使用 useCallback 可以避免不必要的重新渲染。
 
+
+### useContext
+
+创建：React.createContext(); </ThemeContext.Provider>包裹使用数据的组件
+
+使用方法：
+
++ 函数式组件，使用useContext钩子
++ 类组件，使用该`Class.contextType`方法，限制只能使用一个上下文。
++ 类组件，使用 <Context.Consumer>包裹
+
 ### 类组件和函数组的区别，什么场景下使用
 
 - 类组件使用 ES6 的 class 关键字定义，需要继承 React.Component。内置的生命周期方法和状态管理功能。类组件可以通过 this.refName 访问 DOM 节点或子组件的引用。类组件可以通过继承扩展其他类组件，便于代码复用和重用。
 
 - 函数组件使用普通的函数定义，函数的返回值是 JSX。通过 useState 和 useEffect 等 Hooks 来管理状态和副作用。
 使用场景：复杂的状态管理、生命周期方法、直接访问 Refs，组件需要扩展其他类组件时使用类组件。
-        对于简单的 UI 组件，只需要少量的状态管理或副作用操作时使用函数组件。
+对于简单的 UI 组件，只需要少量的状态管理或副作用操作时使用函数组件。
 
 ### React 组件中绑定一个事件跟直接操作 DOM 绑定一个事件有什么差别
 
@@ -417,13 +448,4 @@ when得到true时则渲染Prompt组件，启用拦截
 
 message 得到true则表示允许跳转，即允许跳转，得到false表示不允许，得到字符串表示提示信息，会唤起浏览器的confirm提示。
 
-## [context API](https://www.smashingmagazine.com/2020/01/introduction-react-context-api/#top)
-
-创建：React.createContext(); </ThemeContext.Provider>包裹使用数据的组件
-
-使用方法：
-
-+ 函数式组件，使用useContext钩子
-+ 类组件，使用该`Class.contextType`方法，限制只能使用一个上下文。
-+ 类组件，使用 <Context.Consumer>包裹
 

@@ -26,33 +26,35 @@ View的变化会自动更新到ViewModel,ViewModel的变化也会自动同步到
 2. 依赖收集
 3. 发布订阅模式
 
-## vue 双向数据绑定原理
+## Vue3.0 中通过使用 Proxy 对比 vue2.0 版本通过 Object.defineProperty() 
 
-> 双向数据绑定主要是通过使用数据劫持和发布订阅者模式来实现的。
+更全面的响应式： Proxy 可以监听数组索引、属性添加、删除等更多操作，而 Object.defineProperty 只能监听属性的读写。
+性能提升： Proxy 的底层实现更加高效，尤其是在处理深层嵌套的数据时。
+代码更简洁： Proxy 的 API 更简洁，使得响应式系统的实现更加优雅
 
-> vue2.0 版本通过 Object.defineProperty() 方法来对 Model 数据各个属性添加访问器属性，以此来实现数据的劫持，因此当 Model 中的数据发生变化的时候，我们可以通过配置的 setter 和 getter 方法来实现对 View 层数据更新的通知。
-
-> 数据在 html 模板中一共有两种绑定情况，一种是使用 v-model 来对 value 值进行绑定，一种是作为文本绑定，在对模板引擎进行解析的过程中。
-
-> 如果遇到元素节点，并且属性值包含 v-model 的话，我们就从 Model 中去获取 v-model 所对应的属性的值，并赋值给元素的 value 值。然后给这个元素设置一个监听事件，当 View 中元素的数据发生变化的时候触发该事件，通知 Model 中的对应的属性的值进行更新。
-
-> 如果遇到了绑定的文本节点，我们使用 Model 中对应的属性的值来替换这个文本。对于文本节点的更新，我们使用了发布订阅者模式，属性作为一个主题，我们为这个节点设置一个订阅者对象，将这个订阅者对象加入这个属性主题的订阅者列表中。当 Model 层数据发生改变的时候，Model 作为发布者向主题发出通知，主题收到通知再向它的所有订阅者推送，订阅者收到通知后更改自己的数据。
-
-在 Vue3.0 中通过使用 Proxy 对对象进行代理，从而实现数据劫持。使用 Proxy 的好处是它可以完美的监听到任何方式的数据改变
 
 ## v-if 和 v-show 的区别
 
 - v-if：每次都会重新删除或创建元素来控制 DOM 结点的存在与否，会触发组件生命周期
 
-- v-show:是切换了元素的样式 display:none，display: block
+- v-show:是切换了元素的样式 display:none，display: block，隐藏时仍在DOM树中
 
 因而 v-if 有较高的切换性能消耗，v-show 有较高的初始渲染消耗，适用于条件频繁改变的情况。
 
+## vue 中nextTick 的实现原理
+
+nextTick 会将传入的回调函数推入到一个微任务队列中。回调函数会在 DOM 更新完成后才会执行。
+确保 DOM 更新后操作: 很多时候，我们需要在 DOM 更新完成后才能获取最新的 DOM 结构，或者执行一些依赖于 DOM 的操作。nextTick 就提供了这样的机制。
+避免数据和视图不同步: 如果在数据更新后立即操作 DOM，可能会导致数据和视图不同步的问题。
+
+不同环境的实现:
+Promise.resolve(): 利用 Promise 的特性，将回调函数包装成一个 Promise，然后调用 Promise.resolve()。
+MutationObserver: 创建一个 MutationObserver 实例，观察一个元素的变动，当变动发生时，触发回调函数。
+MessageChannel: 创建一个 MessageChannel，通过 postMessage 来传递消息，从而触发回调函数。
+
 ## 为什么 vue2.0中 组件中的 data 必须是函数
 
-当一个组件被定义，data 必须声明为返回一个初始数据对象的函数，因为组件可能被用来创建多个实例。如果 data 仍然是一个纯粹的对象，则所有的实例将共享引用同一个数据对象！通过提供 data 函数，每次创建一个新实例后，我们能够调用 data 函数，从而返回初始数据的一个全新副本数据对象。
-
-简而言之，就是 data 中数据可能会被复用，要保证不同组件调用的时候数据是相同的。
+data 必须声明为返回一个初始数据对象的函数，因为组件可能被用来创建多个实例。如果 data 仍然是一个纯粹的对象，则所有的实例将共享引用同一个数据对象！。
 
 ## vue3.0 的生命周期函数
 
@@ -87,11 +89,10 @@ key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 
 
 > hash模式 与 history模式
 
-- hash（即地址栏 URL 中的 # 符号)。比如这个 URL：www.123.com/#/test，hash 的值为 #/test。
+- hash（即地址栏 URL 中的 # 符号）。
 
 特点： hash 虽然出现在 URL 中，但不会被包括在HTTP内，hash模式每次页面切换其实切换的是#之后的内容，而#后内容的改变并不会触发地址的改变，
-因此改变 hash 不会重新加载页面。
-每次hash发生变化时都会调用 onhashchange事件
+因此改变 hash 不会重新加载页面。每次hash发生变化时都会调用 onhashchange事件
 
 优点：可以随意刷新
 
@@ -127,11 +128,14 @@ key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 
 ref: 用来给基本数据类型绑定响应式数据，访问时需要通过 .value 的形式， template中会自动解析,不需要 .value
 reactive: 用来给 复杂数据类型 绑定响应式数据，直接访问即可
 
+### computed
+计算属性.通过proxy响应式，依赖收集，缓存数据，只有当依赖的响应式数据发生变化时，才会重新计算。类似于React中的 useMemo
+
 ### toRef、toRefs、toRaw
-toRef(object,key) ：结构object中的key属性,如果object为响应式的，那么返回的结果也是响应式的
+toRef(object,key) ：解构object中的key属性,如果object为响应式的，那么返回的结果也是响应式的
 toRefs(object) ： 循环调用toRef
 toRaw(object)：  将响应式对象修改为普通对象
-computed: 得到计算属性
+
 
 ### watch WatchEffect
 watch(data,()=>{},{})： 监听响应式状态发生变化的，当响应式状态发生变化时，就会触发一个回调函数。
@@ -241,6 +245,11 @@ export default useWindowResize;
 
 ```
 
+## 兄弟组件之间通信
+
+1. eventBus 自定义事件中心
+2. 使用状态管理库
+3. 父组件中转
 
 ##  React 和 Vue差异：
 

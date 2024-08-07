@@ -48,12 +48,12 @@ function Check(){
         return <div>
             <Button onClick={()=>{setToggle(t=>!t)}} />
         </div>   
-    
+}    
     function Button({ onClick }){
        console.log('executed')
         return <button onClick={onClick}>toggle</button>
     }
-}
+
 ```
 
 7. 怎么让外层元素，包裹两个元素，不溢出
