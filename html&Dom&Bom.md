@@ -310,6 +310,17 @@ history.replaceState()	修改当前历史记录状态
 history.state	返回在会话栈顶的状态值的拷贝
 window.onpopstate	当活动历史记录条目更改时，将触发popstate事件
 
+
+## cookie 有哪些字段
+
+Domain
+Path
+Expire/MaxAge
+HttpOnly
+Secure
+SameSite
+
+
 ## window.requestIdleCallback、
 
 requestIdleCallback 维护一个队列，将在浏览器空闲时间内执行。
