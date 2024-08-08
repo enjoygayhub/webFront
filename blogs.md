@@ -1,11 +1,14 @@
 
 ## [页面性能提升](https://www.jianshu.com/p/d9c20eafa67e)
 
-   1. 减少HTTP资源请求次数,使用可缓存的AJAX：使用静态资源CDN来存储文件：推荐使用异步JavaScript资源;消除阻塞渲染的CSS及JavaScript：
-   2. 减少DOM元素数量和深度：减少使用关系型样式表的写法：
-   3. 合理利用浏览器缓存：图片懒加载：使用iconFont代替图片图标：
-   4. 尽量使用id;合理缓存DOM对象：
-   5. 避免各种形式重排重绘：
+   1. 减少HTTP资源请求次数,SVG，base64编码，iconFont，CDN托管，图片懒加载。
+   2. 使用可缓存的AJAX，使用异步JavaScript资源加载; prefetch 与 preload预加载
+   3. 减少DOM元素数量和深度：减少使用关系型样式表的写法：
+   4. css js体积压缩，Code Spliting + 基于路由的按需加载，Tree Shaking
+  
+   5. 避免各种形式重排重绘，避免直接修改样式，避免直接操作dom，使用css3动画，使用虚拟dom
+
+   
 
 ## [图片加载优化方案](https://blog.csdn.net/qq_33539213/article/details/106189209)
 

@@ -309,3 +309,10 @@ history.pushState()	向当前浏览器会话的历史堆栈中添加一个状态
 history.replaceState()	修改当前历史记录状态
 history.state	返回在会话栈顶的状态值的拷贝
 window.onpopstate	当活动历史记录条目更改时，将触发popstate事件
+
+## window.requestIdleCallback、
+
+requestIdleCallback 维护一个队列，将在浏览器空闲时间内执行。
+执行重计算而非紧急任务
+空闲回调执行时间应该小于 50ms，最好更少
+空闲回调中不要操作 DOM，因为它本来就是利用的重排重绘后的间隙空闲时间，重新操作 DOM 又会造成重排重绘

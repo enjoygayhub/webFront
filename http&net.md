@@ -124,19 +124,6 @@ B类  16个 172.16.0.0--172.31.255.255
 C类  255个 192.168.0.0--192.168.255.255
 
 
-
-
-## 浏览器输入 URL 之后发生了什么
-
-> 参考链接：[在浏览器输入 URL 回车之后发生了什么（超详细版）](https://4ark.me/post/b6c7c0a2.html)
-
-1. DNS 解析
-2. TCP 连接
-3. 发送 HTTP 请求
-4. 服务器处理请求并返回 HTTP 报文
-5. 浏览器解析渲染页面
-6. 连接结束
-
 ## DNS 的具体过程
 
 1. 输入 IP，此时电脑发送一个 DNS 请求到本地 DNS 服务器（一般是网络接入服务商提供 eg:电信，移动）
@@ -148,71 +135,7 @@ C类  255个 192.168.0.0--192.168.255.255
 
 
 
-## cookie 和 session 的区别
-
-1.存储位置不同：
-> cookie 数据存放在客户的浏览器上
-> session 数据放在服务器上。
-
-2.存储容量不同：
-
-> 单个 cookie 保存的数据不能超过 4K，一个站点最多保存 20 个 cookie。
-> 对于 session 来说并没有上限，但出于对服务器端的性能考虑，session 内不要存放过多的东西，并且设置 session 删除机制。
-
-3.存储方式不同：
-
-> cookie 中只能保管 ASCII 字符串，并需要通过编码方式存储为 Unicode 字符或者二进制数据。
-> session 中能够存储任何类型的数据，包括且不限于 string，integer，list，map 等。
-
-4.隐私策略不同
-> cookie 对客户端是可见的，别有用心的人可以分析存放在本地的 cookie 并进行 cookie 欺骗，所以它是不安全的。
-> session 存储在服务器上，不存在敏感信息泄漏的风险。
-
-5.有效期不同
-
-> cookie 保管在客户端，不占用服务器资源。对于并发用户十分多的网站，cookie 是很好的选择。
-> session 是保管在服务器端的，每个用户都会产生一个 session。假如并发访问的用户十分多，会产生十分多的 session，耗费大量的内存。
-
-## Ajax， fetch，XHR
-
-Ajax 是一种技术集合，所以Fetch也是Ajax的一个子集，在之前，我们常说Ajax 默认是指以XHR为核心的技术合集
-XHR 以 XMLHttpRequest对象为核心
-同源下：XHR，fetch 都支持cookie,非同源：无论xhr还是fetch都是不自动带cookie
-无论fetch 还是 XHR 都是在网络错误才会触发error
-
-
-## 网络安全
-
-1. XSS攻击(cross-site script)
-
-   有两种主要的方法，注入恶意的脚本，返回到浏览器运行 ：
-  + 反射型：如果客户端将用户输入信息带入代码中，比如在输入的搜索的关键词、图片的链接后附带脚本，被编码进html代码中，浏览器会执行附带的脚本代码 
-  + 持久型 ：服务端保存了用户的携带恶意代码的评论，其他的用户浏览到该评论时就可能会执行。
-
-  防范 XSS 攻击的最好方式就是删除或禁用任何可能包含可运行代码指令的标记。对 HTML 来说，这些包括类似 <script>, <object>, <embed>,和 <link> 的标签。对用户的输入过滤。
-  Content-Security-Policy 允许站点管理者控制用户代理能够为指定的页面加载哪些资源。除了少数例外情况，设置的政策主要涉及指定服务器的源和脚本结束点。
-
-2. CSRF攻击(cross site request forgery,跨站请求伪造)
-
-在其他站点伪造post请求，如果用户登录过，浏览器可能会记录cookie，在请求时便携带上了。便可以以用户的名义进行非法操作。
-不过现代浏览器跨域的网络请求不会携带cookie。
-服务端一般都会与token身份验证，token可以保证用户不同设备登录互踢，后端可以确认请求中没有token便会返回未授权。
-
-3. SQL注入
-
-当传递给底层 SQL 语句的用户输入可以修改该语句的语义，那么就能执行恶意的sql操作。
-所以需要将用户输入中任何在 SQL 语句中有特殊含义的字符进行转义。
-
-4. 劫持
-
-将站点链到隐藏的iframe里，劫持上层的操作，转发给隐藏的iframe。从而执行恶意操作。
-作为防范手段，可以通过设置适当的 HTTP 头来防止其被嵌入到另一个站点的 iframe 中。
-
-5. 拒绝服务 DoS
-Dos 通常通过使用伪造的请求淹没站点，合法用户的访问就会被中断。这些请求可能仅仅是数量巨大或者是单独消耗了大量资源 (如 延缓读，上传大文件等) 。
-
-
-# 网络协议笔记
+## 网络协议笔记
 
    + 只要是在网络上跑的包，都是完整的。可以有下层没上层，绝对不可能有上层没下层。收到的包有可能物理层的信息取了，只留下应用层的。
    + 无类型域间选路CIDR，将32位的IP地址一分为二，前面是网络号，后面是主机号 ，比如 10.100.122.2/24。
@@ -223,9 +146,12 @@ Dos 通常通过使用伪造的请求淹没站点，合法用户的访问就会�
    + MAC的全称是Medium Access Control，即媒体访问控制。其实就是控制在往媒体上发数据的时候，谁先发、谁后发的问题。防止发生混乱。学名叫多路访问。
    + ICMP全称Internet Control Message Protocol，就是互联网控制报文协议。查询报文类型：主动请求，主动请求的回复。差错报文的类型：终点不可达为3，源抑制为4，超时为11，重定向为5。
    + TCP流量控制：在包的确认中携带滑动窗口的大小，窗口大小限制发送端的包发送，为0时停止发送。拥塞控制：拥塞窗口和滑动窗口共同控制发送的速度，目的是不丢包的情况下，尽量发挥带宽，有慢启动和快重传。
+
+
 # HTTP
 
 HTTP 本质是无状态的，使用 Cookies 可以创建有状态的会话。
+
 ## 资源定位URI
 
 协议：http://
@@ -259,7 +185,6 @@ text/plain，image/png，audio/ogg，video/mp4，application/javascript（二进
 6. 凭借Host头，能够使不同域名配置在同一个 IP 地址的服务器上。
 
 ### HTTP/2.0
-> 参考链接：[HTTP/2 相比 1.0 有哪些重大改进？](https://www.zhihu.com/question/34074946)
 
 1. 首部压缩
 2. 多路复用
@@ -294,14 +219,15 @@ text/plain，image/png，audio/ogg，video/mp4，application/javascript（二进
 ## HTTP 与 HTTPS 的区别
 
 1. HTTP 传输的数据是明文未加密的，HTTPS 协议是由 HTTP 和 SSL 协议构建的可进行加密传输和身份认证的网络协议，安全性更高。
-2. HTTPS 协议需要 CA 证书
-3. 使用不同的链接方式，默认使用端口也不同，一般而言，HTTP 协议的端口为 80，HTTPS 的端口为 443；在网络模型中，HTTP工作于应用层，而HTTPS工作在传输层。
+2. HTTPS 协议需要 CA 证书 验证身份，HTTP 协议不需要。
+3. 链接方式不同，HTTP 协议的端口为 80，HTTPS 的端口为 443；
+
 
 ## HTTPS 协议的工作流程
 
 1. 客户使用 HTTPS URL 访问服务器，则要求 web 服务器建立 SSL 链接。
 2. web 服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回给客户端。
-3. 客户端和 web 服务器端开始协商 SSL 链接的安全等级，也就是加密等级。
+3. 客户端和 web 服务器端开始协商 SSL 链接的安全等级。
 4. 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
 5. web 服务器通过自己的私钥解密出会话密钥。
 6. web 服务器通过会话密钥加密与客户端之间进行通信。
@@ -320,15 +246,11 @@ text/plain，image/png，audio/ogg，video/mp4，application/javascript（二进
 ## GET 和 POST 的区别
 
 两者本质上都是 TCP 链接
-
 1. get 参数通过 url 传递，post 放在请求体 (request body) 中。
 2. get 请求在 url 中传递的参数是有长度限制的，而 post 没有。
 3. get 比 post 更不安全，因为参数直接暴露在 url 中，所以不能用来传递敏感信息。
-4. get 请求只能进行 url 编码，而 post 支持多种编码方式。
+4. get 请求有幂等性，而 post没有。
 5. get 请求参数会被完整保留在浏览历史记录里，而 post 中的参数不会被保留。
-6. get 产生一个 TCP 数据包；post 产生两个 TCP 数据包。
-   对于 get 方式的请求，浏览器会把 http header 和 data 一并发送出去，服务器响应 200（返回数据）；
-   而对于 post，浏览器先发送 header，服务器响应 100 continue，浏览器再发送 data，服务器响应 200 ok（返回数据）。
 
 ## 浏览器的同源政策
 
@@ -345,7 +267,7 @@ text/plain，image/png，audio/ogg，video/mp4，application/javascript（二进
 2. Web 字体。
 3. WebGL 贴图。
 4. 使用 drawImage() 将图片或视频画面绘制到 canvas。
-5. 来自图像的 CSS 图形 (en-US)。
+5. 来自图像的 CSS 图形。
 
 ## 网络请求跨域
 
@@ -355,19 +277,13 @@ text/plain，image/png，audio/ogg，video/mp4，application/javascript（二进
 
 2. CORS (跨域资源共享)
     CORS的基本思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。
-
-    简单请求：只需服务端设置 `Access-Control-Allow-Origin：*` 即可，若要带 cookie 请求：前后端都需要设置。前端设置`withCredentials`为true,后端设置`Access-Control-Allow-Credentials`为true,同时`Access-Control-Allow-Origin`不能设置为`*`
+    简单请求：只需服务端设置 `Access-Control-Allow-Origin：*` 即可，若要带 cookie 前端设置`withCredentials`为true,后端设置`Access-Control-Allow-Credentials`为true,同时`Access-Control-Allow-Origin`不能设置为`*`
     复杂请求：使用 OPTIONS 方法发起一个预检请求到服务器，告知服务器实际请求使用方法和首部自定义字段，服务端响应返回实际请求接受的域和方法，头部。如果要携带cookie，Access-Control-Allow-Origin，Access-Control-Allow-Headers，Access-Control-Allow-Methods 均不能设置为*。
 3. nginx反向代理,服务端请求不受浏览器限制，既访问同源服务端，服务端再去寻找正在的地址拿到数据再返回
 4. webpack正向代理， 客户端配置正向代理，替换表面访问地址。
 5. WebSocket协议跨域
 
-## 缓存
-
-1. 私有缓存：浏览器缓存的个性化信息
-2. 共享缓存：
-    + 代理缓存
-    + 托管缓存：包括反向代理，CDN，service worker 
+## 强缓存与协商缓存
 
 ### Expires 与 Cache-Control：max-age
 HTTP/1.0 中的Expires 
@@ -389,3 +305,34 @@ Last-Modify是一个时间标识该资源的最后修改时间，例如Last-Modi
 no-cache 指令不会阻止响应的存储，而是阻止在没有重新验证的情况下重用响应。
 no-store 响应不存储在任何缓存中
 private 私有缓存
+
+## 网络安全
+
+1. XSS攻击(cross-site script)
+
+   有两种主要的方法，注入恶意的脚本，返回到浏览器运行 ：
+  + 反射型：如果客户端将用户输入信息带入代码中，比如在输入的搜索的关键词、图片的链接后附带脚本，被编码进html代码中，浏览器会执行附带的脚本代码 
+  + 持久型 ：服务端保存了用户的携带恶意代码的评论，其他的用户浏览到该评论时就可能会执行。
+
+  防范 XSS 攻击的最好方式就是删除或禁用任何可能包含可运行代码指令的标记。对 HTML 来说，这些包括类似 <script>, <object>, <embed>,和 <link> 的标签。对用户的输入过滤。
+  Content-Security-Policy 允许站点管理者控制用户代理能够为指定的页面加载哪些资源。除了少数例外情况，设置的政策主要涉及指定服务器的源和脚本结束点。
+
+2. CSRF攻击(cross site request forgery,跨站请求伪造)
+
+在其他站点伪造post请求，如果用户登录过，浏览器可能会记录cookie，在请求时便携带上了。便可以以用户的名义进行非法操作。
+不过现代浏览器跨域的网络请求不会携带cookie。
+服务端一般都会与token身份验证，token可以保证用户不同设备登录互踢，后端可以确认请求中没有token便会返回未授权。
+
+3. SQL注入
+
+当传递给底层 SQL 语句的用户输入可以修改该语句的语义，那么就能执行恶意的sql操作。
+所以需要将用户输入中任何在 SQL 语句中有特殊含义的字符进行转义。
+
+4. 劫持
+
+将站点链到隐藏的iframe里，劫持上层的操作，转发给隐藏的iframe。从而执行恶意操作。
+作为防范手段，可以通过设置适当的 HTTP 头来防止其被嵌入到另一个站点的 iframe 中。
+
+5. 拒绝服务 DoS
+Dos 通常通过使用伪造的请求淹没站点，合法用户的访问就会被中断。这些请求可能仅仅是数量巨大或者是单独消耗了大量资源 (如 延缓读，上传大文件等) 。
+
