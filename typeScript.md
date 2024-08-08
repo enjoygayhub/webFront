@@ -86,4 +86,22 @@ type foo = keyof typeof Color
 
 type oo = {[key in Color]:any}
 ```
+## 在 ts 中如何实现 Partial Pick Omit,Parameters
 
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+ 
+type Exclude<T, U> = T extends U ? never : T;
+ 
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
+
+type Parameters<T extends (...args: any) => any> = T extends (
+  ...args: infer P
+) => any
+  ? P
+  : never;
