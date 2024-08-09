@@ -1,6 +1,5 @@
 # HTML
 
-
 ## HTML5 的新特性
 
 1. 语义化标签:header、footer、section、nav、aside、article
@@ -60,12 +59,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 
 
 
-## 行内元素 块级元素
 
-```txt
-常见的行内元素有 a b span img strong sub sup button input label select textarea
-常见的块级元素有  div p ul ol li dl dt dd h1 h2 h3 h4 h5 h6
-```
 
 ## canvas与SVG
 
@@ -74,7 +68,74 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 - canvas绘制位图,绘制出来的每一个图形的元素都是独立的DOM节点，能够方便的绑定事件或用来修改。canvas复杂度高会减慢渲染速度。canvas输出的是一整幅画布，就像一张图片一样，放大会失真。canvas不适合游戏应用。
 - svg输出的图形是矢量图形，后期可以修改参数来自由放大缩小，SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。svg最适合图像密集型的游戏，其中的许多对象会被频繁重绘
 
+## 从html到DOM
 
+1. 字节流解码到字符流数据
+2. 字符预处理
+3. 令牌化，AST解析将字符数据转化成令牌 (状态机
+4. 构建DOM树，由令牌到DOM节点
+5. 将CSSOM与DOM合并得到渲染树，忽略掉不渲染的标签
+6. 布局，计算盒子模型大小位置
+7. 绘制，遍历布局树，生成图层，合成页面
+
+## HTML 页面加载过程
+### 1. 解析 HTML 文档
+当浏览器接收到 HTML 文档时，它会开始解析文档。解析过程包括：
+- **标记化**:
+  - 将 HTML 文本转换为标记流。
+  - 这一步骤将 HTML 文本解析成一系列的标记，如开始标签、结束标签、文本节点等。
+
+- **构建 DOM 树**:
+  - 根据标记流构建文档对象模型 (DOM) 树。
+  - DOM 树是一个树状结构，表示文档的结构和内容。
+
+- **解析样式表**:
+  - 当浏览器遇到 `<link>` 或 `<style>` 标签时，它会下载并解析样式表，然后将样式规则应用到 DOM 树中的元素上。
+
+### 2. 下载外部资源
+- **CSS 资源**:
+  - 当浏览器遇到 `<link rel="stylesheet">` 或 `<style>` 标签时，它会下载 CSS 文件。
+  - CSS 文件被解析，并应用到相应的 DOM 元素上。
+  - 浏览器通常会暂停 HTML 的解析，直到 CSS 文件完全下载并解析完成。
+
+- **JavaScript 资源**:
+  - 当浏览器遇到 `<script>` 标签时，它会下载 JavaScript 文件。
+  - 默认情况下，浏览器会暂停 HTML 的解析，直到 JavaScript 文件完全下载并执行完成。
+  - 通过设置 `async` 或 `defer` 属性，可以使 JavaScript 文件异步加载，避免阻塞 HTML 的解析。
+
+- **图片资源**:
+  - 当浏览器遇到 `<img>` 或 `<source>` 标签时，它会下载图片资源。
+  - 图片资源的下载通常是异步的，不会阻塞 HTML 的解析。
+
+### 3. 构建渲染树
+- **渲染树**:
+  - 渲染树是由 DOM 节点和样式信息组成的树形结构。
+  - 浏览器将 DOM 树中的元素与样式表中的规则相结合，构建出渲染树。
+  - 渲染树表示了最终要渲染到屏幕上的元素及其样式信息。
+
+### 4. 布局
+- **布局**:
+  - 浏览器根据渲染树计算每个元素的位置和尺寸。
+  - 这一步骤决定了元素在页面上的确切位置。
+
+### 5. 绘制
+- **绘制**:
+  - 最后，浏览器将渲染树中的元素绘制到屏幕上。
+  - 绘制是将每个元素的实际像素绘制到屏幕上。
+
+### 处理外部资源的注意事项
+- **CSS 和 JavaScript 的加载顺序**:
+  - CSS 和 JavaScript 的加载顺序会影响页面的渲染和交互。
+  - 将 CSS 放在 `<head>` 中，JavaScript 放在文档末尾可以优化页面加载性能。
+
+- **异步加载**:
+  - 使用 `async` 和 `defer` 属性可以让 JavaScript 异步加载，避免阻塞页面渲染。
+  - 图片也可以通过懒加载（lazy loading）技术异步加载。
+
+- **资源优先级**:
+  - 浏览器通常会优先加载对页面渲染至关重要的资源，如关键路径 CSS。是为当前页面必须用到的资源做准备，加快页面加载速度。
+  - preload 加载当前路由必需资源，优先级高。
+  prefetch 优先级低，在浏览器 idle 状态时加载资源。是为未来可能用到的资源做准备，提升用户体验。
 # Dom & Bom  
 
 
@@ -263,6 +324,27 @@ document.addEventListener("click", function(ev){
   ```
 
 + 使用iframe时，注意安全：尽量使用https,使用sandbox属性，限制其功能
+
+## 一些标签
+
+```html
+1分钟刷新
+<meta http-equiv="Refresh" content="60">
+5秒后跳转:比如无权限时跳转
+<meta http-equiv="Refresh" content="5;URL=page2.html">
+
+```
+
+```js
+//定时修改document.title 可以达到网页消息提醒的目的，title标签妙用
+
+<script type="module" >  ES6标准当成模块解析，默认阻塞同defer 即异步加载，延迟执行
+<script type="module" async>  同async 异步加载，阻塞执行
+
+<link rel="dns-prefeteh" href=""> dns 预解析DNS
+//还有preconnect 预TCP链接，proload：预先http请求，prerender预渲染
+```
+
 
 ## Location
 

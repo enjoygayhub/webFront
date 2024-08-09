@@ -246,7 +246,6 @@ DOM 的变化影响到了预算内宿的几何属性比如宽高，浏览器重�
 
 ## z-index 是干什么用的？默认值是什么？与 z-index: 0 的区别
 
-
 > z-index 属性设置元素的堆叠顺序，且只在属性position: relative/absolute/fixed 的时候才生效。
 > `z-index: auto` 是默认值，与`z-index: 0`是有区别的：
 > `z-index: 0` 会创建一个新的堆叠上下文，而 `z-index: auto` 不会创建新的堆叠上下文
@@ -670,13 +669,105 @@ a标签有四种状态：链接访问前、链接访问后、鼠标滑过、激�
 只有:link和:visited可以交换位置。
 ```
 
-## CSS 清除浮动的方式 （现在已经没人用浮动了吧）
+## 一些简写
 
-1. 
-   > 在需要清除浮动的元素后面添加一个空白标签，为其设置样式`clear: both;`
-2. 父级元素添加`overflow: hidden;`
++ font ：style| weight |size/line-height |family ;字号字体必有，字体必须最后
 
-## 清除浮动的原理
++ text-shadow: offset-x | offset-y |? blur-radius | color ;
 
-- clear属性清除浮动：clear 属性规定元素盒子的边不能和浮动元素相邻。该属性只能影响使用清除的元素本身，不能影响其他元素。
-- 其他的可以归为一类，都是通过触发BFC来实现的
++ background:
+  - `<attachment>` : scroll [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) fixed [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) local
+  
+  - `<box>`:  border-box [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) padding-box [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) content-box | text
+  
+  - `<background-color>`
+  
+  - `<bg-image>`: none|url()| linear-gradient(to-bottom,rgba(),rgba())
+  
+  - `<position>`:left [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) center [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) right [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) top [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) bottom | length-percentage
+  
+  - `<bg-size>` : cover | contain | length| percentage
+  
+  - `<repeat-style>`: repeat [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) space [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) round [|](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Value_definition_syntax#single_bar) no-repeat
+  
++ clip-path: 裁剪盒子显示; shape-outside: 指定使用下面列表的值来定义浮动元素的浮动区域。这个浮动区域决定了行内内容所包裹的形状。
+
+  - 插入长方形，前面1-4个参数控制上右下左的距离，round后参数控制圆角
+    
+    ```css
+    inset( <shape-arg>{1,4} [round <border-radius>]? )
+    ```
+    
+  - 圆形，参数为半径，圆心
+  
+      ```css
+      circle( [<shape-radius>]? [at <position>]? )
+      ```
+  
+  - 椭圆，参数为两轴半径，圆心位置
+  
+      ```css
+      ellipse( [<shape-radius>{2}]? [at <position>]? )
+      ```
+  
+  - 多边形，参数为顶点位置
+  	
+  	```css
+  	polygon( [<fill-rule>,]? [<shape-arg> <shape-arg>] )
+  	```
+  	
+  - path()
+  
+    ```css
+    path( [<fill-rule>,]? <string>)
+    ```
+
+## 修改滚动条
+
+```css
+scroll::-webkit-scrollbar {
+width: 10px;
+height: 10px;
+}
+/*正常情况下滑块的样式*/
+.scroll::-webkit-scrollbar-thumb {
+background-color: rgba(0,0,0,.05);
+border-radius: 10px;
+-webkit-box-shadow: inset1px1px0rgba(0,0,0,.1);
+}
+/*鼠标悬浮在该类指向的控件上时滑块的样式*/
+.scroll:hover::-webkit-scrollbar-thumb {
+}
+/*鼠标悬浮在滑块上时滑块的样式*/
+.scroll::-webkit-scrollbar-thumb:hover {
+}
+/*正常时候的主干部分*/
+.scroll::-webkit-scrollbar-track {
+border-radius: 10px;
+-webkit-box-shadow: inset006pxrgba(0,0,0,0);
+background-color: white;
+}
+/*鼠标悬浮在滚动条上的主干部分*/
+.scroll::-webkit-scrollbar-track:hover {
+}
+```
+
+###  IntersectionObserver
+
+创建一个新的`IntersectionObserver`对象，当其监听到目标元素的可见部分穿过了一个或多个**阈(thresholds)**时，会执行指定的回调函数。
+
+```js
+let observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate')
+      observer.unobserve(entry.target)
+    }
+  })
+})
+
+document.querySelectorAll('mark').forEach(mark => {
+  observer.observe(mark)
+})
+```
+

@@ -41,3 +41,10 @@
         form-sizing: normal;
     }
 ``` 
+
+## blog
+[数据结构数组与类数组](http://www.360doc.com/content/18/0925/05/3175779_789416619.shtml)
+[浮动元素的特点](https://juejin.cn/post/6844903891155288072)
+[虚拟列表](https://blog.csdn.net/weixin_39932611/article/details/110746868?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-1&spm=1001.2101.3001.4242)
+[跨域错误捕获](https://www.jianshu.com/p/315ffe6797b8)
+##  [重排与重绘，提升性能。](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)

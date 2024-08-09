@@ -1,4 +1,11 @@
-# 工程化engineered,webpack
+# 工程化engineered
+## 页面性能提升
+1. 减小下载文件大小：Code Split + 基于路由的按需加载，Tree Shaking,使用体积小的第三方依赖，依赖按需引用，terse压缩混淆代码，gzip压缩
+2. 图片方面：图片压缩，图片懒加载，base64格式，svg格式，css Sprites，iconFont，
+3. 网络方面：prefetch cdn
+4. 缓存方面：缓存http请求
+5. 代码方面：减少HTTP资源请求次数，减少DOM元素数量和深度，避免各种形式重排重绘，避免直接修改样式，避免直接操作dom，React/vue避免重新渲染，重新计算
+6. 其他：service worker, SSR，web worker
 
 ## js 的几种设计模式
   1. 装饰器模式用于扩展对象的功能，而无需修改现有的类或构造函数。此模式可用于将特征添加到对象中，而无需修改底层的代码。
@@ -112,6 +119,9 @@ V8 引擎会对 IR 进行优化，包括常量折叠、死代码消除等优化�
 静态网络服务器：返回的文件是托管文件的原样；
 动态网络服务器：普通是包括静态的应用服务器和数据库；例如将数据库内容填充到HTML模板生成浏览器所收到的文档内容,早期前后端不分离的项目就是这也。
 
+## peerDependency 是为了解决什么问题
+
+peerDependencies 是为了解决依赖冲突的问题，重复安装。在 npm 中，如果一个包 A 依赖于包 B，那么包 A 的用户在安装包 A 时，npm 会自动安装包 B。但是，如果包 A 和包 B 的版本不兼容，就会导致依赖冲突。
 
 # webpack
 
@@ -130,9 +140,24 @@ loader 可以理解为 webpack 的编译器，它使得 webpack 可以处理一�
   2. use 属性，指定 test 类型的文件应该使用哪个 loader 进行预处理。
 常用的 loader 有 css-loader、style-loader 等。
 
-Plugins（插件）可以用于执行范围更广的任务，包括打包、优化、压缩、搭建服务器等等，要使用一个插件，
-一般是先使用 npm 包管理器进行安装，然后在配置文件中引入，最后将其实例化后传递给 plugins 数组属性。
+Plugins（插件）可以用于执行范围更广的任务，包括打包、优化、压缩、搭建服务器等等，要使用一个插件，一般是先使用 npm 包管理器进行安装，然后在配置文件中引入，最后将其实例化后传递给 plugins 数组属性。
 ```
+
+## webpack 的构建流程
+
+初始化: 启动构建，读取webpack.config.js与合并配置参数，加载 Plugin，实例化 Compiler。 
+编译: 从 Entry 出发，递归地找到所有依赖的模块,针对每个 Module 串行调用对应的 Loader 去翻译文件的内容。
+转换模块：Loader 将模块代码转换为抽象语法树（AST），以便进行后续的处理。
+生成依赖图：根据模块之间的引用关系，建立一个依赖图，优化，如去除重复依赖、按需加载等
+确定 Chunk: 每个 Module根据依赖关系，生成代码块(Chunk)。 
+生成 Bundle: 每个 Chunk 都转换成一个单独的文件加入到输出列表，这步是可以修改输出内容的最后机会。 
+输出完成: 确定好输出内容后，根据配置确定的路径与文件名，把文件写入到文件系统。
+
+## webpack 的构建优化
+
+1. 持久化缓存: cache，缓存AST
+2. 多进程: thread-loader
+3. 更快的 loader: swc
 
 ## webpack 常用插件
 
@@ -193,14 +218,35 @@ loader带参数执行的顺序: pre -> normal -> inline -> post
    const req = require.context('!!svg-sprite-loader!!../../images/svgIcons', false, /.svg$/)
    ```
 
-### webpack 是怎么处理 commonjs/esm 
+## webpack 是怎么处理 commonjs/esm 
 
 Webpack 通过解析 require 调用来处理 CommonJS 模块，将模块打包成 IIFE（立即执行函数表达式）
 Webpack 通过解析 import 和 export 语句来处理 ES 模块，并支持 Tree Shaking 和动态导入按需加载，可以用于代码分割，提高性能。
 
-# vite
+## 打包器(webpack/rollup) 如何加载 css 样式资源
 
-### hmr热更新
+Webpack 主要通过 css-loader 和 style-loader 这两个 Loader 来处理 CSS 文件。
+
+css-loader:将 CSS 文件中的 @import 和 url() 等语句解析成 JavaScript模块。
+style-loader:将 CSS 代码注入到 HTML 的 <style> 标签中，从而让浏览器能够直接解析和应用样式。
+或者借助于 mini-css-extract-plugin 将 CSS 单独抽离出来。
+
+rollup通过rollup-plugin-postcss:
+将 CSS 文件处理成 JavaScript 模块，并支持 PostCSS。
+将 CSS 提取成独立的文件，或者内联到 JavaScript 中。
+
+
+# vite
+## vite构建流程、
+
+启动开发服务器: Vite 启动一个开发服务器，监听文件变化。
+浏览器请求模块: 浏览器请求模块时，Vite 会根据请求路径找到对应的模块。
+模块转换:1原生 ESM 模块: 直接返回模块代码。2需要转换的模块: 使用 esbuild 进行快速转换，生成 ES 模块。
+返回模块给浏览器: Vite 将转换后的模块代码返回给浏览器，浏览器加载并执行。
+HMR: 当文件发生变化时，Vite 会重新构建模块，并通过 WebSocket 通知浏览器更新相应的模块。
+
+## hmr热更新
+
 模块映射:
 Vite 服务器在开发模式下将模块直接映射到浏览器。
 每个模块都由一个唯一的 URL 映射，例如 /@fs/path/to/module.js。
@@ -214,3 +260,113 @@ Vite 服务器会通过websocket发送更新信号给浏览器，通知浏览器
 新的模块文件会替换旧的模块文件，而不会刷新整个页面。
 浏览器会重新执行已更改的模块，并更新相关状态。
 
+## js的代码压缩
+
+1. terser 或者 uglify，及流行的使用 Rust 编写的 swc 压缩混淆化 JS。
+2. gzip 或者 brotli 压缩，在网关处(nginx)开启
+3. 使用 webpack-bundle-analyzer 分析打包体积，替换占用较大体积的库，如 moment -> dayjs
+4. 使用支持 Tree-Shaking 的库，对无引用的库或函数进行删除，如 lodash -> lodash/es
+5. 对无法 Tree Shaking 的库，进行按需引入模块，如使用 import Button from 'antd/lib/Button'，此处可手写 babel-plugin 自动完成，但不推荐
+6. 使用 babel (css 为 postcss) 时采用 browserlist，越先进的浏览器所需要的 polyfill 越少，体积更小
+7. code spliting，路由懒加载，只加载当前路由的包，按需加载其余的 chunk，首页 JS 体积变小 (不减小总体积，但减小首页体积)
+8. 使用 webpack 的 splitChunksPlugin，把运行时、被引用多次的库进行分包，在分包时要注意避免某一个库被多次引用多次打包。此时分为多个 chunk，虽不能把总体积变小，但可提高加载性能 
+
+目前前端工程化中使用 terser 和 swc 进行 JS 代码压缩。
+通过 AST 分析，根据选项配置一些策略，来生成一颗更小体积的 AST 并生成代码。
+
+1. 去除多余字符: 空格，换行及注释
+2. 压缩变量名：替换变量名，函数名及属性名
+3. 解析程序逻辑: 编译预计算
+
+## window.performance
+
+window.performance 是一个 Web API，用于获取和分析网页的性能数据。
+它提供了一系列的方法和属性，可以帮助开发者了解网页的加载和运行情况。
+比如window.performance.timing里有很多时间点
+
+## 什么是 AST，及其应用
+AST 是 Abstract Syntax Tree 的简称抽象语法树
+将 Typescript 转化为 Javascript (typescript)
+将 SASS/LESS 转化为 CSS (sass/less)
+将 ES6+ 转化为 ES5 (babel)
+将 Javascript 代码进行格式化 (eslint/prettier)
+识别 React 项目中的 JSX (babel)
+GraphQL、MDX、Vue SFC 等等
+
+而在语言转换的过程中，实质上就是对其 AST 的操作，核心步骤就是 AST 三步走
+Code -> AST (Parse)
+AST -> AST (Transform)
+AST -> Code (Generate)
+
+AST 的生成这一步骤被称为解析(Parser)，而该步骤也有两个阶段: 词法分析(Lexical Analysis)和语法分析(Syntactic Analysis)
+
+## semver
+语义化版本号。版本格式：主版本号.次版本号.修订号
+
+## JWT（JSON Web Token）的原理
+JWT 是一种用于在不同服务之间传递安全可靠信息的紧凑且自包含的方式。它本质上是一个 JSON 对象，经过 Base64 编码并使用数字签名。
+一个标准的 JWT 包含三个部分，用点（.）分隔：
+
+头部（Header）：
+指定了 JWT 的类型（通常为 JWT）和使用的签名算法（例如 HMAC SHA256）。
+
+载荷（Payload）：
+标识该 JWT 的唯一 id，创建时间，过期时间，以及其他自定义数据。
+这些声明一般不加密，但被 Base64 URL 编码。
+
+签名（Signature）：
+使用头部和载荷的内容，结合一个密钥，通过指定的签名算法生成。用于验证 JWT 的完整性。
+
+## 什么是服务器渲染 (SSR)
+
+服务器渲染 (SSR)：将同一个组件渲染为服务器端的 HTML 字符串，将它们直接发送到浏览器，最后将这些静态标记"激活"为客户端上完全可交互的应用程序。
+
+服务器处理请求：服务器接收到请求后，执行相应的逻辑，获取数据，并使用模板引擎将数据渲染成完整的 HTML。返回给浏览器
+
+优点
+首屏加载速度快： 浏览器可以直接渲染完整的 HTML，无需等待 JavaScript 执行，提升用户体验。
+SEO 友好： 搜索引擎可以抓取到完整的 HTML，有利于 SEO。
+更好的初始交互： 用户在页面加载完成前就可以进行一些简单的交互。
+
+服务器渲染的缺点
+服务器负载较大： 服务器需要承担更多的计算任务，消耗更多的资源。
+开发复杂度高： 实现 SSR 需要掌握更多的技术，开发成本较高。
+不利于单页面应用： SSR 不适合高度动态化的单页面应用。
+
+## Core Web Vitals（核心网页指标）是什么？
+
+1. 最大内容绘制 (Largest Contentful Paint, LCP):
+2. 首次输入延迟 (First Input Delay, FID):
+3. 累积布局偏移 (Cumulative Layout Shift, CLS):
+
+### 如何确认你们项目是否依赖某一个依赖项
+yarn list
+npm list --depth=0
+
+### 如何检测出你们安装的依赖是否安全
+npm audit/yarn audit
+
+### dom操作性能消耗的原理
+
+渲染引擎与js引擎是互斥的单线程，操作系统切换线程执行会保存上下文，直接操作dom是便会带来性能损耗
+
+### core-js 是做什么用的
+polyfill垫片
+
+### git hooks 原理是什么
+git 允许在各种操作之前添加一些 hook 脚本，如未正常运行则 git 操作不通过。
+例如：precommit，prepush
+
+###  eslint 的作用
+eslint，对代码不仅有风格的校验，更有可读性、安全性、健壮性的校验。
+
+### pnpm 有什么作用
+它解决了 npm/yarn 平铺 node_modules 带来的依赖项重复的问题 (doppelgangers)
+
+### browserslist作用
+
+打包到所支持的浏览器的所需最小内容
+
+### 如何分包
+webpack中提供了方案4.0之前是：CommonsChunkPlugin 4.0后是optimization.splitChunks
+vite中配置build.rollupOptions.output.manualChunks
