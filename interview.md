@@ -53,8 +53,26 @@ function Check(){
        console.log('executed')
         return <button onClick={onClick}>toggle</button>
     }
-
+// 优化如下
+function App() {
+  const [count, setCount] = React.useState(false);
+  const click = React.useCallback(() => {
+          setCount((c) => !c);
+        })
+  const MyButton = React.memo(({ click })=>{
+        console.log('executed')
+        return <button onClick={click}>toggle</button>
+  })
+  return (
+    <div className="App">
+      <MyButton onClick={click}>
+      </MyButton>
+    </div>
+  );
+}
 ```
+
+
 
 7. 怎么让外层元素，包裹两个元素，不溢出
   

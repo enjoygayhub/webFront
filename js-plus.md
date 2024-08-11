@@ -443,3 +443,81 @@ URIError：URI处理函数而产生的错误。
 2. window.onerror 捕获全局错误
 3. window.addEventListener('error') 全局错误和静态资源加载错误
 4. unhandledrejection 未捕获的promise错误
+
+# node
+
+### 监控文件变化
+fs.watch
+
+### 如何判断一个路径是文件还是文件夹
+isFile()：检测是否为常规文件
+isDirectory()：检测是否为文件夹
+
+### cluster 利用多核心CPU的原理是什么
+
+fork 子进程
+Load Balance
+多进程共享端口
+
+### 如何进行进程间通信
+对于 spawn/fork 出来的父子进程来说，可以通过 pipe 的方式
+
+process.on('message')/process.send
+stdin.on/stdout.write
+
+对于并无相关的进程
+socket
+message queue
+
+### Node 应用发生 gc 时，如何监控
+在启动 Node.js 进程时添加 --prof 参数，会在进程退出时生成一个 CPU profile 文件。
+process.memoryUsage()：这个方法可以获取当前 Node.js 进程的内存使用情况，包括 RSS（Resident Set Size）、Heap Total、Heap Used 等。
+
+### 循环引用会发生什么
+循环依赖是指两个或多个模块相互引用，形成了一个闭环。
+
+CommonJS 的模块缓存机制：
+
+每个模块只会被加载一次，并缓存其导出值。
+当模块 A 引入模块 B 时，如果模块 B 还没有被加载，则会立即加载并执行。
+如果模块 B 已经在缓存中，则直接从缓存中获取。
+这种机制虽然能解决循环依赖的问题，但可能会导致在模块加载时，某些导出值还没有被完全赋值。
+
+ES 模块的静态导入：
+
+ES 模块的导入是静态的，在编译阶段就已经确定了模块之间的依赖关系。
+循环依赖在编译阶段就会被检测出来，并抛出错误。
+这种机制保证了模块的依赖关系清晰，避免了运行时的意外。
+
+### Node 中 require 时发生了什么
+路径分析、模块定位、编译执行
+
+### 简述 node/v8 中的垃圾回收机制
+
+1. Scavenge，工作在新生代，把 from space 中的存活对象移至 to space
+2. Mark-Sweep，标记清除。新生代的某些对象由于过度活跃会被移至老生代，此时对老生代中活对象进行标记，并清理死对象
+3. Mark-Compact，标记整理。
+
+### node 中 exec，fork 与 spawn 
+child_process.exec()：衍生 shell 并在该 shell 中运行命令，完成后将 stdout 和 stderr 传给回调函数。可设置超时
+child_process.execSync: 同步执行命令，返回命令的输出。
+child_process.fork()：衍生新的 Node.js 进程并使用建立的 IPC 通信通道（其允许在父子进程之间发送消息）调用指定的模块。
+child_process.spawn()：异步衍生子进程，不会阻塞 Node.js 事件循环。
+child_process.execFile()：指定的可执行文件 file 直接作为新进程衍生
+
+### async_hooks 
+async_hooks 是 Node.js 提供的一个低级 API，用于跟踪异步资源的生命周期
+async_hooks 模块提供了一个 AsyncHook 类，用于创建异步钩子。这个类包含四个回调函数：
+
+init(asyncId, type, triggerAsyncId, resource): 当一个新的异步资源被创建时调用，用于初始化异步资源。
+before(asyncId): 在异步资源开始执行之前调用。
+after(asyncId): 在异步资源执行完成之后调用。
+destroy(asyncId): 在异步资源被销毁时调用。
+
+### fs-extra
+fs-extra是fs的一个扩展，提供了非常多的便利API，并且继承了fs所有方法和为fs方法添加了promise的支持。
+
+### Node.js 中 module.exports 与 exports 的区别
+
+module.exports：是一个对象，是模块的真正出口。当我们 require 一个模块时，得到的实际上就是这个 module.exports 对象。
+exports：是 module.exports 的一个引用，最初指向 module.exports。

@@ -412,7 +412,8 @@ React 使用增量渲染技术来分批处理队列中的任务。
 7. 使用 useContext
 8. 代码分割和懒加载 lazy(()=>import())
 9. 减少渲染层级
-
+10. 使用 useDebounce，对值及事件处理函数进行防抖，避免状态频繁变动，优化渲染次数
+11. 使用 useImmer
 
 ## [redux](https://www.redux.org.cn)
 
