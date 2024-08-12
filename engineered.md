@@ -1,6 +1,6 @@
 # 工程化engineered
 ## 页面性能提升
-1. 减小下载文件大小：Code Split + 基于路由的按需加载，Tree Shaking,使用体积小的第三方依赖，依赖按需引用，terse压缩混淆代码，gzip压缩
+1. 减小下载文件大小：Code Split + 基于路由的按需加载，Tree Shaking,使用体积小的第三方依赖，依赖按需引用，terser压缩混淆代码，gzip压缩
 2. 图片方面：图片压缩，图片懒加载，base64格式，svg格式，css Sprites，iconFont，
 3. 网络方面：prefetch cdn
 4. 缓存方面：缓存http请求
@@ -153,11 +153,6 @@ Plugins（插件）可以用于执行范围更广的任务，包括打包、优�
 生成 Bundle: 每个 Chunk 都转换成一个单独的文件加入到输出列表，这步是可以修改输出内容的最后机会。 
 输出完成: 确定好输出内容后，根据配置确定的路径与文件名，把文件写入到文件系统。
 
-## webpack 的构建优化
-
-1. 持久化缓存: cache，缓存AST
-2. 多进程: thread-loader
-3. 更快的 loader: swc
 
 ## webpack 常用插件
 

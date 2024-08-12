@@ -403,7 +403,7 @@ Secure
 SameSite
 
 
-## window.requestIdleCallback、
+## window.requestIdleCallback
 
 requestIdleCallback 维护一个队列，将在浏览器空闲时间内执行。
 执行重计算而非紧急任务
