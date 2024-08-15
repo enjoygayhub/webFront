@@ -90,15 +90,21 @@ type oo = {[key in Color]:any}
 
 ```ts
 type Partial<T> = {
-  [P in keyof T]?: T[P];
+  [P in keyof T]?: T[P]|undefined;
 };
+
+type Required<T> = {
+  [P in keyof T]-?: T[P];
+};
+
+type Extract<T, U> = T extends U ? T : never;
+
+type Exclude<T, U> = T extends U ? never : T;
 
 type Pick<T, K extends keyof T> = {
   [P in K]: T[P];
 };
- 
-type Exclude<T, U> = T extends U ? never : T;
- 
+
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
 type Parameters<T extends (...args: any) => any> = T extends (
@@ -106,6 +112,14 @@ type Parameters<T extends (...args: any) => any> = T extends (
 ) => any
   ? P
   : never;
+
+// 过滤掉可选属性
+type ExcludeOption<T extends {}> = Pick<T, { [k in keyof T]-?: undefined extends T[k] ? never : K }[keyof T]>;
+// 过滤掉指定类型的属性
+type ExcludeType<T , N> = Pick<T, { [k in keyof T]: T[k] extends N ? never : K }[keyof T]>;
+
+
+
 ```
 
 ## 构建普通ts脚本项目
