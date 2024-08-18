@@ -70,9 +70,10 @@
 
 - Undefined 和 Null 都是基本数据类型，这两个基本数据类型分别都只有一个值，就是 undefined 和 null。
 - undefined 代表的含义是未定义，null 代表的含义是空对象。一般变量声明了但还没有定义的时候会返回 undefined，null主要用于赋值给一些可能会返回对象的变量，作为初始化。
--  undfined是变量，而null是关键字。在低版本浏览器种可以被赋值而更改，它会影响我们对 undefined 值的判断。可以通过一元运算符void获得安全的 undefined 值，比如说 void 0。
+-  undefined是变量，而null是关键字。在低版本浏览器种可以被赋值而更改，它会影响我们对 undefined 值的判断。可以通过一元运算符void获得安全的 undefined 值，比如说 void 0。
 - 使用 typeof 进行判断的时候，null 类型化会返回 “object”，这是一个历史遗留的问题。
 - `undefined==null(true)` `undefined===null(false)`
+
 ## 判断数据类型的方式
 
 1. typeof  缺陷：可以判断null以外的基础类型，复杂类型除funiton以外均判断为object
@@ -97,6 +98,7 @@
    注：构造函数可以被复写
 
    总：使用typeof 先判断是否复杂类型，如果是，再使用toString判断具体。
+
 ## instanceof 的作用
 > instanceof 运算符用于判断构造函数（放运算符右边）的 prototype 属性是否出现在对象（运算符左边）的原型链中的任何位置。
 
@@ -254,8 +256,8 @@ arr.forEach((v,k) => {
 
 - for...in
 
-```
 > 注意for...in遍历的是索引
+```js
 let arr = [1,2,,3];
 for(let ele in arr) {
     console.log(ele);
@@ -407,6 +409,7 @@ ES5 中Object.getPrototypeOf() 方法来获取对象的原型。
 JavaScript 对象是通过引用来传递的，我们创建的每个新对象实体中并没有一份属于自己的原型副本。当我们修改原型时，与之相关的对象也会继承这一改变。
 
 特别的对象：Object.create(null);没有原型
+
 ## JavaScript 继承的方式
 
 - 原型链继承，分清构造函数，原型，实例：1,每一个构造函数都有一个原型对象;2,原型对象包含一个指向构造函数的指针;3,实例中包含一个原型对象的指针。缺点，在包含有引用类型的数据时，会被所有的实例对象所共享，容易造成修改的混乱。
@@ -665,7 +668,7 @@ console.log(obj.getRadius()()) // 10
 ```
 注：
 非严格模式下，使用call改变this指向时，如果传参数为null和undefined，等同于默认window；
-可以看到bind 以后，再次通过call改变this,是不生效的。
+bind 以后，再次通过call改变this,是不生效的。
 同样，多次bind 也是一次生效。
 
 ## ES6 class 和 ES5 函数的区别
@@ -685,7 +688,6 @@ console.log(obj.getRadius()()) // 10
 - 立即执行函数内部形成了一个单独的作用域，可以封装一些外部无法读取的私有变量
 
 - 只需使用1次的函数。
-
 
 
 ## Promise 是做什么的
@@ -815,9 +817,9 @@ Promise
 ES6给我们提供了一个原生的构造函数Promise，Promise代表了一个异步操作，可以将异步对象和回调函数脱离开来，通过.then方法在这个异步操作上绑定回调函数，Promise可以让我们通过链式调用的方法去解决回调嵌套的问题，而且由于promise.all这样的方法存在，可以让同时执行多个操作变得简单。
 
 promise对象存在三种状态：
-1)Fulfilled:成功状态
-2)Rejected：失败状态
-3)Pending：既不是成功也不是失败状态，可以理解为进行中状态
+1. Fulfilled:成功状态
+2. Rejected：失败状态
+3. Pending：既不是成功也不是失败状态，可以理解为进行中状态
 
 Promise的缺点：
 1.当处于未完成状态时，无法确定目前处于哪一阶段。
@@ -857,7 +859,7 @@ async function bar() {
 bar(); // 隔1秒同时输出 lee van
 ```
 
-> 当await 后跟的是普通函数（非promise()）
+> 当await 后跟的是普通函数,非promise()
 
 ```js
 let f1 = () => {

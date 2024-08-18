@@ -103,7 +103,7 @@ css引入伪类和伪元素概念是为了格式化文档树以外的信息。�
 当一个属性不是继承属性的时候，通过将它的值设置为inherit来使它从父元素那获取同名的属性值来继承。
 ```
 
-## BFC的概念, 哪些元素可以触发BFC
+## BFC的概念
 
 > BFC 即 Block Formatting Context (块格式化上下文)， 是Web页面的可视化CSS渲染的一部分，是块盒子的布局过程发生的区域
 
@@ -228,7 +228,7 @@ display: none，把元素删除，会改变文档流布局，不会触发事件�
 
 ```
 
-## 知道怎么去减少重绘和重排吗，让文档脱离文档流有哪些方法
+## 重绘和重排
 
 DOM 的变化影响到了预算内宿的几何属性比如宽高，浏览器重新计算元素的几何属性，其他元素的几何属性也会受到影响，浏览器需要重新构造渲染树，这个过程称之为重排，浏览器将受到影响的部分重新绘制在屏幕上 的过程称为重绘，引起重排重绘的原因有：
 
@@ -237,12 +237,6 @@ DOM 的变化影响到了预算内宿的几何属性比如宽高，浏览器重�
 - 浏览器页面初始化，
 - 浏览器窗口大小发生改变，重排一定导致重绘，重绘不一定导致重排，
 
-减少重绘重排的方法有：
-
-- 不在布局信息改变时做 DOM 查询，
-- 使用 cssText,className 一次性改变属性
-- 使用 fragment
-- 对于多次重排的元素，比如说动画。使用绝对定位脱离文档流，使其不影响其他元素
 
 ## z-index 是干什么用的？默认值是什么？与 z-index: 0 的区别
 
@@ -294,22 +288,6 @@ DOM 的变化影响到了预算内宿的几何属性比如宽高，浏览器重�
 
 解决方法：
 （1）给图片添加 vertical-align middle | top | bottom
-
-
-## 移动端适配的方法
-
-> 起因:手机设备屏幕尺寸不一，做移动端的Web页面，需要考虑安卓/IOS的各种尺寸设备上的兼容，针对移动端设备的页面，设计与前端实现怎样做能更好地适配不同屏幕宽度的移动设备；
-
-1. flex 弹性布局,多列布局：column-count：3；网格布局
-
-2. viewport 适配
-    
-  initial-scale = 屏幕的宽度 / 设计稿的宽度
-  <meta name="viewport" content="width=750,initial-scale=0.5">
-
-3. rem 弹性布局,使用百分号单位，或视口单位，或者vw，vh单位
-4. 媒体查询：@media screen and (min-width:800px){}
-- 响应式图像使用了picture元素的srcset和sizes 特性提供多种资源
 
 
 ## rem 和 em 的区别
@@ -379,7 +357,7 @@ base64编码是一种图片处理格式，通过特定的算法将图片编码�
 一般一些网站的小图标可以使用base64图片来引入。
 ```
 
-## 如果需要手动写动画,最小时间间隔是多久，为什么
+## 动画最小时间间隔是多久
 
 ```css
 多数显示器默认频率是60Hz，即1秒刷新60次，所以理论上最小间隔为1/60*1000ms＝16.7ms
@@ -387,7 +365,6 @@ base64编码是一种图片处理格式，通过特定的算法将图片编码�
 
 ## 阐述一下 CSSSprites
 
-```css
 将一个页面涉及到的所有图片都包含到一张大图中去，然后利用CSS的background-image，background-repeat，background-position的组合进行背景定位。
 利用CSSSprites能很好地减少网页的http请求，从而很好的提高页面的性能；CSSSprites能减少图片的字节。
 
@@ -399,17 +376,7 @@ base64编码是一种图片处理格式，通过特定的算法将图片编码�
 缺点：
   图片合并麻烦
   维护麻烦，修改一个图片可能需要重新布局整个图片，样式
-```
 
-## 画一条 0.5px 的线
-
-```css
-采用meta viewport的方式：initial-scale=0.5
-
-采用border-image的方式：svg
-
-采用transform:scaleY(0.5)的方式
-```
 
 ## 如何实现单行／多行文本溢出的省略（...）
 
@@ -601,8 +568,6 @@ HTML代码如下：
 
 ## 屏幕里面内容未占满的时候footer固定在屏幕可视区域的底部。占满的时候显示在网页的最底端
 
-- 方式一
-
 ```html
 <style>
     html,
@@ -632,22 +597,6 @@ HTML代码如下：
 </div>
 <footer>底部</footer>
 ```
-
-## 移动端 300ms 延迟的原因以及解决方案
-
-> 因为移动端会有双击缩放的这个操作，因此浏览器在 click 之后要等待 300ms，看用户有没有下一次点击，来判断这次操作是不是双击。
-
-1. 通过 meta 标签禁用网页的缩放。
-
-    ```html
-    <meta name="viewport" content="user-scalable=no">
-    ```
-
-2. 更改默认的视口宽度
-
-    ```html
-    <meta name="viewport" content="width=device-width">
-    ```
 
 
 ## CSS 选择器的解析规则
@@ -725,7 +674,7 @@ a标签有四种状态：链接访问前、链接访问后、鼠标滑过、激�
 ## 修改滚动条
 
 ```css
-scroll::-webkit-scrollbar {
+.scroll::-webkit-scrollbar {
 width: 10px;
 height: 10px;
 }
@@ -733,7 +682,7 @@ height: 10px;
 .scroll::-webkit-scrollbar-thumb {
 background-color: rgba(0,0,0,.05);
 border-radius: 10px;
--webkit-box-shadow: inset1px1px0rgba(0,0,0,.1);
+-webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);
 }
 /*鼠标悬浮在该类指向的控件上时滑块的样式*/
 .scroll:hover::-webkit-scrollbar-thumb {
@@ -744,7 +693,7 @@ border-radius: 10px;
 /*正常时候的主干部分*/
 .scroll::-webkit-scrollbar-track {
 border-radius: 10px;
--webkit-box-shadow: inset006pxrgba(0,0,0,0);
+-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
 background-color: white;
 }
 /*鼠标悬浮在滚动条上的主干部分*/
@@ -752,7 +701,7 @@ background-color: white;
 }
 ```
 
-###  IntersectionObserver
+##  IntersectionObserver
 
 创建一个新的`IntersectionObserver`对象，当其监听到目标元素的可见部分穿过了一个或多个**阈(thresholds)**时，会执行指定的回调函数。
 

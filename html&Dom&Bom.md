@@ -61,41 +61,31 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 
 
 
-## canvas与SVG
 
-- canvas与svg都是可以在浏览器上创建图形
-- HTML5 的 canvas 元素使用 JavaScript 在网页上绘制图像。画布是一个矩形区域，您可以控制其每一像素。canvas 拥有多种绘制路径、矩形、圆形、字符以及添加图像、动画的方法
-- canvas绘制位图,绘制出来的每一个图形的元素都是独立的DOM节点，能够方便的绑定事件或用来修改。canvas复杂度高会减慢渲染速度。canvas输出的是一整幅画布，就像一张图片一样，放大会失真。canvas不适合游戏应用。
-- svg输出的图形是矢量图形，后期可以修改参数来自由放大缩小，SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失。svg最适合图像密集型的游戏，其中的许多对象会被频繁重绘
 
 ## 从html到DOM
 
 1. 字节流解码到字符流数据
 2. 字符预处理
-3. 令牌化，AST解析将字符数据转化成令牌 (状态机
+3. 令牌化，AST解析将字符数据转化成令牌 (状态机)
 4. 构建DOM树，由令牌到DOM节点
 5. 将CSSOM与DOM合并得到渲染树，忽略掉不渲染的标签
 6. 布局，计算盒子模型大小位置
 7. 绘制，遍历布局树，生成图层，合成页面
 
 ## HTML 页面加载过程
-### 1. 解析 HTML 文档
-当浏览器接收到 HTML 文档时，它会开始解析文档。解析过程包括：
+
 - **标记化**:
-  - 将 HTML 文本转换为标记流。
-  - 这一步骤将 HTML 文本解析成一系列的标记，如开始标签、结束标签、文本节点等。
+  - 将 HTML 文本解析成一系列的标记，如开始标签、结束标签、文本节点等。
 
 - **构建 DOM 树**:
   - 根据标记流构建文档对象模型 (DOM) 树。
-  - DOM 树是一个树状结构，表示文档的结构和内容。
 
 - **解析样式表**:
-  - 当浏览器遇到 `<link>` 或 `<style>` 标签时，它会下载并解析样式表，然后将样式规则应用到 DOM 树中的元素上。
+  - 当浏览器遇到 `<link>` 或 `<style>` 标签时，它会下载并解析样式表。
 
-### 2. 下载外部资源
 - **CSS 资源**:
   - 当浏览器遇到 `<link rel="stylesheet">` 或 `<style>` 标签时，它会下载 CSS 文件。
-  - CSS 文件被解析，并应用到相应的 DOM 元素上。
   - 浏览器通常会暂停 HTML 的解析，直到 CSS 文件完全下载并解析完成。
 
 - **JavaScript 资源**:
@@ -136,6 +126,8 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
   - 浏览器通常会优先加载对页面渲染至关重要的资源，如关键路径 CSS。是为当前页面必须用到的资源做准备，加快页面加载速度。
   - preload 加载当前路由必需资源，优先级高。
   prefetch 优先级低，在浏览器 idle 状态时加载资源。是为未来可能用到的资源做准备，提升用户体验。
+
+
 # Dom & Bom  
 
 
@@ -143,6 +135,7 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
   screenX, screenY 浏览器的边界到系统屏幕左和顶边界的距离
   innerHeight，innerWidth 浏览器显示页面内容的窗口大小（不包含工具栏、导航栏等等），亦为下面的client
   outerHeight，outerWidth 表示整个浏览器窗口的宽度，包括边框、菜单栏, 底部状态栏从,侧边栏
+
 ## Element的clientWidth offsetWidth scrollWidth
   + 元素宽度clientWidth= width + 左右padding  (不包含border,margin,滚动条)
   + 元素布局宽度offsetWidth=width + 左右padding + 左右border + 滚动条（不包含margin）
@@ -151,31 +144,21 @@ acronym，applet，basefont ，big ，center，dir，font，frame，frameset，n
 ## 事件对象中的clientX offsetX screenX pageX，
 
 - [clientX, clientY]
-
-```txt
 client客户端，客户端窗口就是指游览器的显示页面内容的窗口大小（不包含工具栏、导航栏等等）
 [clientX, clientY]就是鼠标点击位置距客户端窗口左边界和上边界的距离
-```
-- [screenX, screenY]
 
-```txt
-screen是屏幕
-[screenX, screenY]是用来获取鼠标点击位置在屏幕显示器的距离，根据屏幕分辨率来计算，多显示器分屏也能叠加。
-```
+- [screenX, screenY]
+获取鼠标点击位置在屏幕显示器的距离，根据屏幕分辨率来计算，多显示器分屏也能叠加。
 
 - [offsetX, offsetY]
 
-```txt
-offset意为偏移量
-[offsetX, offsetY]是鼠标点击的点距离与点击的**元素**的左边界和上边界的距离。边界计算不包含margin border
-```
+offset意为偏移量,鼠标点击的点距离与点击的**元素**的左边界和上边界的距离。边界计算不包含margin border
 
 - [pageX, pageY]
 
-```txt
 page为页面的意思。在没有由于滚动而隐藏的区域时pageX, pageY与clientX, clientY大小一样
 [pageX, pageY]是鼠标点击的点距离client边界的距离，包括由于滚动隐藏的不可见的空间距离。
-```
+
 其中page与offset常用属性。
 
 ## 事件模型以及三种事件绑定方法
@@ -184,8 +167,6 @@ page为页面的意思。在没有由于滚动而隐藏的区域时pageX, pageY�
 事件捕获阶段。捕获指的是事件从html根元素向下传播到实际点击的目标元素（指在dom文档树中向下层），依次检查经过的节点是否绑定了该事件监听函数，如果有且该事件是设定在捕获阶段执行，便执行。
 
 冒泡阶段：捕获阶段结束后，反向再检查一次，冒泡回根元素
-
-现代浏览器中，默认情况下，所有事件处理程序都在冒泡阶段执行。
 
 事件绑定方法：
 
@@ -220,6 +201,7 @@ page为页面的意思。在没有由于滚动而隐藏的区域时pageX, pageY�
  现代浏览器中，第三个参数可传对象option：{capture:boolean,once:boolean,passive:boolean,signal:AbortSignal}。
  capture效果同useCapture，once为true时事件仅执行一次，这两个常用，兼容性良好，下面2个兼容性不好，也不常用
  passive为true时，事件的preventDefault()无效，用于优化滚屏性能，signal可以用于设置移除监听。
+
 注：capture选项不相同，事件回调函数可以被重复添加
 
 ## 事件代理/事件委托 以及 优缺点
