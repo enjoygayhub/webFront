@@ -1,225 +1,5 @@
 # leetcode
 
-- [leetcode](#leetcode)
-  - [面试题 02.01. 移除重复节点](#面试题-0201-移除重复节点)
-  - [面试题 16.11. 跳水板](#面试题-1611-跳水板)
-  - [剑指 Offer 22. 链表中倒数第k个节点](#剑指-offer-22-链表中倒数第k个节点)
-  - [1. 两数之和](#1-两数之和)
-  - [2. 两数相加](#2-两数相加)
-  - [3. 无重复字符的最长子串](#3-无重复字符的最长子串)
-  - [5. 最长回文子串](#5-最长回文子串)
-  - [6. Z字形变换](#6-z字形变换)
-  - [7. 整数反转](#7-整数反转)
-  - [9. 回文数](#9-回文数)
-  - [11. 盛最多水的容器](#11-盛最多水的容器)
-  - [12. 整数转罗马数字](#12-整数转罗马数字)
-  - [13. 罗马数字转整数](#13-罗马数字转整数)
-  - [14. 最长公共前缀](#14-最长公共前缀)
-  - [15. 三数之和](#15-三数之和)
-  - [16. 最接近的三数之和](#16-最接近的三数之和)
-  - [17. 电话号码的字母组合](#17-电话号码的字母组合)
-  - [19. 删除链表的倒数第N个节点](#19-删除链表的倒数第n个节点)
-  - [20. 有效的括号](#20-有效的括号)
-  - [21. 合并两个有序链表](#21-合并两个有序链表)
-  - [24. 两两交换链表中的节点](#24-两两交换链表中的节点)
-  - [26. 删除排序数组中的重复项](#26-删除排序数组中的重复项)
-  - [27. 移除元素](#27-移除元素)
-  - [28. 实现 strStr()](#28-实现-strstr)
-  - [31. 下一个排列](#31-下一个排列)
-  - [33. 搜索旋转排序数组](#33-搜索旋转排序数组)
-  - [34. 在排序数组中查找元素的第一个和最后一个位置](#34-在排序数组中查找元素的第一个和最后一个位置)
-  - [35. 搜索插入位置](#35-搜索插入位置)
-  - [39. 组合总和](#39-组合总和)
-  - [40. 组合总和Ⅱ](#40-组合总和ⅱ)
-  - [48. 旋转图像](#48-旋转图像)
-  - [49. 字母异位词分组](#49-字母异位词分组)
-  - [53. 最大子序和](#53-最大子序和)
-  - [58. 最后一个单词的长度](#58-最后一个单词的长度)
-  - [61. 旋转链表](#61-旋转链表)
-  - [62. 不同路径](#62-不同路径)
-  - [70. 爬楼梯](#70-爬楼梯)
-  - [75. 颜色分类](#75-颜色分类)
-  - [78. 子集](#78-子集)
-  - [82. 删除排序链表中的重复元素 II](#82-删除排序链表中的重复元素-ii)
-  - [83. 删除排序链表中的重复元素](#83-删除排序链表中的重复元素)
-  - [86. 分隔链表](#86-分隔链表)
-  - [94. 二叉树的中序遍历](#94-二叉树的中序遍历)
-  - [103. 二叉树的锯齿形层序遍历](#103-二叉树的锯齿形层序遍历)
-  - [107. 二叉树的层次遍历 II](#107-二叉树的层次遍历-ii)
-  - [112. 路径总和](#112-路径总和)
-  - [116. 填充每个节点的下一个右侧节点指针](#116-填充每个节点的下一个右侧节点指针)
-  - [117. 填充每个节点的下一个右侧节点指针 II](#117-填充每个节点的下一个右侧节点指针-ii)
-  - [118. 杨辉三角](#118-杨辉三角)
-  - [121. 买卖股票的最佳时机](#121-买卖股票的最佳时机)
-  - [122. 买卖股票的最佳时机 II](#122-买卖股票的最佳时机-ii)
-  - [123. 买卖股票的最佳时机 III](#123-买卖股票的最佳时机-iii)
-  - [125. 验证回文串](#125-验证回文串)
-  - [129. 求根到叶子节点数字之和](#129-求根到叶子节点数字之和)
-  - [134. 加油站](#134-加油站)
-  - [135. 分发糖果](#135-分发糖果)
-  - [141. 环形链表](#141-环形链表)
-  - [142. 环形链表Ⅱ](#142-环形链表ⅱ)
-  - [143. 重排链表](#143-重排链表)
-  - [144. 二叉树的前序遍历](#144-二叉树的前序遍历)
-  - [145. 二叉树的后序遍历](#145-二叉树的后序遍历)
-  - [147. 对链表进行插入排序](#147-对链表进行插入排序)
-  - [148. 排序链表](#148-排序链表)
-  - [160. 相交链表](#160-相交链表)
-  - [164. 最大间距](#164-最大间距)
-  - [189. 旋转数组](#189-旋转数组)
-    - [方法1](#方法1)
-    - [方法2](#方法2)
-  - [200. 岛屿数量](#200-岛屿数量)
-  - [203. 移除链表元素](#203-移除链表元素)
-  - [204. 计数质数](#204-计数质数)
-  - [205. 同构字符串](#205-同构字符串)
-  - [206. 反转链表](#206-反转链表)
-  - [209. 长度最小的子数组](#209-长度最小的子数组)
-  - [215. 数组中的第K个最大元素](#215-数组中的第k个最大元素)
-  - [217. 存在重复元素](#217-存在重复元素)
-  - [222. 完全二叉树的节点个数](#222-完全二叉树的节点个数)
-  - [228. 汇总区间](#228-汇总区间)
-  - [234. 回文链表](#234-回文链表)
-  - [239. 滑动窗口最大值](#239-滑动窗口最大值)
-    - [方法1： 暴力法](#方法1-暴力法)
-    - [方法2：滑动窗口 + 双端队列](#方法2滑动窗口--双端队列)
-  - [242. 有效的字母异位词](#242-有效的字母异位词)
-  - [283. 移动零](#283-移动零)
-  - [290. 单词规律](#290-单词规律)
-  - [300. 最长上升子序列](#300-最长上升子序列)
-  - [316. 去除重复字母](#316-去除重复字母)
-  - [328. 奇偶链表](#328-奇偶链表)
-  - [344. 反转数组](#344-反转数组)
-  - [347. 前 K 个高频元素](#347-前-k-个高频元素)
-  - [349. 两个数组的交集](#349-两个数组的交集)
-  - [387. 字符串中的第一个唯一字符](#387-字符串中的第一个唯一字符)
-  - [389. 找不同](#389-找不同)
-  - [399. 除法求值](#399-除法求值)
-  - [402. 移掉K位数字](#402-移掉k位数字)
-  - [406. 根据身高重建队列](#406-根据身高重建队列)
-  - [416. 分割等和子集](#416-分割等和子集)
-  - [435. 无重叠区间](#435-无重叠区间)
-  - [452. 用最少数量的箭引爆气球](#452-用最少数量的箭引爆气球)
-  - [454. 四数相加 II](#454-四数相加-ii)
-  - [455. 分发饼干](#455-分发饼干)
-  - [463. 岛屿的周长](#463-岛屿的周长)
-  - [494. 目标和](#494-目标和)
-  - [509. 斐波那契数](#509-斐波那契数)
-  - [518. 零钱兑换Ⅱ](#518-零钱兑换ⅱ)
-  - [530. 二叉搜索树的最小绝对差](#530-二叉搜索树的最小绝对差)
-  - [547. 省份数量](#547-省份数量)
-    - [深度优先搜索](#深度优先搜索)
-    - [广度优先搜索](#广度优先搜索)
-  - [605. 种花问题](#605-种花问题)
-  - [628. 三个数的最大乘积](#628-三个数的最大乘积)
-  - [649. Dota2 参议院](#649-dota2-参议院)
-  - [674. 最长连续递增序列](#674-最长连续递增序列)
-    - [方法1：动态规划](#方法1动态规划)
-    - [方法2：贪心](#方法2贪心)
-  - [684. 冗余连接](#684-冗余连接)
-  - [714. 买卖股票的最佳时机含手续费](#714-买卖股票的最佳时机含手续费)
-  - [724. 寻找数组的中心索引](#724-寻找数组的中心索引)
-  - [738. 单调递增的数字](#738-单调递增的数字)
-  - [746. 使用最小花费爬楼梯](#746-使用最小花费爬楼梯)
-  - [763. 划分字母区间](#763-划分字母区间)
-  - [766. 托普利茨矩阵](#766-托普利茨矩阵)
-  - [771. 宝石与石头](#771-宝石与石头)
-  - [830. 较大分组的位置](#830-较大分组的位置)
-  - [844. 比较含退格的字符串](#844-比较含退格的字符串)
-  - [845. 数组中的最长山脉](#845-数组中的最长山脉)
-  - [860. 柠檬水找零](#860-柠檬水找零)
-  - [861. 翻转矩阵后的得分](#861-翻转矩阵后的得分)
-  - [867. 转置矩阵](#867-转置矩阵)
-  - [876. 链表的中间结点](#876-链表的中间结点)
-  - [888. 公平的糖果棒交换](#888-公平的糖果棒交换)
-  - [896. 单调数列](#896-单调数列)
-  - [922. 按奇偶排序数组 II](#922-按奇偶排序数组-ii)
-  - [925. 长按键入](#925-长按键入)
-  - [941. 有效的山脉数组](#941-有效的山脉数组)
-  - [973. 最接近原点的 K 个点](#973-最接近原点的-k-个点)
-  - [976. 三角形的最大周长](#976-三角形的最大周长)
-  - [977. 有序数组的平方](#977-有序数组的平方)
-  - [989. 数组形式的整数加法](#989-数组形式的整数加法)
-  - [1002. 查找常用字符](#1002-查找常用字符)
-  - [1024. 视频拼接](#1024-视频拼接)
-  - [1030. 距离顺序排列矩阵单元格](#1030-距离顺序排列矩阵单元格)
-  - [1046. 最后一块石头的重量](#1046-最后一块石头的重量)
-  - [1018. 可被 5 整除的二进制前缀](#1018-可被-5-整除的二进制前缀)
-  - [1122. 数组的相对排序](#1122-数组的相对排序)
-  - [1128. 等价多米诺骨牌对的数量](#1128-等价多米诺骨牌对的数量)
-    - [方法1：排序 + 哈希map + 计数](#方法1排序--哈希map--计数)
-    - [方法2：二元组表示 + 计数](#方法2二元组表示--计数)
-  - [1207. 独一无二的出现次数](#1207-独一无二的出现次数)
-  - [1356. 根据数字二进制下 1 的数目排序](#1356-根据数字二进制下-1-的数目排序)
-  - [1365. 有多少小于当前数字的数字](#1365-有多少小于当前数字的数字)
-  - [1370. 上升下降字符串](#1370-上升下降字符串)
-  - [1423. 可获得的最大点数](#1423-可获得的最大点数)
-
-## 面试题 02.01. [移除重复节点](https://leetcode-cn.com/problems/remove-duplicate-node-lcci/)
-
-```txt
-双指针法，循环右指针即可
-```
-
-```js
-var removeDuplicateNodes = function(head) {
-    if(!head) return null;
-    let left = head, right = left.next;
-    let arr = [left.val];
-    while(right) {
-        if(arr.indexOf(right.val) !== -1) {
-            left.next = right.next;
-        }else {
-            arr.push(right.val);
-            left.next = right;
-            left = left.next;
-        }
-        right = right.next;
-    }
-    return head;
-};
-```
-
-## 面试题 16.11. [跳水板](https://leetcode-cn.com/problems/diving-board-lcci/)
-
-```txt
-动态规划
-最开始全是短木板（k*shorter），然后每次都把上一次的一个短木板变为长木板。
-```
-
-```js
-var divingBoard = function(shorter, longer, k) {
-    if(k<=0)return [];
-    let ans = [k*shorter];
-    let diff = longer - shorter;
-    if(diff === 0) return ans;
-    for(let i=1;i<=k;i++){
-        ans.push(ans[ans.length - 1]+diff);
-    }
-    return ans;
-};
-```
-
-## 剑指 Offer 22. [链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
-
-```txt
-双指针法：右指针先走k-1步，然后左右指针一起走。
-```
-
-```js
-var getKthFromEnd = function(head, k) {
-    let left = head;
-    let right = head;
-    for(let i=1;i<k;i++){
-        right = right.next;
-    }
-    while(right.next) {
-        right = right.next;
-        left = left.next;
-    }
-    return left;
-};
-```
 
 ## 1. [两数之和](https://leetcode-cn.com/problems/two-sum)
 
@@ -709,24 +489,7 @@ var threeSum = function(nums) {
 ```
 
 ```js
-// 思路一：
-var threeSumClosest = function(nums, target) {
-  var min = Infinity;
-  var ans;
-  for(let i=0;i<nums.length;i++){
-    for(let j=i+1;j<nums.length;j++){
-      for(let k=j+1;k<nums.length;k++){
-        var sum = nums[i]+nums[j]+nums[k];
-        if(min > Math.abs(sum-target)){
-          min = Math.abs(sum - target)
-          ans = sum;
-        }
-      }
-    }
-  }
-  return ans
-};
-// 思路二：
+
 var threeSumClosest = function(nums, target) {
   var res=nums[0]+nums[1]+nums[2], min=Infinity;
   nums.sort((a,b)=>a-b);
@@ -877,13 +640,6 @@ p1 p2只要有一个为空，就结束循环，看一下p1 p2谁还存在:
 
 ```js
 /**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- */
-/**
  * @param {ListNode} l1
  * @param {ListNode} l2
  * @return {ListNode}
@@ -940,47 +696,32 @@ var swapPairs = function(head) {
 
 ## 26. [删除排序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array)
 
-```txt
-倒序遍历数组，判断一下当前元素与下一个元素是否相同，如果相同就删除当前元素，遍历结束返回数组的长度
-```
-
 ```js
 /**
  * @param {number[]} nums
  * @return {number}
  */
 var removeDuplicates = function(nums) {
-  for(let i=nums.length; i>0; i--) {
-    if(nums[i] === nums[i-1]){
-      nums.splice(i, 1)
+   let index = 1;
+  for(let i=1; i< nums.length ; i++) {
+    if(nums[i] !== nums[i-1]){
+      nums[i]=n;
+        index+=1;  
     }
   }
-  return nums.length;
+  return index;
 };
 ```
 
 ## 27. [移除元素](https://leetcode-cn.com/problems/remove-element)
 
 ```txt
-思路1：
-倒序遍历数组，判断一下当前元素与下一个元素是否相同，如果相同就删除当前元素，遍历结束返回数组的长度
-
-思路2：
 遍历数组nums，遍历指针为i，总长度为ans
 在遍历过程中如果出现数字与需要移除的值不相同时，则i自增1，继续下一次遍历
 如果相同的时候，则将nums[i]用nums[ans-1]覆盖，即当前数字和数组最后一个数字进行交换，交换后就少了一个元素，故而ans自减1
 ```
 
 ```js
-// 思路1
-var removeElement = function(nums, val) {
-  for(let i=nums.length-1;i>=0;i--) {
-    if(nums[i] === val) {
-      nums.splice(i, 1);
-    }
-  }
-  return nums.length;
-};
 
 // 思路2
 var removeElement = function(nums, val) {
@@ -994,19 +735,6 @@ var removeElement = function(nums, val) {
     }
   }
   return ans
-};
-```
-
-## 28. [实现 strStr()](https://leetcode-cn.com/problems/implement-strstr)
-
-```txt
-直接调用indexOf()方法就好了
-```
-
-```js
-var strStr = function(haystack, needle) {
-  if(!needle) return 0;
-  return haystack.indexOf(needle)
 };
 ```
 
@@ -1108,12 +836,6 @@ var search = function(nums, target) {
 
     时间复杂度：O(logN)
     空间复杂度：O(1)
-
-方法2：
-    数组的方法
-
-    时间复杂度：O(N)
-    空间复杂度：O(1)
 ```
 
 ```js
@@ -1140,45 +862,27 @@ var searchRange = function (nums, target) {
     } else return [-1, -1]
 };
 
-// 方法2
-var searchRange = function (nums, target) {
-    if (!nums.length || nums.indexOf(target) === -1) return [-1, -1]
-    return [nums.indexOf(target), nums.lastIndexOf(target)]
-}
+
 ```
 
 ## 35. [搜索插入位置](https://leetcode-cn.com/problems/search-insert-position)
 
 ```txt
-思路1：
-暴力遍历
-
-思路2:
-二分法：
+二分法：
 用两个指针left right分别记录左右下标，每次取得左右下标的中位数的下标mid，判断一下中位数与target的大小：
   若比target小，说明target在mid右边，让left=mid+1;
   否则的话在mid左边（可能就是mid这个数），让right=mid;
 ```
 
 ```js
-// 思路1：
-var searchInsert = function(nums, target) {
-    for(let i=0; i<nums.length;i++) {
-        if(nums[i] >= target) {
-            return i;
-        }
-    }
-    return nums.length;
-};
 
-// 思路2:
 var searchInsert = function(nums, target) {
     var left=0, right=nums.length-1;
     if(target > nums[right]) {
         return right+1;
     }
     while(left < right) {
-        var mid = (left + right) >>> 1;
+        var mid = (left + right) >> 1;
         if(target > nums[mid]) {
             left = mid + 1;
         }else {
@@ -1339,19 +1043,6 @@ var maxSubArray = function (nums) {
 };
 ```
 
-## 58. [最后一个单词的长度](https://leetcode-cn.com/problems/length-of-last-word)
-
-```txt
-太简单了，去除一下首尾的空格，然后分割一下去最后一个的长度
-```
-
-```js
-var lengthOfLastWord = function(s) {
-    let arr = s.trim().split(" ");
-    return arr[arr.length-1].length;
-};
-```
-
 ## 61. [旋转链表](https://leetcode-cn.com/problems/rotate-list)
 
 ```txt
@@ -1474,29 +1165,31 @@ var climbStairs = function (n) {
 - 单指针
 
 ```txt
-遍历两次，一次将所有的 0 换到最前面，一次将所有的 1 换到中间
+遍历一次将所有的 0 换到最前面，将所有的 2换到最后
 
 时间复杂度：O(N)
 空间复杂度：O(1)
 ```
 
-```js
-var sortColors = function (nums) {
-    let ptr = 0;
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] === 0) {
-            [nums[i], nums[ptr]] = [nums[ptr], nums[i]]
-            ptr++;
-        }
-    }
-    for (let i = ptr; i < nums.length; i++) {
-        if (nums[i] === 1) {
-            [nums[i], nums[ptr]] = [nums[ptr], nums[i]]
-            ptr++;
-        }
-    }
-    return nums;
-};
+```python
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n= len(nums)-1
+        i=0  # 计数1和0
+        j=0  # 记数0
+        while i<=n:
+            if nums[i]==0:
+                nums[i],nums[j]=nums[j],nums[i]
+                i+=1
+                j+=1
+            elif nums[i]==1:
+                i+=1
+            else:
+                nums[i],nums[n]=nums[n],nums[i]
+                n-=1                
 ```
 
 - 双指针
