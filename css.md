@@ -29,8 +29,6 @@
 - border：边框
 - margin：外边距
 
-两种盒模型的区别：
-
 - `box-sizing: content-box`  (默认)
   
   > 通过CSS样式设置的width的大小只是content的大小
@@ -249,16 +247,17 @@ DOM 的变化影响到了预算内宿的几何属性比如宽高，浏览器重�
 2. 当Z-index的值设置为一个整数时,该整数是当前堆叠上下文中生成的div的堆栈级别。该框还建立了其堆栈级别的本地堆叠上下文。这意味着后代的z-index不与此元素之外的元素的z-index进行比较。
 
 ## CSS 实现垂直居中
+- 2024年新增属性 align-content：center
 
-- 定位 + 负边距 元素绝对定位，top:50%，margin-top：-（高度/2）
+- 定位 + 负边距 元素绝对定位，top:50%;margin-top：-（高度/2）
 
-- 高度不确定用transform：translateY（-50%）
+- 高度不确定用 top:50%;transform：translateY（-50%）
 
 - 父元素display:flex,align-items:center;
 
 - display: table-cell+vertical-align：middle；
 
-- 绝对居中
+- 高度确定情形下，绝对定位，margin：auto
 
   ```css
   div {

@@ -177,3 +177,72 @@ hooks性能优化
 8. 代码分割和懒加载 lazy(()=>import())
 9. 减少渲染层级
 
+## DD
+
+### 返回值
+typeof Array.prototype //object
+typeof Function.prototype //function
+typeof Object.prototype //object
+
+### 任务顺序
+process.nextTick() 最优先执行的，当前轮次的事件循环结束之前被调用。在当前同步代码执行完成后立即执行的。
+promise.then()  在所有同步代码和 process.nextTick() 执行完后，但在宏任务之前执行
+setImmediate() 红任务，在timeOut之前
+setTimeout()
+
+### 异步顺序
+```js
+function async1(){
+  console.log(async1 start!)
+  await new Promise(resolve=>{
+    console.log("promise!")
+  })
+  console.log("promise success")
+  return "async1 end"
+}
+console.log("script start!");
+async1().then(res=>{
+  console.log(res)
+})
+console.log("script end!");
+```
+
+### 状态码
+206 Partial Content
+200 from cache
+304 not modify
+
+
+### 写findIndex
+```js
+    Array.prototype.findIndex = function (predicate) {
+        'use strict';
+        if (this == null) {
+            throw new TypeError('Array.prototype.findIndex called on null or undefined');
+        }
+        if (typeof predicate !== 'function') {
+            throw new TypeError('predicate must be a function');
+        }
+        var list = Object(this);
+        var length = list.length >>> 0;
+        var thisArg = arguments[1];
+        var value;
+
+        for (var i = 0; i < length; i++) {
+            value = list[i];
+            if (predicate.call(thisArg, value, i, list)) {
+                return i;
+            }
+        }
+        return -1;
+    };
+```
+
+## 其他
+React lazy 是怎么实现得
+
+面对大流量项目，前端的容灾措施
+
+监控线上性能指标
+
+倒计数组件如何保持准确
