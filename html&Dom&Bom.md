@@ -307,7 +307,7 @@ document.addEventListener("click", function(ev){
 
 + 使用iframe时，注意安全：尽量使用https,使用sandbox属性，限制其功能
 
-## 一些标签
+## 标签的使用
 
 ```html
 1分钟刷新

@@ -362,7 +362,7 @@ base64编码是一种图片处理格式，通过特定的算法将图片编码�
 多数显示器默认频率是60Hz，即1秒刷新60次，所以理论上最小间隔为1/60*1000ms＝16.7ms
 ```
 
-## 阐述一下 CSSSprites
+## CSSSprites(已经无人用了)
 
 将一个页面涉及到的所有图片都包含到一张大图中去，然后利用CSS的background-image，background-repeat，background-position的组合进行背景定位。
 利用CSSSprites能很好地减少网页的http请求，从而很好的提高页面的性能；CSSSprites能减少图片的字节。
@@ -388,30 +388,19 @@ p {
 }
 
 /*多行文本溢出*/
-p {
-  position: relative;
-  line-height: 1.5em;
-  /*高度为需要显示的行数*行高，比如这里我们显示两行，则为3*/
-  height: 3em;
-  overflow: hidden;
-}
 
-p:after {
-  content: "...";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #fff;
-}
-/*方法2*/
+/* 方法1*/
+
 p{display:-webkit-box;
 
 -webkit-box-orient:vertical;
 
--webkit-line-clamp: 3;//此处的数字可变 此处是三行省略
+-webkit-line-clamp: 3;//设置行数，此处是三行省略
 
 overflow:hidden;
 }
+
+/*方法2，直接hidden，伪元素放一个“...”在最后面一行末端*/
 ```
 
 ## 常见的元素隐藏方式
@@ -600,7 +589,7 @@ HTML代码如下：
 
 ## CSS 选择器的解析规则
 
-从右向左，这样会提高查找选择器所对应的元素的效率
+从右向左，提高查找选择器所对应的元素的效率
 
 ## 关于伪类 LVHA 的解释
 
@@ -700,22 +689,7 @@ background-color: white;
 }
 ```
 
-##  IntersectionObserver
+# css plus
 
-创建一个新的`IntersectionObserver`对象，当其监听到目标元素的可见部分穿过了一个或多个**阈(thresholds)**时，会执行指定的回调函数。
-
-```js
-let observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('animate')
-      observer.unobserve(entry.target)
-    }
-  })
-})
-
-document.querySelectorAll('mark').forEach(mark => {
-  observer.observe(mark)
-})
-```
+现代css设置table样式[文章链接](https://piccalil.li/blog/styling-tables-the-modern-css-way/)
 
