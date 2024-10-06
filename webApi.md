@@ -19,3 +19,14 @@ document.querySelectorAll('mark').forEach(mark => {
 ## navigator.getBattery()
 
 获取设备电量信息
+
+## AbortController 
+取消异步信号
+async function fetchWithTimeout(url, options = {}) {
+  const { timeoutMS = 3000 } = options;
+
+  return await fetch(url, {
+    ...options,
+    signal: AbortSignal.timeout(timeoutMS),
+  });
+}
