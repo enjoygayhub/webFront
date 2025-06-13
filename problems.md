@@ -58,3 +58,13 @@
   如果依赖项数组为空（[]），useEffect 只会在组件挂载时运行一次，永远只会访问最初的state值；
   如果依赖性不为空，但在useEffect方法内访问到的是旧值，可能是因为useEffect方法是异步执行的，
   解决：用useRef方法，将state的值存储到ref中，然后在useEffect方法内访问ref.current即可。
+
+### JSON.stringify 会忽略函数，因为 JSON 不支持函数类型。
+
+如果需要保留函数，需通过 replacer 手动处理（如转为字符串）。
+
+直接序列化函数（如 JSON.stringify(fn)）会返回 undefined
+
+### node_modules/bin中放着可执行的脚本
+  终端命令ls -l 可查看脚本链接的实际地址。
+  开启javascript调试终端，可以调试命令汗后执行的代码
