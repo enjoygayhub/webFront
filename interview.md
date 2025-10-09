@@ -246,3 +246,43 @@ React lazy 是怎么实现得
 监控线上性能指标
 
 倒计数组件如何保持准确
+
+## 前端国际化需要做什么
+Intl是处理国际化相关内容i18n的底层API，可选使用。
+### 排版布局
+阅读顺序和流式布局对应排版的inline轴和block轴
+
+left = inline-start
+right = inline-end
+top = block-start
+bottom = block-end
+
+阅读顺序和流式布局可以不同。dir: rtl 语言的阅读顺序，writing-mode: horizontal-tb 决定了文本的布局方向。
+
+宽高vw和vh也被取代，用 vi(viewport inline) 和 vb(viewport block)替代
+
+### 语言
+lang="en"
+"en" 代表英语，"es" 代表西班牙语。
+希伯来语和阿拉伯语是从右到左阅读的，中文和英语是从左到右阅读的。
+ 
+### 地区
+locale="en-US" 语言+地区+文化
+"US" 表示美国，"CN" 表示中国. 还有常见的如「zh-CN, en-US, en-GB等」
+CN是国家地区码
+zh-CN是语言地区码,
+### 货币
+比如人民币是 ¥ , 美元是 $ , 欧元 € , 英镑 £
+用elvish
+### 日期和时区
+
+UTC = 「协调世界时（UTC: Coordinated Universal Time）- 由原子钟提供」
+DST (Daylight saving time)，日光节约时，夏令时/冬令时等等名称。「它会在每年春天的某一天将时钟向后拨一小时，又在秋天的某一天将时钟向前拨动一个小时。」
+周一是哪一天有不同，星期形式不同
+日期展示年月日形式不同
+日历展示不同
+### 数字
+英文单复数
+数字格式化小数点不同
+比较级不同
+百分比

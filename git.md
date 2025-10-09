@@ -62,7 +62,6 @@ git pull
 ```js
 git push
 ```
-推送失败 可以尝试[这里](https://zhuanlan.zhihu.com/p/654998555);
 
 ## 撤销修改
 
@@ -126,7 +125,6 @@ git merge origin/branch2
 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
 ```
 
-## 如果提示没有公钥，请看[这个](https://blog.csdn.net/weixin_30763455/article/details/99901544)
 
 ## submodule 使用
 
@@ -151,10 +149,28 @@ git merge origin/branch2
 
 使用 `git submodule deinit` 命令卸载一个子模块
 
-
+## 使用ssh 如果提示没有公钥，请看[这个](https://blog.csdn.net/weixin_30763455/article/details/99901544)
 
 ## 构建本地远程项目关系 看[这个](https://cloud.tencent.com/developer/article/1504684)
 
 ## .gitignore
 
 添加.gitignore文件，在文件中添加不想上传git管理的文件名即可，[参见](https://juejin.cn/post/6998911250323390501)
+
+## git rebase 
+主要用于重新整理提交历史。它的核心作用是改变提交的基准点。举例
+### 1. 开始新功能
+git checkout -b feature-xyz
+
+### 2. 开发并多次提交
+git commit -m "WIP: 功能A"
+git commit -m "WIP: 功能B"
+
+### 3. 更新到主分支最新代码
+git rebase main
+
+### 4. 整理提交历史
+git rebase -i HEAD~2
+# 合并为: "feat: 完成XYZ功能"
+### 5. 推送到远程
+git push origin feature-xyz
