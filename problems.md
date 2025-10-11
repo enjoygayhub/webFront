@@ -40,7 +40,7 @@
 ## textarea 随内容自动增高，而不是固定高度，出现滚动条
 ```css
     textarea {
-        form-sizing: normal;
+        field-sizing: normal;
     }
 ``` 
 
