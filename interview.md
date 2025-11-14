@@ -286,3 +286,9 @@ DST (Daylight saving time)，日光节约时，夏令时/冬令时等等名称�
 数字格式化小数点不同
 比较级不同
 百分比
+
+### rtl问题
+  1 unicode-bidi + direction 强制方向，例如：style="direction: ltr; unicode-bidi: embed;"
+  2 用 Unicode 控制字符 LTR，包裹元素ltr，例如：&#x200E;&lt;&#x200E; 
+  3 用 <bdi> 标签隔离（适合混合方向文本），例如：
+  النطاق السعري: <bdi>50 &lt; 150</bdi> دولار

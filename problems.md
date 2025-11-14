@@ -68,3 +68,5 @@
 ### node_modules/bin中放着可执行的脚本
   终端命令ls -l 可查看脚本链接的实际地址。
   开启javascript调试终端，可以调试命令汗后执行的代码
+
+### flex 布局，容器设置flex：flex-start，子元素设置margin-left，子元素会被推到容器右侧
