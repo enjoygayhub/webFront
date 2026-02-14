@@ -20,7 +20,7 @@
    - embed 定义嵌入的内容，比如插件。
    - track 为诸如 video 和 audio 元素之类的媒介规定外部文本轨道。
 
-6. canvas：位图
+6. canvas：
 
 7. 地理定位：
 

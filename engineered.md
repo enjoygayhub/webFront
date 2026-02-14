@@ -1,5 +1,7 @@
 # 工程化engineered
+
 ## 页面性能提升
+
 1. 减小下载文件大小：Code Split + 基于路由的按需加载，Tree Shaking,使用体积小的第三方依赖，依赖按需引用，terser压缩混淆代码，gzip压缩
 2. 图片方面：图片压缩，图片懒加载，base64格式，svg格式，css Sprites，iconFont，
 3. 网络方面：prefetch cdn
@@ -8,45 +10,35 @@
 6. 其他：service worker, SSR，web worker
 
 ## js 的几种设计模式
-  1. 装饰器模式用于扩展对象的功能，而无需修改现有的类或构造函数。此模式可用于将特征添加到对象中，而无需修改底层的代码。
-  2. 工厂模式使用工厂方法创建对象而不需要指定具体的类或构造函数的模式。根据特定条件生成不同的对象时，可以使用此模式。
-  3. 单例模式一个单例对象是只能实例化一次的对象。如果不存在，则单例模式将创建类的新实例。如果存在实例，则仅返回对该对象的引用。重复调用构造函数将始终获取同一对象。 
-  4. 模块模式。模块独立的代码，通过为变量创建单独的作用域来避免命名空间污染。
-  5. ES6模块，ES6的模块是以文件形式存储的。每个文件只能有一个模块。默认情况下，模块内的所有内容都是私有的。通过使用 export 关键字来暴露函数、变量和类。模块内的代码始终在严格模式下运行。
+
+1. 装饰器模式用于扩展对象的功能，而无需修改现有的类或构造函数。此模式可用于将特征添加到对象中，而无需修改底层的代码。
+2. 工厂模式使用工厂方法创建对象而不需要指定具体的类或构造函数的模式。根据特定条件生成不同的对象时，可以使用此模式。
+3. 单例模式一个单例对象是只能实例化一次的对象。如果不存在，则单例模式将创建类的新实例。如果存在实例，则仅返回对该对象的引用。重复调用构造函数将始终获取同一对象。
+4. 模块模式。模块独立的代码，通过为变量创建单独的作用域来避免命名空间污染。
+5. ES6模块，ES6的模块是以文件形式存储的。每个文件只能有一个模块。默认情况下，模块内的所有内容都是私有的。通过使用 export 关键字来暴露函数、变量和类。模块内的代码始终在严格模式下运行。
 
 ## js 的几种模块规范
 
 ```txt
 
-第一种是 CommonJS 方案，它通过 require 来引入模块，通过 module.exports 定义模块的输出接口。这种模块加载方案是服务器端的解决方案，
+第一种是 CommonJS 方案，它通过 require 来引入模块，通过 module.exports 定义模块的输出接口。这种模块加载方案是服务端的解决方案， Node.js 就是基于 CommonJS 规范的。
 
 第二种是 AMD 方案
 
-第三种是 CMD 方案，AMD 和 CMD 过时，基本没见过
+第三种是 CMD 方案（AMD 和 CMD 过时，基本没见过）
 
-第四种方案是 ES6 提出的方案，使用 import 和 export 的形式来导入导出模块
+第四种是 ES6 Modules，使用 import 和 export 的形式来导入导出模块
 
 ```
-
-核心特性和差异：
-
-| 特性维度 | 🗿 CommonJS | ⚡ AMD | 🛠️ CMD | 🚀 ES6 Modules (ESM) |
-| :--- | :--- | :--- | :--- | :--- |
-| **主要应用场景** | 服务器端 (如 Node.js)  | 浏览器端  | 浏览器端  | 浏览器 & 服务器端 (通用)  |
-| **加载方式** | **同步**加载  | **异步**加载  | **异步**加载，依赖**提前下载**  | **异步**加载（支持静态分析） |
-| **语法关键词** | `require()`<br>`module.exports`  | `define()`<br>`require()`  | `define()`<br>`require()`  | `import`<br>`export`  |
-| **依赖时机** | **运行时**确定依赖  | **运行时**确定依赖 | **执行前**通过分析下载依赖，**执行时**按需加载  | **编译时**静态确定依赖  |
-| **输出特性** | **值的拷贝**  | N/A | N/A | **值的只读引用**（动态映射） |
-
 
 ## ES6 模块与 CommonJS 模块区别
 
 > CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
-CommonJS 模块输出的是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。
-ES6 模块是对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。
+> CommonJS 模块输出的是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。
+> ES6 模块是对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。
 
-> CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。CommonJS 模块就是对象，即在输入时是先加载整个模块，生成一个对象，然后再从这个对象上面读取方法，这种加载称为“运行时加载”。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
-
+> CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
+> CommonJS 模块就是对象，即在输入时是先加载整个模块，生成一个对象，然后再从这个对象上面读取方法，这种加载称为“运行时加载”。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
 
 ## 进程与线程
 
@@ -80,7 +72,6 @@ ES6 模块是对脚本静态分析的时候，遇到模块加载命令 import，
 栈是线程中的私有内存区域，用于存储局部变量和函数调用的信息（如函数参数、局部变量和返回地址）。
 每个线程有自己的栈空间，因此多个线程之间不会相互影响栈空间。
 栈空间的分配和回收通常是在函数调用和返回时自动完成的。
-
 
 一个进程通常有一个堆空间，这个堆空间被该进程中的所有线程共享。
 每个线程有一个私有的栈空间，用于存储该线程的局部变量和函数调用栈。
@@ -120,7 +111,6 @@ V8 引擎会对 IR 进行优化，包括常量折叠、死代码消除等优化�
 执行:
 编译后的本地机器码可以直接在目标平台上执行。
 
-
 ### Source Map
 
 编译过程中，生成的产物代码中被转换的部分与源代码中相应部分的映射关系表
@@ -157,28 +147,28 @@ Plugins（插件）可以用于执行范围更广的任务，包括打包、优�
 
 ## webpack 的构建流程
 
-初始化: 启动构建，读取webpack.config.js与合并配置参数，加载 Plugin，实例化 Compiler。 
+初始化: 启动构建，读取webpack.config.js与合并配置参数，加载 Plugin，实例化 Compiler。
 编译: 从 Entry 出发，递归地找到所有依赖的模块,针对每个 Module 串行调用对应的 Loader 去翻译文件的内容。
 转换模块：Loader 将模块代码转换为抽象语法树（AST），以便进行后续的处理。
 生成依赖图：根据模块之间的引用关系，建立一个依赖图，优化，如去除重复依赖、按需加载等
-确定 Chunk: 每个 Module根据依赖关系，生成代码块(Chunk)。 
-生成 Bundle: 每个 Chunk 都转换成一个单独的文件加入到输出列表，这步是可以修改输出内容的最后机会。 
+确定 Chunk: 每个 Module根据依赖关系，生成代码块(Chunk)。
+生成 Bundle: 每个 Chunk 都转换成一个单独的文件加入到输出列表，这步是可以修改输出内容的最后机会。
 输出完成: 确定好输出内容后，根据配置确定的路径与文件名，把文件写入到文件系统。
-
 
 ## webpack 常用插件
 
 - html-webpack-plugin
-  
+
 > 用于生成一个html文件，并将最终生成的js，css以及一些静态资源文件以script和link的形式动态插入其中
 
 - webpack-dev-server
-  
+
   > 用于实时的打包编译，打包好的 main.js 是托管到了内存中，所以在项目根目录中看不到，但是我们可以认为在项目的根目录中，有一个看不见的 main.js
+
 - CommonsChunkPlugin
-  
+
   > 主要是用来提取第三方库（如jQuery）和公共模块(公共js，css都可以)，常用于多页面应用程序，生成公共 chunk，避免重复引用。
-  
+
 ## webpack添加多个loader
 
 1. use中使用数组，包含多个loader，或者对象 use: ['loader3', 'loader2', 'loader1']
@@ -211,10 +201,10 @@ loader带参数执行的顺序: pre -> normal -> inline -> post
 
 引用时可以通过特殊符号禁用loader或选择loader
 
-1. `!`禁用`normal-loader`  
+1. `!`禁用`normal-loader`
 
    ```js
-   import LeftLogo from '!../../images/svgIcons/chevron-left.svg';
+   import LeftLogo from "!../../images/svgIcons/chevron-left.svg";
    ```
 
 2. `-!`禁用`pre-loader`和 `normal-loader`
@@ -222,10 +212,14 @@ loader带参数执行的顺序: pre -> normal -> inline -> post
 3. `!!` 禁用`pre-loader`、`normal-loader`、`post-loader`,只能行内处理
 
    ```js
-   const req = require.context('!!svg-sprite-loader!!../../images/svgIcons', false, /.svg$/)
+   const req = require.context(
+     "!!svg-sprite-loader!!../../images/svgIcons",
+     false,
+     /.svg$/,
+   );
    ```
 
-## webpack 是怎么处理 commonjs/esm 
+## webpack 是怎么处理 commonjs/esm
 
 Webpack 通过解析 require 调用来处理 CommonJS 模块，将模块打包成 IIFE（立即执行函数表达式）
 Webpack 通过解析 import 和 export 语句来处理 ES 模块，并支持 Tree Shaking 和动态导入按需加载，可以用于代码分割，提高性能。
@@ -242,8 +236,8 @@ rollup通过rollup-plugin-postcss:
 将 CSS 文件处理成 JavaScript 模块，并支持 PostCSS。
 将 CSS 提取成独立的文件，或者内联到 JavaScript 中。
 
-
 # vite
+
 ## vite构建流程、
 
 启动开发服务器: Vite 启动一个开发服务器，监听文件变化。
@@ -276,7 +270,7 @@ Vite 服务器会通过websocket发送更新信号给浏览器，通知浏览器
 5. 对无法 Tree Shaking 的库，进行按需引入模块，如使用 import Button from 'antd/lib/Button'，此处可手写 babel-plugin 自动完成，但不推荐
 6. 使用 babel (css 为 postcss) 时采用 browserlist，越先进的浏览器所需要的 polyfill 越少，体积更小
 7. code spliting，路由懒加载，只加载当前路由的包，按需加载其余的 chunk，首页 JS 体积变小 (不减小总体积，但减小首页体积)
-8. 使用 webpack 的 splitChunksPlugin，把运行时、被引用多次的库进行分包，在分包时要注意避免某一个库被多次引用多次打包。此时分为多个 chunk，虽不能把总体积变小，但可提高加载性能 
+8. 使用 webpack 的 splitChunksPlugin，把运行时、被引用多次的库进行分包，在分包时要注意避免某一个库被多次引用多次打包。此时分为多个 chunk，虽不能把总体积变小，但可提高加载性能
 
 目前前端工程化中使用 terser 和 swc 进行 JS 代码压缩。
 通过 AST 分析，根据选项配置一些策略，来生成一颗更小体积的 AST 并生成代码。
@@ -292,6 +286,7 @@ window.performance 是一个 Web API，用于获取和分析网页的性能数�
 比如window.performance.timing里有很多时间点
 
 ## 什么是 AST，及其应用
+
 AST 是 Abstract Syntax Tree 的简称抽象语法树
 将 Typescript 转化为 Javascript (typescript)
 将 SASS/LESS 转化为 CSS (sass/less)
@@ -308,9 +303,11 @@ AST -> Code (Generate)
 AST 的生成这一步骤被称为解析(Parser)，而该步骤也有两个阶段: 词法分析(Lexical Analysis)和语法分析(Syntactic Analysis)
 
 ## semver
+
 语义化版本号。版本格式：主版本号.次版本号.修订号
 
 ## JWT（JSON Web Token）的原理
+
 JWT 是一种用于在不同服务之间传递安全可靠信息的紧凑且自包含的方式。它本质上是一个 JSON 对象，经过 Base64 编码并使用数字签名。
 一个标准的 JWT 包含三个部分，用点（.）分隔：
 
@@ -347,10 +344,12 @@ SEO 友好： 搜索引擎可以抓取到完整的 HTML，有利于 SEO。
 3. 累积布局偏移 (Cumulative Layout Shift, CLS):
 
 ### 如何确认你们项目是否依赖某一个依赖项
+
 yarn list
 npm list --depth=0
 
 ### 如何检测出你们安装的依赖是否安全
+
 npm audit/yarn audit
 
 ### dom操作性能消耗的原理
@@ -358,16 +357,20 @@ npm audit/yarn audit
 渲染引擎与js引擎是互斥的单线程，操作系统切换线程执行会保存上下文，直接操作dom是便会带来性能损耗
 
 ### core-js 是做什么用的
+
 polyfill垫片
 
 ### git hooks 原理是什么
+
 git 允许在各种操作之前添加一些 hook 脚本，如未正常运行则 git 操作不通过。
 例如：precommit，prepush
 
-###  eslint 的作用
+### eslint 的作用
+
 eslint，对代码不仅有风格的校验，更有可读性、安全性、健壮性的校验。
 
 ### pnpm 有什么作用
+
 它解决了 npm/yarn 平铺 node_modules 带来的依赖项重复的问题 (doppelgangers)
 
 ### browserslist作用
@@ -375,5 +378,6 @@ eslint，对代码不仅有风格的校验，更有可读性、安全性、健�
 打包到所支持的浏览器的所需最小内容
 
 ### 如何分包
+
 webpack中提供了方案4.0之前是：CommonsChunkPlugin 4.0后是optimization.splitChunks
 vite中配置build.rollupOptions.output.manualChunks
