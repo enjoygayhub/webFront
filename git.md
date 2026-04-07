@@ -19,10 +19,6 @@ git config --global user.email number@qq.com
 ```
 $ git clone SSH/HTTPS地址 -b <分支名>
 ```
-  如果Recv failure: Connection was reset
-  尝试关闭代理 $ git config --global --unset https.proxy
-  然后打开cmd输入指令刷新dns：$ ipconfig/flushdns 
-
 
 ## 查看工作区状态
 
