@@ -78,25 +78,6 @@
 
   多个脚本的执行顺序无法保证。
   
-## localStorage，sessionStorage，cookie 的区别
-
-```txt
-共同点：都是保存在浏览器端，同源限制。
-区别：
-(1) cookie数据始终在同源的http请求中携带（即使不需要），即cookie在浏览器和服务器间来回传递
-    sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存
-(2) 存储大小限制也不同
-    cookie数据不能超过4k
-    sessionStorage和localStorage 虽然也有存储大小的限制，但比cookie大得多，可以达到5M或更大
-(3) 数据有效期不同
-    sessionStorage：仅在当前浏览器窗口关闭前有效，自然也就不可能持久保持；
-    localStorage：始终有效，窗口或浏览器关闭也一直保存，因此用作持久数据；
-    cookie只在设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭;
-(4) 作用域不同
-    sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
-    localStorage 在所有同源窗口中都是共享的；
-    cookie也是在所有同源窗口中都是共享的
-```
 
 # Dom & Bom
 
@@ -390,3 +371,23 @@ async function fetchWithTimeout(url, options = {}) {
 window.performance 是一个 Web API，用于获取和分析网页的性能数据。
 它提供了一系列的方法和属性，可以帮助开发者了解网页的加载和运行情况。
 比如window.performance.timing里有很多时间点
+
+## localStorage，sessionStorage，cookie 的区别
+
+```txt
+共同点：都是保存在浏览器端，同源限制。
+区别：
+(1) cookie数据始终在同源的http请求中携带（即使不需要），即cookie在浏览器和服务器间来回传递
+    sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存
+(2) 存储大小限制也不同
+    cookie数据不能超过4k
+    sessionStorage和localStorage 虽然也有存储大小的限制，但比cookie大得多，可以达到5M或更大
+(3) 数据有效期不同
+    sessionStorage：仅在当前浏览器窗口关闭前有效，自然也就不可能持久保持；
+    localStorage：始终有效，窗口或浏览器关闭也一直保存，因此用作持久数据；
+    cookie只在设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭;
+(4) 作用域不同
+    sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
+    localStorage 在所有同源窗口中都是共享的；
+    cookie也是在所有同源窗口中都是共享的
+```

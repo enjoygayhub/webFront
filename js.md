@@ -1,5 +1,264 @@
 # JavaScript
 
+## 闭包
+
+闭包是由捆绑起来（封闭的）的函数和函数周围状态（词法环境）的引用组合而成。换言之，闭包让函数能访问它的外部作用域。在 JavaScript 中，闭包会随着函数的创建而同时创建。
+
+
+闭包的优点：
+
+- 希望一个变量长期保存内存中；
+- 避免全局变量污染；
+- 私有成员的存在。
+
+闭包的缺点：
+
+- 常驻内存，增加内存使用量；
+- 使用不当造成内存泄漏。
+
+## js 原型，原型链以及特点
+
+```JavaScript
+
+function Class(){
+    this.name='name';
+}
+classA = new Class();//小写classA为Class类的实例；Class为构造函数
+
+```
+
+__proto__（隐式原型），非web标准却被大多数浏览器支持，指向它的构造函数的prototype。
+即class.__proto__ === Class.prototype; 
+prototype（显式原型）只有函数对象才有（普通对象没有，是构造函数的一个属性，存放所有实例共享的属性和方法
+
+prototype中一般包含2个属性，一个是constructor，指向Class函数自身，用于标识原型属于谁；一个是__proto__,指向更高一级的原型对象，层层向上直到一个对象的原型对象为 null。
+
+Object.prototype.__proto__ === null;
+
+ES5 中Object.getPrototypeOf() 方法来获取对象的原型。
+
+当访问一个实例对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链。
+
+特点：
+JavaScript 对象是通过引用来传递的，创建的每个新对象实体中并没有一份属于自己的原型副本。当我们修改原型时，与之相关的对象也会继承这一改变。
+
+特别的对象：Object.create(null);没有原型
+
+
+## Event Loop 事件循环
+
+> 参考链接：[详解JavaScript中的Event Loop（事件循环）机制](https://zhuanlan.zhihu.com/p/33058983?utm_source=wechat_session&utm_medium=social&utm_oi=859347813597863936)
+
+```js
+微任务: Promise.then / catch / finally(不是promise，promise里是立即执行)
+  async / await语法糖（本质就是 Promise 微任务） await 后面的代码全部塞进微任务队列
+  MutationObserver的回调
+  process.nextTick(Node.js 环境)
+  queueMicrotask()手动添加微任务
+宏任务: script(整体代码)  setTimeout  setInterval   I/O  setImmediate(Node.js 环境)   UI 交互事件
+同一次事件循环中:  微任务永远在宏任务之前执行
+```
+
+事件循环的过程：
+> 首先script脚本整体是一个大的异步任务，先执行script脚本。这个script脚本会包含同步任务和异步任务，同步任务会先在主线程上执行，异步任务（分为宏任务和微任务）会添加到任务队列中，任务队列分为宏任务队列和微任务队列。
+>
+> 当同步任务执行完毕后，此时的执行栈已经被清空，会去执行异步任务。此时会先从微任务队列中取一个微任务放到执行栈中执行，若有新的微任务或宏任务产生，添加到相应的任务队列中，循环往复，直至微任务队列清空。
+>
+> 紧接着会从宏任务队列取一个宏任务放到执行栈中执行，此时可能会产生新的微任务，将微任务放到微任务队列中，当这个宏任务执行完后会继续执行微任务队列，如果没有产生就继续执行下一个宏任务。循环往复，直至所有任务执行完毕。
+
+```js
+async function async1(){
+    console.log('asy1 start');
+    await async2();
+    console.log("asy1 end");}
+async function async2(){console.log("async2");}
+async1();
+setTimeout(()=>{console.log('timeout')},0);
+new Promise(function(resolve){
+    console.log("promise1");
+    resolve();})
+    .then(function(){console.log('promise2')});
+console.log('script end');
+//结果
+//asy1 start
+//async2
+//promise1
+//script end
+//asy1 end
+//promise2
+//timeout
+```
+
+## async await
+
+> async函数返回一个 Promise 对象，可以使用then方法添加回调函数。当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
+
+- async单独使用的时候，放在函数前面表示这个函数是一个异步函数，如果async函数有返回结果，必须要用.then()方法来承接（也就是返回的值会被自动处理成promise对象）
+
+```js
+async function bar() {
+  return 'lee'
+}
+console.log(bar()); // Promise {<resolved>: "lee"}
+```
+
+- async await搭配使用的时候，await是等待此函数执行后，再执行下一个，可以把异步函数变成同步来执行，控制函数的执行顺序。await一定要搭配async使用。
+
+> 当await后的函数是返回的promise。
+
+```js
+let foo = () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log('lee');
+      resolve();
+    }, 1000);
+  })
+}
+async function bar() {
+  await foo();
+  console.log('van');
+}
+bar(); // 隔1秒同时输出 lee van
+```
+
+> 当await 后跟的是普通函数,非promise()
+
+```js
+let f1 = () => {
+  setTimeout(() => {
+    console.log('lee');
+  }, 1000)
+}
+
+let f2 = () => {
+  setTimeout(() => {
+    console.log('van');
+  }, 1000)
+}
+
+async function bar() {
+  await f1();
+  await f2();
+  console.log('yeah');
+}
+bar(); // yeah 隔1秒同时输出 lee fan
+```
+
+
+
+
+## Promise 
+
+### Promise用法
+
+> Promise构造函数接受一个函数作为参数，该函数的两个参数分别是resolve和reject。它们是两个函数，由 JavaScript 引擎提供。
+>
+> resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；reject函数的作用是，将Promise对象的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。
+
+```js
+const promise = new Promise(function(resolve, reject) {
+  if (1){
+    resolve(value);
+  } else {
+    reject(error);
+  }
+});
+```
+
+### Promise.prototype.then()
+
+> Promise 实例具有 then 方法，也就是说，then 方法是定义在原型对象 Promise.prototype 上的。它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
+>
+> **then 方法返回的是一个新的 Promise 实例**（注意，不是原来那个 Promise 实例）。因此可以采用链式写法，即 then 方法后面再调用另一个 then 方法。
+
+```js
+getJSON("/posts.json").then(function(json) {
+  return json.post;
+}).then(function(post) {
+  // ...
+});
+```
+
+### Promise.prototype.catch()
+
+> Promise.prototype.catch()方法是.then(null, rejection)或.then(undefined, rejection)的别名，用于指定发生错误时的回调函数。
+
+```js
+getJSON('/posts.json').then(function(posts) {
+  // ...
+}).catch(function(error) {
+  console.log('发生错误！', error);
+});
+```
+
+> 上面代码中，getJSON()方法返回一个 Promise 对象，如果该对象状态变为resolved，则会调用then()方法指定的回调函数；如果异步操作抛出错误，状态就会变为rejected，就会调用catch()方法指定的回调函数，处理这个错误。另外，then()方法指定的回调函数，如果运行中抛出错误，也会被catch()方法捕获。
+
+### Promise.prototype.finally() 
+    Promise结束后无论成功失败都执行，仍返回Promise
+
+### Promise.all()
+
+> Promise.all() 参数中全部Promise执行成功，返回所有成功的数组，任一失败则返回失败的。
+
+```js
+const p = Promise.all([p1, p2, p3]);
+```
+
+> 上面代码中，Promise.all()方法接受一个数组作为参数，p1、p2、p3都是 Promise 实例，如果不是，就会先调用下面讲到的Promise.resolve方法，将参数转为 Promise 实例，再进一步处理。
+>
+> 另外，Promise.all()方法的参数可以不是数组，但必须具有 Iterator 接口，且返回的每个成员都是 Promise 实例。
+>
+> p的状态由p1、p2、p3决定，分成两种情况:
+>
+> （1）只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
+>
+> （2）只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
+
+### Promise.allSettled()
+    与all类似，等所有传入的promise执行结束，返回所有结果，
+### Promise.race()
+
+> Promise.race()方法返回最快的有结果的promise，无论成功或失败。
+
+```js
+const p = Promise.race([p1, p2, p3]);
+```
+
+> 上面代码中，只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
+
+### Promise.any()
+
+> Promise.any()方法返回第一个成功的promise。
+
+### Promise.resolve()
+
+> 有时需要将现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用。
+
+> Promise.resolve()等价于下面的写法。
+
+```js
+Promise.resolve('foo')
+// 等价于
+new Promise(resolve => resolve('foo'))
+```
+
+### Promise.reject()
+
+> Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
+
+```js
+const p = Promise.reject('出错了');
+// 等同于
+const p = new Promise((resolve, reject) => reject('出错了'))
+
+p.then(null, function (s) {
+  console.log(s)
+});
+// 出错了
+```
+
+
 ## js 基本数据类型
 
 > js 一共有7种**基本**数据类型，分别是 Undefined、Null、Boolean、Number、String。
@@ -353,34 +612,6 @@ let newObj = JSON.parse(JSON.stringify(oldObj));//不完全的深拷贝
 
 回收方法/：标记清除法和引用计数法
 
-## js 原型，原型链以及特点
-
-```JavaScript
-
-function Class(){
-    this.name='name';
-}
-classA = new Class();//小写classA为Class类的实例；Class为构造函数
-
-```
-
-__proto__（隐式原型），非web标准却被大多数浏览器支持，指向它的构造函数的prototype。
-即class.__proto__ === Class.prototype; 
-prototype（显式原型）只有函数对象才有（普通对象没有，是构造函数的一个属性，存放所有实例共享的属性和方法
-
-prototype中一般包含2个属性，一个是constructor，指向Class函数自身，用于标识原型属于谁；一个是__proto__,指向更高一级的原型对象，层层向上直到一个对象的原型对象为 null。
-
-Object.prototype.__proto__ === null;
-
-ES5 中Object.getPrototypeOf() 方法来获取对象的原型。
-
-当访问一个实例对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链。
-
-特点：
-JavaScript 对象是通过引用来传递的，创建的每个新对象实体中并没有一份属于自己的原型副本。当我们修改原型时，与之相关的对象也会继承这一改变。
-
-特别的对象：Object.create(null);没有原型
-
 
 ## 对象的描述。Object.defineProperty 用法
 
@@ -510,21 +741,6 @@ test1()  // 1
 - let变量不能覆盖作用域中已定义的变量，const变量定义同时必须赋值
 - 如果区块中存在let 或者 const ,这个区块对这些声明的变量，将形成一个封闭的作用域，不去父作用域查找。在块内，令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区” (TDZ)
 
-## 闭包
-
-闭包是由捆绑起来（封闭的）的函数和函数周围状态（词法环境）的引用组合而成。换言之，闭包让函数能访问它的外部作用域。在 JavaScript 中，闭包会随着函数的创建而同时创建。
-
-
-闭包的优点：
-
-- 希望一个变量长期保存内存中；
-- 避免全局变量污染；
-- 私有成员的存在。
-
-闭包的缺点：
-
-- 常驻内存，增加内存使用量；
-- 使用不当造成内存泄漏。
 
 ## 箭头函数与普通函数的区别
 
@@ -638,118 +854,6 @@ bind 以后，再次通过call改变this,是不生效的。
 - 只需使用1次的函数。
 
 
-## Promise 
-
-### Promise用法
-
-> Promise构造函数接受一个函数作为参数，该函数的两个参数分别是resolve和reject。它们是两个函数，由 JavaScript 引擎提供。
->
-> resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；reject函数的作用是，将Promise对象的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。
-
-```js
-const promise = new Promise(function(resolve, reject) {
-  if (1){
-    resolve(value);
-  } else {
-    reject(error);
-  }
-});
-```
-
-### Promise.prototype.then()
-
-> Promise 实例具有 then 方法，也就是说，then 方法是定义在原型对象 Promise.prototype 上的。它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，then 方法的第一个参数是 resolved 状态的回调函数，第二个参数（可选）是 rejected 状态的回调函数。
->
-> **then 方法返回的是一个新的 Promise 实例**（注意，不是原来那个 Promise 实例）。因此可以采用链式写法，即 then 方法后面再调用另一个 then 方法。
-
-```js
-getJSON("/posts.json").then(function(json) {
-  return json.post;
-}).then(function(post) {
-  // ...
-});
-```
-
-### Promise.prototype.catch()
-
-> Promise.prototype.catch()方法是.then(null, rejection)或.then(undefined, rejection)的别名，用于指定发生错误时的回调函数。
-
-```js
-getJSON('/posts.json').then(function(posts) {
-  // ...
-}).catch(function(error) {
-  console.log('发生错误！', error);
-});
-```
-
-> 上面代码中，getJSON()方法返回一个 Promise 对象，如果该对象状态变为resolved，则会调用then()方法指定的回调函数；如果异步操作抛出错误，状态就会变为rejected，就会调用catch()方法指定的回调函数，处理这个错误。另外，then()方法指定的回调函数，如果运行中抛出错误，也会被catch()方法捕获。
-
-### Promise.prototype.finally() 
-    Promise结束后无论成功失败都执行，仍返回Promise
-
-### Promise.all()
-
-> Promise.all() 参数中全部Promise执行成功，返回所有成功的数组，任一失败则返回失败的。
-
-```js
-const p = Promise.all([p1, p2, p3]);
-```
-
-> 上面代码中，Promise.all()方法接受一个数组作为参数，p1、p2、p3都是 Promise 实例，如果不是，就会先调用下面讲到的Promise.resolve方法，将参数转为 Promise 实例，再进一步处理。
->
-> 另外，Promise.all()方法的参数可以不是数组，但必须具有 Iterator 接口，且返回的每个成员都是 Promise 实例。
->
-> p的状态由p1、p2、p3决定，分成两种情况:
->
-> （1）只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
->
-> （2）只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
-
-### Promise.allSettled()
-    与all类似，等所有传入的promise执行结束，返回所有结果，
-### Promise.race()
-
-> Promise.race()方法返回最快的有结果的promise，无论成功或失败。
-
-```js
-const p = Promise.race([p1, p2, p3]);
-```
-
-> 上面代码中，只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
-
-### Promise.any()
-
-> Promise.any()方法返回第一个成功的promise。
-
-### Promise.resolve()
-
-> 有时需要将现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用。
-
-> Promise.resolve()等价于下面的写法。
-
-```js
-Promise.resolve('foo')
-// 等价于
-new Promise(resolve => resolve('foo'))
-```
-
-### Promise.reject()
-
-> Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
-
-```js
-const p = Promise.reject('出错了');
-// 等同于
-const p = new Promise((resolve, reject) => reject('出错了'))
-
-p.then(null, function (s) {
-  console.log(s)
-});
-// 出错了
-```
-
-
-
 ## callback和Promise
 
 callback
@@ -773,105 +877,6 @@ Promise的缺点：
 2.如果不设置回调函数，Promise内部的错误不会反映到外部。
 3.无法取消Promise，一旦新建它就会立即执行，无法中途取消。
 
-## async await
-
-> async函数返回一个 Promise 对象，可以使用then方法添加回调函数。当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
-
-- async单独使用的时候，放在函数前面表示这个函数是一个异步函数，如果async函数有返回结果，必须要用.then()方法来承接（也就是返回的值会被自动处理成promise对象）
-
-```js
-async function bar() {
-  return 'lee'
-}
-console.log(bar()); // Promise {<resolved>: "lee"}
-```
-
-- async await搭配使用的时候，await是等待此函数执行后，再执行下一个，可以把异步函数变成同步来执行，控制函数的执行顺序。await一定要搭配async使用。
-
-> 当await后的函数是返回的promise。
-
-```js
-let foo = () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      console.log('lee');
-      resolve();
-    }, 1000);
-  })
-}
-async function bar() {
-  await foo();
-  console.log('van');
-}
-bar(); // 隔1秒同时输出 lee van
-```
-
-> 当await 后跟的是普通函数,非promise()
-
-```js
-let f1 = () => {
-  setTimeout(() => {
-    console.log('lee');
-  }, 1000)
-}
-
-let f2 = () => {
-  setTimeout(() => {
-    console.log('van');
-  }, 1000)
-}
-
-async function bar() {
-  await f1();
-  await f2();
-  console.log('yeah');
-}
-bar(); // yeah 隔1秒同时输出 lee fan
-```
-
-## Event Loop 事件循环
-
-> 参考链接：[详解JavaScript中的Event Loop（事件循环）机制](https://zhuanlan.zhihu.com/p/33058983?utm_source=wechat_session&utm_medium=social&utm_oi=859347813597863936)
-
-```js
-微任务: Promise.then / catch / finally(不是promise，promise里是立即执行)
-  async / await语法糖（本质就是 Promise 微任务） await 后面的代码全部塞进微任务队列
-  MutationObserver的回调
-  process.nextTick(Node.js 环境)
-  queueMicrotask()手动添加微任务
-宏任务: script(整体代码)  setTimeout  setInterval   I/O  setImmediate(Node.js 环境)   UI 交互事件
-同一次事件循环中:  微任务永远在宏任务之前执行
-```
-
-事件循环的过程：
-> 首先script脚本整体是一个大的异步任务，先执行script脚本。这个script脚本会包含同步任务和异步任务，同步任务会先在主线程上执行，异步任务（分为宏任务和微任务）会添加到任务队列中，任务队列分为宏任务队列和微任务队列。
->
-> 当同步任务执行完毕后，此时的执行栈已经被清空，会去执行异步任务。此时会先从微任务队列中取一个微任务放到执行栈中执行，若有新的微任务或宏任务产生，添加到相应的任务队列中，循环往复，直至微任务队列清空。
->
-> 紧接着会从宏任务队列取一个宏任务放到执行栈中执行，此时可能会产生新的微任务，将微任务放到微任务队列中，当这个宏任务执行完后会继续执行微任务队列，如果没有产生就继续执行下一个宏任务。循环往复，直至所有任务执行完毕。
-
-```js
-async function async1(){
-    console.log('asy1 start');
-    await async2();
-    console.log("asy1 end");}
-async function async2(){console.log("async2");}
-async1();
-setTimeout(()=>{console.log('timeout')},0);
-new Promise(function(resolve){
-    console.log("promise1");
-    resolve();})
-    .then(function(){console.log('promise2')});
-console.log('script end');
-//结果
-//asy1 start
-//async2
-//promise1
-//script end
-//asy1 end
-//promise2
-//timeout
-```
 
 ## Ajax 基本流程
 

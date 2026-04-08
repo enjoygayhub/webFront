@@ -1,5 +1,27 @@
 #  js-plus
 
+### 执行上下文 调用栈，作用域
+
++ 执行上下文 是函数调用时创建的运行环境，每次调用都不同。比如变量对象的定义、作用域链的扩展、提供调用者的对象引用等信息。
+包括this，变量环境var，词法环境（let， const），外部环境
+
++ 调用栈 call stack负责管理执行上下文的进出顺序。
++ 作用域： 就是变量、函数可以被访问的有效范围。
+函数的词法作用域，也叫静态作用域，变量的作用域在函数创建时就已经确定了，而不是在函数调用时确定。
+词法作用域保存到内部属性 [[Environment]] 中。无论函数未来在何处被调用，创建时确定，永不改变
+
+执行上下文会引用函数的 [[Environment]] 来构建作用域链。
++ 函数的this [[thisMode]] ，当函数没有明确调用者时，规定this 指向谁。
+ 私有属性有三个取值。
+lexical：表示从上下文中找this，这对应了箭头函数。
+global：表示当this为undefined时，取全局对象，对应了普通函数。
+strict：当严格模式时使用，this严格按照调用时传入的值，可能为nul或者undefined。
+
+### 循环引用会发生什么
+循环依赖是指两个或多个模块相互引用，形成了一个闭环。
+CommonJS 遇到循环依赖，返回当前已导出的缓存对象，值是拷贝的，可能不全，不会自动更新。
+ES6 Module 遇到循环依赖，保留变量引用，但var变量若未初始化会undefined,let const变量会报错Reference error。
+
 ### 隐式转换优先级
 
 Symbol.toPrimitive -> valueOf/toString
@@ -35,6 +57,13 @@ var obj = {
 严等===是比较引用，不会触发隐式转换。
 宽松等==， 如果只有一边是对象，会触发隐式转换。 否则，是等同于严等。
 
+### ES6 Promise 注意事项
+
+异常捕获可以通过 Promise catch 捕获，或在window上监听 unhandledrejection 事件捕获。
+在then中以第二参数传入处理reject后，不影响后续then的执行
+then中resolve之后 再报错throw new Error，则resolve无效，
+then传入非函数，则当前then无效，且穿透。
+Promise.all,Promise.race等 有实例reject以后，其他的Promise实例并没有停止
 
 ### 关于string，码点，utf16
 string字符串的length 并不是指字符长度。而是utf16编码单元的长度
@@ -66,6 +95,7 @@ UTF-16：JS 字符串物理存储编码，用 1~2 个 16 位单元存码点；
 + []
 // 0
 ```
+
 ### Function.name,Function.length,Function.caller,arguments.callee
 + Function.name 用于获得函数名;
   1 大多数情况包括函数声明式，匿名函数赋值给变量，.name都能取到函数名或变量名
@@ -341,22 +371,6 @@ toString(() => { });
 toString(1);
 ```
 
-### 执行上下文 调用栈，作用域
-
-+ 执行上下文 是函数调用时创建的运行环境，每次调用都不同。比如变量对象的定义、作用域链的扩展、提供调用者的对象引用等信息。
-包括this，变量环境var，词法环境（let， const），外部环境
-
-+ 调用栈 call stack负责管理执行上下文的进出顺序。
-+ 作用域： 就是变量、函数可以被访问的有效范围。
-函数的词法作用域，也叫静态作用域，变量的作用域在函数创建时就已经确定了，而不是在函数调用时确定。
-词法作用域保存到内部属性 [[Environment]] 中。无论函数未来在何处被调用，创建时确定，永不改变
-
-执行上下文会引用函数的 [[Environment]] 来构建作用域链。
-+ 函数的this [[thisMode]] ，当函数没有明确调用者时，规定this 指向谁。
- 私有属性有三个取值。
-lexical：表示从上下文中找this，这对应了箭头函数。
-global：表示当this为undefined时，取全局对象，对应了普通函数。
-strict：当严格模式时使用，this严格按照调用时传入的值，可能为nul或者undefined。
 
 ### es6中类的继承 
 ```js
@@ -435,13 +449,6 @@ window._once = (type, callback) => window.addEventListener(type, callback, { onc
 
 ```
 
-### ES6 Promise 注意事项
-
-异常捕获可以通过 Promise catch 捕获，或在window上监听 unhandledrejection 事件捕获。
-在then中以第二参数传入处理reject后，不影响后续then的执行
-then中resolve之后 再报错throw new Error，则resolve无效，
-then传入非函数，则当前then无效，且穿透。
-Promise.all,Promise.race等 有实例reject以后，其他的Promise实例并没有停止
 
 ### Error对象
 
@@ -485,10 +492,6 @@ message queue
 在启动 Node.js 进程时添加 --prof 参数，会在进程退出时生成一个 CPU profile 文件。
 process.memoryUsage()：这个方法可以获取当前 Node.js 进程的内存使用情况，包括 RSS（Resident Set Size）、Heap Total、Heap Used 等。
 
-### 循环引用会发生什么
-循环依赖是指两个或多个模块相互引用，形成了一个闭环。
-CommonJS 遇到循环依赖，返回当前已导出的缓存对象，值是拷贝的，可能不全，不会自动更新。
-ES6 Module 遇到循环依赖，保留变量引用，但var变量若未初始化会undefined,let const变量会报错Reference error。
 
 
 ### 简述 node/v8 中的垃圾回收机制

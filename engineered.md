@@ -29,8 +29,8 @@ Core Web Vitals（三大核心网页指标）
 ## 性能检测
 
 - ligthing
-- devtool中的network 和 性能监控
-- web API ： Performance API , PerformanceEntry ， PerformanceObserver
+- devtool中的network 和 性能监控record
+- web API ： Performance.timing , PerformanceEntry ， PerformanceObserver
 
 ### 指标参数
 
@@ -64,12 +64,31 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 - 加载方式（图片懒加载，img添加背景
 - 加载优先级（img的fetchPriority 属性
 
-2. 减小下载文件大小：Code Split + 基于路由的按需加载，Tree Shaking+依赖按需引用,使用体积小的第三方依赖，terser压缩混淆代码，gzip压缩
+2. HTML角度
+- 嵌入内容过大（响应式资源提供多种格式尺寸，懒加载，不使用iframe）
+- 资源加载（rel="preload"：提前加载首屏必需资源，dns-prefetch / preconnect）
+- 减小阻塞 HTML 解析与渲染：（非关键JavaScript 异步加载）
 
-3. 网络方面： cdn， http2.0， 减少HTTP请求
+3. css角度
+- 压缩、最小化 CSS 并开启 gzip
+- 拆分 CSS，首屏样式内联
+- 简化选择器，避免复杂嵌套与冗余匹配，删除无用 CSS，
+- 用 CSS 精灵图减少图片请求
+- 动画 transform、opacity、filter，不触发回流/重绘
+- （video/canvas/iframe、3D 变换、will-change）GPU 合成层加速
+- 字体加载显示优化
+- contain属性，限定布局 / 绘制 / 样式重算范围，content-visibility: auto指定浏览器在需要之前不要布局和渲染
 
-4. 代码方面：，减少DOM元素数量和深度，减少访问dom，避免各种形式重排重绘，避免直接修改样式，避免直接操作dom，React/vue避免重新渲染，重新计算
-5. 其他：service worker, SSR，web worker
+4. js角度
+- 减小js体积：Code Split + 基于路由的按需加载，Tree Shaking+依赖按需引用,使用体积小的第三方依赖，terser压缩混淆代码，gzip压缩
+- JS 默认阻塞 HTML 解析与渲染，非关键Js 异步加载）
+- 长任务拆分，计算任务放web worker
+- 使用事件委托，及时移除监听
+- 减少DOM元素数量和深度，减少访问dom，避免直接修改样式，避免直接操作dom，React/vue避免重新渲染，重新计算
+
+5. 网络方面： cdn， http2.0， 减少HTTP请求，客户端预请求，客户端离线包
+
+6. 其他：service worker, SSR
 
 ## ES6 模块与 CommonJS 模块区别
 
