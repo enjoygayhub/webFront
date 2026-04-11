@@ -1,27 +1,7 @@
 # Vue
 
-## MVVM 和 MVC的区别
+## vue 的响应式原理
 
-- MVC: MVC是应用最广泛的软件架构之一,一般MVC分为:Model(模型),View(视图),Controller(控制器)。 这主要是基于分层的目的,让彼此的职责分开.View一般用过Controller来和Model进行联系。Controller是Model和View的协调者,View和Model不直接联系。基本都是单向联系。
-
-1. View传送指令到Controller。
-2. Controller完成业务逻辑后改变Model状态。
-3. Model将新的数据发送至View,用户得到反馈。
-
-- MVVM: MVVM是把MVC中的Controller改变成了ViewModel。
-
-View的变化会自动更新到ViewModel,ViewModel的变化也会自动同步到View上显示,通过数据来显示视图层。
-
-区别:
-
-- MVC中Controller演变成MVVM中的ViewModel
-- MVVM通过数据来显示视图层而不是节点操作
-- MVVM主要解决了MVC中大量的dom操作使页面渲染性能降低,加载速度变慢,影响用户体验
-
-
-## vue 的响应式
-
-数据发生变化后，会重新对页面渲染
 1. 数据劫持 / 数据代理
 2. 依赖收集
 3. 发布订阅模式
@@ -46,10 +26,10 @@ set：
 
 因而 v-if 有较高的切换性能消耗，v-show 有较高的初始渲染消耗，适用于条件频繁改变的情况。
 
-## vue 中nextTick 的实现原理
+## vue 中nextTick 的实现
 
 nextTick 会将传入的回调函数推入到一个微任务队列中。回调函数会在 DOM 更新完成后才会执行。
-确保 DOM 更新后操作: 很多时候，我们需要在 DOM 更新完成后才能获取最新的 DOM 结构，或者执行一些依赖于 DOM 的操作。nextTick 就提供了这样的机制。
+确保 DOM 更新后操作: 需要在 DOM 更新完成后才能获取最新的 DOM 结构，或者执行一些依赖于 DOM 的操作。nextTick 就提供了这样的机制。
 避免数据和视图不同步: 如果在数据更新后立即操作 DOM，可能会导致数据和视图不同步的问题。
 
 不同环境的实现:
@@ -59,7 +39,7 @@ MessageChannel: 创建一个 MessageChannel，通过 postMessage 来传递消息
 
 ## 为什么 vue2.0中 组件中的 data 必须是函数
 
-data 必须声明为返回一个初始数据对象的函数，因为组件可能被用来创建多个实例。如果 data 仍然是一个纯粹的对象，则所有的实例将共享引用同一个数据对象！。
+因为组件可能被用来创建多个实例。如果 data 仍然是一个纯粹的对象，则所有的实例将共享引用同一个数据对象！。
 
 ## vue3.0 的生命周期函数
 
@@ -88,7 +68,6 @@ key 的作用主要是为了高效的更新虚拟 DOM
 
 key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 对比时辨识 VNodes。如果不使用 key，Vue 会使用一种最大限度减少动态元素并且尽可能的尝试就地修改/复用相同类型元素的算法。而使用 key 时，它会基于 key 的变化重新排列元素顺序，并且会移除 key 不存在的元素。
 
-有相同父元素的子元素必须有独特的 key。重复的 key 会造成渲染错误。
 
 ## Vue的路由模式
 
@@ -106,10 +85,6 @@ key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 
 特点：利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。
 在当前已有的 back、forward、go的前进 后退控制页面。
 
-## vue中router和route的区别
-
-- route：当前激活的路由的信息对象。每个对象都是局部的，可以获取当前路由的 path, name, params, query 等属性。
-- router：全局的 router 实例。通过 vue 根实例中注入 router 实例，然后再注入到每个子组件，从而让整个应用都有路由功能。其中包含了很多属性和对象（比如 history 对象），任何页面也都可以调用其 push(), replace(), go() 等方法。
 
 ## 路由的两种跳转方式
 
@@ -244,56 +219,36 @@ export default useWindowResize;
   }  
 </style>
 
-```
+``` 
 
 ## 兄弟组件之间通信
 
-1. eventBus 自定义事件中心
-2. 使用状态管理库
+1. eventBus事件中心（vue3废弃）
+2. 使用全局状态
 3. 父组件中转
+4. Provide/Inject → Vue3 推荐、跨层级
 
-##  React 和 Vue差异：
+##  React 和 Vue 事件绑定的差异：
 
-### 1. 虚拟 DOM
-
-**React** 和 **Vue** 都使用虚拟 DOM 的概念来提高渲染效率。虚拟 DOM 是内存中的 DOM 树副本，用于减少实际 DOM 的更新次数。React 和 Vue 都通过比较虚拟 DOM 的差异来决定实际 DOM 的更新操作。
-
-### 2. 批量更新
-
-- **React** 通过 `batching` 来批量处理状态更新，减少不必要的渲染。React 18 引入了 `useTransition` 和 `useSyncExternalStore` 等 Hooks，进一步增强了批量更新的能力。
-- **Vue** 默认使用异步更新队列，这意味着所有状态更新都会在下一个微任务的结尾批量处理。这有助于减少不必要的渲染，提高性能。
-
-### 3. 更新机制
-
-- **React** 使用了合成事件和虚拟 DOM 的更新机制。当状态或 props 发生变化时，React 会重新渲染组件，并通过 Diff 算法来确定需要更新的实际 DOM 节点。
-- **Vue** 使用了观察者模式来实现响应式。当数据变化时，Vue 会自动更新依赖这些数据的视图。Vue 3.0 使用了 Proxy 对象来实现数据的响应式，这比 Vue 2.0 中的 Object.defineProperty 更高效。
-
-### 4. 优化工具
-
-- **React** 提供了 `React.memo` 和 `useMemo`、`useCallback` 等 Hooks 来帮助开发者优化性能。此外，还有 `StrictMode` 来帮助发现潜在的性能问题。
-- **Vue** 也提供了类似的功能，如 `v-memo`（社区提供的解决方案）和 `computed` 属性来缓存计算结果。Vue 3.0 中的 `ref` 和 `reactive` API 也提供了更多的灵活性来优化性能。
-
-### 5. 性能测试
-
-- **React** 和 **Vue** 在大多数基准测试中表现相近。在某些场景下，Vue 的异步更新队列和更细粒度的依赖追踪可能会带来一些性能优势。
-- **React** 在某些大规模应用中，尤其是涉及大量状态更新和复杂的组件树时，其批量更新和合成事件的优势可能会更加明显。
-
-### 6. 生态系统
-
-- **React** 和 **Vue** 都拥有丰富的生态系统和社区支持。React 的生态系统相对较大，有更多的第三方库和工具可供选择，这也可能会影响性能和开发效率。
-
-### 7. 服务端渲染
-
-- **React** 和 **Vue** 都支持服务端渲染（SSR）。React 的 SSR 支持较为成熟，而 Vue 3.0 通过官方的 `vue-server-renderer` 和社区提供的解决方案也有很好的 SSR 支持。
-
-### 8. 框架特性
-
-- **React** 的核心库相对较小，更多功能是通过社区提供的库来实现。这使得 React 可以保持轻量级，但也可能增加学习曲线和配置复杂度。
-- **Vue** 的核心库集成了更多功能，如状态管理、路由等，这使得 Vue 在开箱即用方面表现更好，但也可能增加应用的初始加载时间。
+Vue：
+  基于原生 DOM 事件
+  使用 addEventListener 直接绑定
+  支持强大的事件修饰符
+   this 自动指向组件实例
+  事件对象就是原生 event
+  灵活：可委托、可直接绑定
+  
+React：
+  自己实现合成事件系统（SyntheticEvent）
+  全部事件委托到 root 节点（React17+）
+  不使用原生 onclick 等属性
+  须手动绑定 this 或箭头函数
+  事件对象是合成的，非原生
+  目的：跨平台、统一机制、优化更新
 
 ### React、Vue2、Vue3的三种Diff算法
 
-1. Diff 算法的基本原理
+1. 基本原理
 虚拟 DOM： 将真实的 DOM 结构抽象成一个 JavaScript 对象，这个对象就是虚拟 DOM。
 差异对比： 比较新旧虚拟 DOM，找出其中的差异。
 最小化更新： 根据差异，对真实的 DOM 进行最小化的更新。

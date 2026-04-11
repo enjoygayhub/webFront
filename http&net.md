@@ -1,63 +1,6 @@
 # 计算机网络 与HTTP
 
 
-## 浏览器的同源政策
-
-协议、域名、端口号必须相同，否则则不属于同一个域。
-
-## 不受跨域影响的核心场景：
-静态资源加载（img/CSS/ 字体 / 视频，仅渲染，JS 无法读取内容）；
-链接跳转 / 表单提交（浏览器直接处理，无 JS 读取响应）；
-嵌入型资源（iframe/object，仅展示，JS 无法跨域通信）；
-资源预加载（prefetch/preload，仅缓存，不读取内容）。
-
-核心判断规则：
-「JS 无法读取内容」的资源 / 操作 → 不受跨域影响；
-「JS 可读取 / 修改内容」的资源 / 接口 → 受跨域限制（需 CORS/JSONP 解决）。
-比如：canvas 操作跨域图片、跨域字体加载需特殊处理，但本质不是「跨域读取限制」，而是「内容访问授权」。
-
-## 网络请求跨域
-
-> 当一个请求url的 协议、域名、端口三者之间任意一个与当前页面url不同即为跨域。
-
-1. JSONP (JSON with Padding) 通过动态创建 script，再请求一个带参网址实现跨域通信，目前已过时。
-
-2. CORS (跨域资源共享)
-    CORS的基本思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。
-    简单请求：只需服务端设置 `Access-Control-Allow-Origin：*` 即可，若要带 cookie 前端设置`withCredentials`为true,后端设置`Access-Control-Allow-Credentials`为true,同时`Access-Control-Allow-Origin`不能设置为`*`
-    复杂请求：使用 OPTIONS 方法发起一个预检请求到服务器，告知服务器实际请求使用方法和首部自定义字段，服务端响应返回实际请求接受的域和方法，头部。如果要携带cookie，Access-Control-Allow-Origin，Access-Control-Allow-Headers，Access-Control-Allow-Methods 均不能设置为*。
-3. nginx反向代理,服务端请求不受浏览器限制，既访问同源服务端，服务端再去寻找正在的地址拿到数据再返回
-4. 本地开发启动正向代理服务     
-5. 跨域属于浏览器行为，可以通过浏览器设置关闭
-6. 浏览器插件可以拦截请求，修改responce 的body
-
-简单请求判定：方法是 GET/HEAD/POST + 仅含安全首部 + Content-Type 为 x-www-form-urlencoded/multipart/form-data/text/plain（三者同时满足）；
-复杂请求：不满足上述任一条件（如 POST JSON、PUT/DELETE、带自定义头）；
-核心差异：复杂请求多了 OPTIONS 预检步骤，服务端需额外配置允许的方法 / 首部。
-
-## 强缓存与协商缓存
-
-### Expires 与 Cache-Control：max-age
-HTTP/1.0 中的Expires 
-Expires 的值是一个绝对时间的 GMT 格式的时间字符串。比如 Expires 值是：`expires:Fri, 14 Apr 2017 10:47:02 GMT`。这个时间代表这这个资源的失效时间，只要发送请求时间是在 Expires 之前，那么本地缓存始终有效，则在缓存中读取数据。
-
-HTTP/1.1 中，Cache-Control指定 max-age——代表经过的时间后缓存过期。
-同时启用的时候 Cache-Control 优先级高。
-
-### 缓存重新验证响应 
-
-`Etag/If-None-Match`返回的是一个校验码。`Etag`可以保证每一个资源是唯一的，资源变化都会导致`Etag`变化。服务器根据浏览器发送的`If-None-Match`值来判断是否命中缓存。
-
-Last-Modify是一个时间标识该资源的最后修改时间，例如Last-Modify: Thu,31 Dec 2037 23:59:59 GMT。当浏览器再次请求该资源时，request的请求头中会包含If-Modify-Since，该值为缓存之前返回Last-Modify。服务器收到If-Modify-Since后，根据资源的最后修改时间判断是否命中缓存。如果命中缓存，则返回304，并且不会返回资源内容，并且不会返回Last-Modify。
-
-`Last-Modified` 与 `ETag` 是可以一起使用的，服务器会优先验证`ETag`，一致的情况下，才会继续比对 `Last-Modified`，最后才决定是否返回 304。
-
-### 不使用缓存 Cache-Control
-
-no-cache 指令不会阻止响应的存储，而是阻止在没有重新验证的情况下重用响应。
-no-store 响应不存储在任何缓存中
-private 私有缓存
-
 ## 网络安全
 
 1. XSS攻击(cross-site script)
@@ -270,3 +213,19 @@ File： 继承自 Blob，表示一个用户系统中的文件。除了 Blob 的�
 创建一个 XMLHttpRequest 对象，发送 HTTP 请求。设置请求方法为 POST，指定请求的 URL。
 设置请求头中的 Content-Type，通常为 multipart/form-data，表示这是一个多部分表单数据。
 发送请求：将 FormData 对象作为请求体，发送到服务器。
+
+
+## JWT（JSON Web Token）的原理+
+
+JWT 是一种用于在不同服务之间传递安全可靠信息的紧凑且自包含的方式。它本质上是一个 JSON 对象，经过 Base64 编码并使用数字签名。
+一个标准的 JWT 包含三个部分，用点（.）分隔：
+
+头部（Header）：
+指定了 JWT 的类型（通常为 JWT）和使用的签名算法（例如 HMAC SHA256）。
+
+载荷（Payload）：
+标识该 JWT 的唯一 id，创建时间，过期时间，以及其他自定义数据。
+这些声明一般不加密，但被 Base64 URL 编码。
+
+签名（Signature）：
+使用头部和载荷的内容，结合一个密钥，通过指定的签名算法生成。用于验证 JWT 的完整性。

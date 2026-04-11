@@ -1,5 +1,7 @@
 # react
 
+## class react
+
 ### state
 
 + 不能直接修改，需要使用setState（）
@@ -13,10 +15,6 @@
 + state更新会被合并，可以单独更新
 
 + `setState()` 并不总是立即更新组件。它会批量推迟更新。在调用 `setState()` 后立即读取 `this.state` 成为了隐患。为了消除隐患，使用 `componentDidUpdate` 或者 `setState` 的回调函数（`setState(updater, callback)`），这两种方式都可以保证在应用更新后触发。
-
-### 事件处理
-
-  函数式事件回调中this指向问题，使用箭头函数来解决。可以在定义时使用箭头函数+赋值          callback= ()=>{}，或者在传参时使用（）=>{this.callback}
 
 ###  阻止渲染
 
@@ -65,38 +63,7 @@ tips：
 - 回调形式使用Ref，ref = {callback}，在回调函数中设置引用
 - 可使用React.forwardRef，将ref引用传递给子组件。
 
-### Fragment
 
-Fragments 允许你将子列表分组，而无需向 DOM 添加额外节点。简写<> </> 来声明 Fragments。
-
-key是唯一支持的属性。
-
-### HOC高阶组件
-
-**高阶组件是参数为组件，返回值为新组件的函数。**
-
-1.状态管理:使用Redux。
-
-2.渲染增强:使用 HOC 来添加特定的渲染逻辑，如添加额外的 UI 组件或修改现有组件的输出。
-3.性能优化:使用 HOC 来实现如懒加载、记忆化等性能优化技术。
-4权限控制:使用 HOC 来控制组件的可见性，只允许特定的用户访问某些组件。
-5日志记录和调试:使用 HOC 来记录组件的生命周期事件或添加调试信息。
-
-HOC 不应该修改传入组件，而应该使用组合的方式，通过将组件包装在容器组件中实现功能
-
-几点约定和注意：
-
-- 透传与自身无关的props
-
-- 最大化可组合性，增加props或减少
-
-- 包装显示名称方便调试
-
-- 不要在render中使用HOC，会使diff不同，影响性能，子组件状态丢失
-
-- 返回的组件中没有被包装组件的静态方法，需要手动复制出来
-
-- Refs 不会被传递，会指向容器组件本身
 
 ## 非受控组件使用
 
@@ -157,28 +124,6 @@ HOC 不应该修改传入组件，而应该使用组合的方式，通过将组�
   ```
 
 
-### JSX
-jsx是一种语法扩展，类html的模板语言，需要babel转义为js语法
-- jsx会被编译成React.createElement()语法，返回React Element的js对象
-
-```js
-//createElement函数入参，type标时节点类型，config对象表示属性键值对，children对象记录组件标签之间的嵌套内容
-export function createElement(type, config, children){}
-
-```
-- 一个模块中导出许多组件时，可使用点语法获得组件
-- 自定义组件必须以大写字母开头
-- 大括号{}中可以嵌入JavaScript表达式，if 和for 不是表达式，所以必须在jsx以外使用
-- props 默认值为true
-- render中可以return 一个数组
-- 可以把回调函数作为 `props.children` 进行传递，来重复生产组件
-- `false`, `null`, `undefined`, and `true` 是合法的子元素。但并不会被渲染
-
-```jsx
-shouldComponentUpdate(nextProps, nextState){}
-//手动判断是否更新dom
-```
-
 ### portals
 Portal 提供了一种将子节点渲染到存在于父组件以外的 DOM 节点的优秀的方案。
 
@@ -190,24 +135,15 @@ Portal 提供了一种将子节点渲染到存在于父组件以外的 DOM 节�
 ReactDOM.createPortal(child, container)
 ```
 
-### render prop
 
-render prop 是一个用于告知组件需要渲染什么内容的函数 prop。
+### react 生命周期
 
-可以将相同的行为封装复用，渲染不同的内容。
-
-### react API
-
- React.Component基类中包含了生命周期。state与props
+ React.Component基类中包含了
 
 组件实例被创建并插入 DOM 中时，其生命周期调用顺序如下：
 
 - constructor()  ： 初始化内部state，避免将props的值赋值给state
 - render()： 纯函数，返回boolean 或null时不渲染
-```jsx
-// element需要渲染的元素，container挂在的目标容器真实的dom，
-ReactDOM.render(elements,container,[callback])
-```
 - componentDidMount()： 网络请求数据，添加订阅
 
 触发更新后，生命周期为
@@ -232,17 +168,6 @@ React Hooks 是 React 16.8 引入的一个新特性，它允许在函数组件�
 
 使用 Hook 的过程中，React 维护了每个组件的“Hook 状态链”，它是一个单向链表结构，存储着所有使用 Hook 的状态信息。每次组件更新时，React 会检查使用的 Hook 是否发生变化，并根据变化来更新状态链中的对应状态。
 
-### useState
-
-```jsx
-const [state, setState] = useState(initialState);
-```
-
-state：当前状态值
-
-setState：更新state的函数
-
-initialState：初始状态值
 
 ### useEffect
 
@@ -308,19 +233,12 @@ useCallback 用于返回一个被优化过的函数引用，这个函数只有�
 + 类组件，使用该`Class.contextType`方法，限制只能使用一个上下文。
 + 类组件，使用 <Context.Consumer>包裹
 
-### 类组件和函数组的区别，什么场景下使用
-
-- 类组件使用 ES6 的 class 关键字定义，需要继承 React.Component。内置的生命周期方法和状态管理功能。类组件可以通过 this.refName 访问 DOM 节点或子组件的引用。类组件可以通过继承扩展其他类组件，便于代码复用和重用。
-
-- 函数组件使用普通的函数定义，函数的返回值是 JSX。通过 useState 和 useEffect 等 Hooks 来管理状态和副作用。
-使用场景：复杂的状态管理、生命周期方法、直接访问 Refs，组件需要扩展其他类组件时使用类组件。
-对于简单的 UI 组件，只需要少量的状态管理或副作用操作时使用函数组件。
 
 ### React 组件中绑定一个事件跟直接操作 DOM 绑定一个事件有什么差别
 
 React 中，事件处理程序通常作为属性（props）附加到 JSX 元素上，通过 React 的合成事件系统自动完成，使用箭头函数来自动绑定 this，当组件卸载时，相关的事件监听器会被自动清理，避免内存泄漏。
 
-React 使用合成事件来提供一致性的事件处理机制，同时通过事件代理的方式提高了性能。通过使用合成事件，React 简化了事件处理的复杂性，并自动管理了事件监听器的生命周期，使得开发者可以专注于业务逻辑的实现。
+React 使用合成事件来提供一致性的事件处理机制，同时通过事件代理的方式提高了性能。通过使用合成事件，React 简化了事件处理的复杂性，并自动管理了事件监听器的生命周期
 
 ### hooks 使用的时候有注意些什么
 React Hooks 的规则限制
@@ -419,46 +337,13 @@ React 使用增量渲染技术来分批处理队列中的任务。
 
 ### hooks性能优化
 1. 使用 useMemo 和 useCallback
-3. 使用 useRef ，避免在每次渲染时创建新的对象
+3. 使用 useRef，避免在每次渲染时创建新的对象
 5. 使用 React.memo 和 shouldComponentUpdate
 6. 使用 useEffect 控制副作用
 7. 使用 useContext
-8. 代码分割和懒加载 lazy(()=>import())
-10. 使用 useDebounce，对值及事件处理函数进行防抖，避免状态频繁变动，优化渲染次数
+10. 使用 useDebounce，对值及事件处理函数进行防抖，避免状态频繁变动
 11. 使用 useImmer
 
-## [redux](https://www.redux.org.cn)
 
-### 基本概念
-
-state：数据对象；
-
-action：简单的对象，用来描述state发生了什么变更。
-
-reducer：reducer 只是一个接收 state 和 action，并返回新的 state 的函数
-
-store：只能有一个。创建store就是把所有reducer给它。export const store = createStore(rootReducers，initstate)
-
-`store.dispatch()`是组件发出action的唯一方法。
-
-### 原则：
-
-- 单一数据源 ：单一的state tree
-- 只读State ： 只能触发action来改变
-- 纯函数执行修改：可以通过combineReducers将各个小的reducer合并
-
-展示组件用于描述结构，容器组件中使用connect将state映射到props
-
-## router
-
-react-router 路由拦截
-
-<Prompt message={（location，action）=>{}} when= {}>
-
-Prompt 可以获得到路由跳转event事件，location.pathname可得到将要跳转的路由
-
-when得到true时则渲染Prompt组件，启用拦截
-
-message 得到true则表示允许跳转，即允许跳转，得到false表示不允许，得到字符串表示提示信息，会唤起浏览器的confirm提示。
 
 
