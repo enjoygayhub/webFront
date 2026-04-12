@@ -1,3 +1,41 @@
+# typeScript
+
+## keyof，infer，extends
+keyof取一个对象类型的所有键，变成联合类型。
+extends：
+  - 类型约束 function fn<T extends string>(a: T) {}
+  - 条件类型 T extends U ? X : Y ，如果 T 是 U 的子类型 → 取 X，否则取 Y
+infer：条件类型中推断一个类型
+## 在 ts 中如何实现 Partial Pick Omit,Parameters
+
+```ts
+type Partial<T> = {
+  [P in keyof T]?: T[P]; // ?可选
+};
+
+type Required<T> = {
+  [P in keyof T]-?: T[P]; // -?不能可选
+};
+// 联合类型中提取
+type Extract<T, U> = T extends U ? T : never;
+// 联合类型中排除
+type Exclude<T, U> = T extends U ? never : T;
+
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
+
+type MyParameters<T extends (...args: any[]) => any> = 
+  T extends (...args: infer P) => any ? P : never
+
+// 过滤掉可选属性
+type ExcludeOption<T extends {}> = Pick<T, { [k in keyof T]-?: undefined extends T[k] ? never : K }[keyof T]>;
+// 过滤掉指定类型的属性
+type ExcludeType<T , N> = Pick<T, { [k in keyof T]: T[k] extends N ? never : K }[keyof T]>; 
+```
+
 ### any 类型
 
 变量如果无法推断出类型，TypeScript 就会认为该变量的类型是any。
@@ -75,59 +113,4 @@ keyof 运算符可以取出 Enum 结构的所有成员名，作为联合类型�
 in 运算符可以取出所有的  Enum 结构的所有成员的值
 
 数值 Enum 存在反向映射，即可以通过成员值获得成员名。比如 Color[0]
-```typeScript
-enum Color {
-        Red,
-        Green,
-        Blue
-      }
 
-type foo = keyof typeof Color
-
-type oo = {[key in Color]:any}
-```
-## 在 ts 中如何实现 Partial Pick Omit,Parameters
-
-```ts
-type Partial<T> = {
-  [P in keyof T]?: T[P]|undefined;
-};
-
-type Required<T> = {
-  [P in keyof T]-?: T[P];
-};
-
-type Extract<T, U> = T extends U ? T : never;
-
-type Exclude<T, U> = T extends U ? never : T;
-
-type Pick<T, K extends keyof T> = {
-  [P in K]: T[P];
-};
-
-type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
-
-type Parameters<T extends (...args: any) => any> = T extends (
-  ...args: infer P
-) => any
-  ? P
-  : never;
-
-// 过滤掉可选属性
-type ExcludeOption<T extends {}> = Pick<T, { [k in keyof T]-?: undefined extends T[k] ? never : K }[keyof T]>;
-// 过滤掉指定类型的属性
-type ExcludeType<T , N> = Pick<T, { [k in keyof T]: T[k] extends N ? never : K }[keyof T]>;
-
-
-
-```
-
-## 构建普通ts脚本项目
-
-1. 新建项目文件夹，vscode打开文件夹,
-2. 唤起cmd终端，输入git init 初始化git，
-3. 输入npm init -y 初始化包管理工具，按提示输入项目信息,
-4. 输入npm install typescript --save -d ：安装ts在开发环境，
-5. 输入tsc init 初始化ts配置，修改tsconfig.json 相关配置，如配置rootDir,outDir等
-6. 输入tsc 可编译ts为js,
-7. 添加gitignore，readme等文件,

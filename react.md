@@ -1,5 +1,135 @@
 # react
 
+## hooks
+### react hooks 的原理是什么
+
+通过 Fiber 节点上的单向 Hook 链表 + 闭包 + 双阶段 Dispatcher，按固定调用顺序将状态与副作用 “挂” 在组件上，实现函数组件的状态持久化与生命周期能力。
+
+每个函数组件对应一个 Fiber 节点，其 memoizedState 指向一条 单向 Hook 链表，存储所有 Hook 的状态。
+// 单个 Hook 对象（简化）
+const hook = {
+  memoizedState: null,  // 存储状态（useState值、useEffect回调等）
+  queue: null,          // 更新队列（setState的更新任务）
+  next: null            // 指向下一个 Hook，形成链表
+}
+首次渲染（mount）：按调用顺序创建 Hook 节点，串联成链表。
+
+1. 只能在顶层调用 Hooks:  
+2. 不要在条件循环语句中调用 Hooks:
+3. 不要在事件处理器中直接调用 Hooks:
+
+### React Diff 的算法
+
+对虚拟 DOM 树做分层同层比较 + 基于 key 的元素复用 + 只做最小必要更新，
+
+1 只做同层比较
+
+2类型不同：直接重建
+3类型相同：对比属性和文本
+4子列表：用 key 匹配复用节点
+
+
+
+### fiber
+
+把原来同步、一次性、阻塞式的虚拟 DOM 渲染，拆分成可中断、可恢复、可调度的 “增量更新任务”，让浏览器主线程不被长时间阻塞，从而保证交互流畅。
+
+Fiber 本质是一个链表结构的fiber树，替代了原来的递归虚拟 DOM：每个 Fiber 包含：
+stateNode：对应 DOM 或组件实例
+child：第一个子节点
+sibling：兄弟节点
+return：父节点
+effectTag：更新标记（插入、更新、删除等）
+expirationTime：优先级
+
+### hooks性能优化
+ 1. useMemo：缓存计算结果（避免重复计算）
+2. useCallback：缓存函数引用（避免子组件不必要重渲染）
+3. React.memo：浅比较 props，缓存组件
+4. useRef：保存不变引用，不触发重渲染
+5. useTransition/useDeferredValue 实现调度优化
+
+
+### useEffect
+
+useEffect 是 React Hooks 中的一个非常重要的 Hook，用于处理副作用操作，如数据获取、订阅或手动更改 DOM。
+副作用函数:
+你提供一个函数作为第一个参数，这个函数将在渲染后执行。
+你可以在这个函数中执行任何副作用操作，如数据获取、设置定时器、订阅等。
+清理函数:
+如果副作用函数返回一个函数，这个返回的函数将在组件卸载时执行，用于清理副作用。
+这可以用于取消网络请求、清除定时器、取消订阅等。
+依赖数组:
+第二个参数是一个依赖数组，它告诉 React 哪些值的变化会导致副作用函数重新运行。
+如果依赖数组为空（[]），副作用函数仅在组件挂载时运行一次，并在组件卸载时清理。
+
+### useLayoutEffect 与 useEffect 的区别
+
+useLayoutEffect 在浏览器进行布局和绘制之前同步执行，会阻塞浏览器绘制。
+用于读取 DOM 布局信息（如元素尺寸），确保某些副作用在浏览器更新 UI 之前发生
+
+### useReducer
+useReducer 是 React Hooks 中的一个 Hook，用于在函数组件中管理复杂的状态逻辑。它类似于 Redux 的 reducer，但适用于函数组件。
+
+reducer 函数:
+你提供一个 reducer 函数，这个函数接收当前的状态和动作，并返回新的状态。
+dispatch 函数:
+你提供一个 dispatch 函数，这个函数用于分发动作，并触发状态更新。
+initialState:
+你提供一个初始状态值。
+state:
+你获取当前的状态值。
+dispatch:
+你获取一个用于分发动作的函数。
+
+
+### useMemo
+useMemo 接收一个函数和一个依赖数组作为参数。
+
+函数:
+你提供一个函数，该函数返回一个需要缓存的值。
+这个函数会在每次渲染时被调用，但返回值会被缓存。
+依赖数组:
+一个数组，包含函数依赖的值。
+如果依赖数组中的值发生改变，useMemo 会重新运行函数并更新缓存的值。
+如果依赖数组中的值没有改变，useMemo 将返回上次计算的结果，从而避免了不必要的计算。
+
+### useCallback
+
+useCallback 用于返回一个被优化过的函数引用，这个函数只有在依赖项发生变化时才会重新创建。
+适用场景：
+当你需要传递一个函数作为 prop 到子组件，并且这个函数的依赖项很少改变时。
+当函数作为回调被频繁创建时，使用 useCallback 可以避免不必要的重新渲染。
+
+### useContext
+
+创建：React.createContext(); </ThemeContext.Provider>包裹使用数据的组件
+
+使用方法：使用useContext
+
+
+### 实现一个useState
+```jsx
+const useState = defaultValue => {
+    const value = useRef(defaultValue);
+    
+    const setValue = newValue => {
+        if (typeof newValue === 'function') {
+            value.current = newValue(value.current);
+        } else {
+            value.current = value;
+        }
+    }
+    
+    //  触发组件的重新渲染
+    dispatchAction();
+    
+    return [value, setValue];
+}
+```
+
+
+
 ## class react
 
 ### state
@@ -157,193 +287,4 @@ ReactDOM.createPortal(child, container)
 - componentWillUnmount ：清除 timer，取消网络请求或清除订阅
 
 调用 `forceUpdate()` 将致使组件调用 `render()` 方法，此操作会跳过该组件的 `shouldComponentUpdate()`。但其子组件会触发正常的生命周期方法，避免使用该api
-
-## hooks
-
-### react hooks 的原理是什么
-
-React Hooks 是 React 16.8 引入的一个新特性，它允许在函数组件中使用状态和其他 React 功能，而无需编写类组件。它的实现原理是通过利用 JavaScript 的闭包和函数式编程的思想来实现。
-
-每个 Hook 都是一个函数，它可以对组件的状态进行操作或者访问 React 的其他功能。当组件渲染时，React 会根据每个 Hook 调用的顺序来维护内部的状态并执行相应的操作。
-
-使用 Hook 的过程中，React 维护了每个组件的“Hook 状态链”，它是一个单向链表结构，存储着所有使用 Hook 的状态信息。每次组件更新时，React 会检查使用的 Hook 是否发生变化，并根据变化来更新状态链中的对应状态。
-
-
-### useEffect
-
-useEffect 是 React Hooks 中的一个非常重要的 Hook，用于处理副作用操作，如数据获取、订阅或手动更改 DOM。useEffect 允许你在函数组件中执行类似于类组件中的生命周期方法
-
-副作用函数:
-你提供一个函数作为第一个参数，这个函数将在渲染后执行。
-你可以在这个函数中执行任何副作用操作，如数据获取、设置定时器、订阅等。
-清理函数:
-如果副作用函数返回一个函数，这个返回的函数将在组件卸载时执行，用于清理副作用。
-这可以用于取消网络请求、清除定时器、取消订阅等。
-依赖数组:
-第二个参数是一个依赖数组，它告诉 React 哪些值的变化会导致副作用函数重新运行。
-如果依赖数组为空（[]），副作用函数仅在组件挂载时运行一次，并在组件卸载时清理。
-
-### useLayoutEffect 与 useEffect 的区别
-
-useLayoutEffect 在浏览器进行布局和绘制之前同步执行，会阻塞浏览器绘制。
-用于读取 DOM 布局信息（如元素尺寸），确保某些副作用在浏览器更新 UI 之前发生
-
-### useReducer
-useReducer 是 React Hooks 中的一个 Hook，用于在函数组件中管理复杂的状态逻辑。它类似于 Redux 的 reducer，但适用于函数组件。
-
-reducer 函数:
-你提供一个 reducer 函数，这个函数接收当前的状态和动作，并返回新的状态。
-dispatch 函数:
-你提供一个 dispatch 函数，这个函数用于分发动作，并触发状态更新。
-initialState:
-你提供一个初始状态值。
-state:
-你获取当前的状态值。
-dispatch:
-你获取一个用于分发动作的函数。
-
-
-
-### useMemo
-useMemo 接收一个函数和一个依赖数组作为参数。它会在每次渲染时调用该函数，并根据依赖数组中的值来判断是否需要重新计算函数的结果。
-
-函数:
-你提供一个函数，该函数返回一个需要缓存的值。
-这个函数会在每次渲染时被调用，但返回值会被缓存。
-依赖数组:
-一个数组，包含函数依赖的值。
-如果依赖数组中的值发生改变，useMemo 会重新运行函数并更新缓存的值。
-如果依赖数组中的值没有改变，useMemo 将返回上次计算的结果，从而避免了不必要的计算。
-
-### useCallback
-
-useCallback 用于返回一个被优化过的函数引用，这个函数只有在依赖项发生变化时才会重新创建。
-适用场景：
-当你需要传递一个函数作为 prop 到子组件，并且这个函数的依赖项很少改变时。
-当函数作为回调被频繁创建时，使用 useCallback 可以避免不必要的重新渲染。
-
-
-### useContext
-
-创建：React.createContext(); </ThemeContext.Provider>包裹使用数据的组件
-
-使用方法：
-
-+ 函数式组件，使用useContext钩子
-+ 类组件，使用该`Class.contextType`方法，限制只能使用一个上下文。
-+ 类组件，使用 <Context.Consumer>包裹
-
-
-### React 组件中绑定一个事件跟直接操作 DOM 绑定一个事件有什么差别
-
-React 中，事件处理程序通常作为属性（props）附加到 JSX 元素上，通过 React 的合成事件系统自动完成，使用箭头函数来自动绑定 this，当组件卸载时，相关的事件监听器会被自动清理，避免内存泄漏。
-
-React 使用合成事件来提供一致性的事件处理机制，同时通过事件代理的方式提高了性能。通过使用合成事件，React 简化了事件处理的复杂性，并自动管理了事件监听器的生命周期
-
-### hooks 使用的时候有注意些什么
-React Hooks 的规则限制
-
-React Hooks 虽然为函数组件带来了极大的灵活性，但同时也有一些使用规则，其中一条就是 不能在表达式、条件语句或循环中定义 Hooks。
-
-原因分析
-Hooks 执行顺序： Hooks 的执行顺序是固定的，并且依赖于它们在函数组件中的调用顺序。如果在表达式或条件语句中定义 Hooks，它们的执行顺序就会变得不确定，这可能会导致不可预期的行为和错误。
-保证组件的稳定性: Hooks 的规则是为了保证组件的稳定性和可预测性。如果允许在表达式中定义 Hooks，那么组件的行为就会变得难以理解和调试。
-
-1. 只能在顶层调用 Hooks:
-不能在一个循环、条件语句或嵌套函数内部调用 Hooks。
-2. Hooks 必须始终在组件的最外层调用，以确保每次渲染时 Hooks 被调用的顺序相同。
-只在 React 函数中调用 Hooks:
-3. Hooks 只能在 React 的函数组件或自定义 Hooks 中使用。
-不要在类组件、普通的 JavaScript 函数或其他库中使用 Hooks。
-4. 不要在自定义 Hooks 之外的地方返回 Hooks:
-如果你创建了一个自定义 Hook，那么这个 Hook 应该只在其他 Hook 内部被调用，而不是在组件外部。
-自定义 Hooks 应该遵循 use 的命名约定，比如 useCustomHook()。
-5. 不要在条件语句中调用 Hooks:
-不要在 if 语句内调用 Hooks，因为这会导致某些渲染中 Hooks 被跳过。
-如果某些逻辑只有在满足特定条件时才执行，应该将这些逻辑放在单独的函数中，并在组件的最外层调用。
-6. 不要在事件处理器中直接调用 Hooks:
-事件处理器中直接调用 Hooks 会导致 Hooks 每次事件触发时重新创建，这可能导致不一致的状态或副作用行为。
-如果需要在事件处理器中使用状态，应该在组件的顶级作用域中定义状态变量，并在事件处理器中引用这些变量。
-7. 使用 useEffect 清理副作用:
-当你的组件卸载时，或者在特定依赖项改变之前，必须清理副作用。
-使用 useEffect 的清理函数来确保副作用正确清理，避免内存泄漏。
-8. 遵守依赖数组的规则:
-当你使用 useEffect 或 useCallback 时，依赖数组中的值必须是可控的。
-如果依赖项可能变化，确保将其包含在依赖数组中，否则使用闭包来保持值的不变性。
-9. 不要滥用 useState 和 useEffect:
-尽管可以多次调用 useState 和 useEffect，但这并不意味着你应该过度使用它们。
-保持组件简洁，合理组织状态和副作用，避免不必要的复杂性。
-10. 避免使用闭包中的状态:
-当你在事件处理器中使用状态时，确保不是通过闭包间接引用状态，而是直接引用状态变量。
-闭包可能会导致状态更新不一致。
-11. 使用最新的 Hook 实例:
-如果你使用 useRef 或 useMemo 来缓存值，确保在这些值发生变化时能够获取到最新实例。
-
-
-### React Diff 的算法
-React 使用一种称为“深度优先搜索”的算法来遍历虚拟 DOM 树。在遍历过程中，React 会对节点进行比较，以确定是否需要更新。
-
-React 会从根节点开始，递归地比较虚拟 DOM 树中的节点
-结点类型:
-如果两个元素的类型不同（例如 <div> 和 <span>），则会删除旧元素并创建新元素。
-key 属性:
-如果元素有 key 属性，React 会使用 key 来追踪元素的位置。
-当移动带有 key 的元素时，React 会尝试重用这些元素，而不是创建新的元素。
-属性和子元素:
-对于相同的元素类型，React 会比较属性和子元素。
-如果属性发生变化，React 会更新这些属性。
-如果子元素发生变化，React 会递归地进行同样的比较。
-文本节点:
-对于文本节点，React 仅比较文本内容。
-如果内容发生变化，React 会更新文本内容。
-
-### 实现一个useState
-```jsx
-const useState = defaultValue => {
-    const value = useRef(defaultValue);
-    
-    const setValue = newValue => {
-        if (typeof newValue === 'function') {
-            value.current = newValue(value.current);
-        } else {
-            value.current = value;
-        }
-    }
-    
-    //  触发组件的重新渲染
-    dispatchAction();
-    
-    return [value, setValue];
-}
-```
-
-### fiber
-
-Fiber 架构的核心思想是将 React 的渲染过程分为一系列可中断的工作单元，每个工作单元称为一个 “Fiber”。Fiber 本质上是一个对象，它表示了一个虚拟的 DOM 节点，并包含了该节点的状态、属性以及其他相关信息。
-
-主要组成部分
-Fiber 节点:
-每个 Fiber 节点代表了虚拟 DOM 树中的一个节点。
-Fiber 节点包含有关该节点的详细信息，如类型、属性、状态等。
-工作队列:
-Fiber 架构使用一个工作队列来管理需要执行的工作。
-每个更新或渲染任务都被放入队列中，然后根据优先级进行调度。
-优先级调度:
-React 使用优先级调度算法来决定何时执行队列中的任务。
-任务可以根据其重要性被赋予不同的优先级。
-增量渲染:
-React 使用增量渲染技术来分批处理队列中的任务。
-这样可以在每个时间片中只处理一部分任务，从而避免长时间的阻塞。
-
-### hooks性能优化
-1. 使用 useMemo 和 useCallback
-3. 使用 useRef，避免在每次渲染时创建新的对象
-5. 使用 React.memo 和 shouldComponentUpdate
-6. 使用 useEffect 控制副作用
-7. 使用 useContext
-10. 使用 useDebounce，对值及事件处理函数进行防抖，避免状态频繁变动
-11. 使用 useImmer
-
-
-
 
