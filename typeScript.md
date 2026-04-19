@@ -23,17 +23,16 @@ type Exclude<T, U> = T extends U ? never : T;
 
 type Pick<T, K extends keyof T> = {
   [P in K]: T[P];
-};
+}; 
 
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
 type MyParameters<T extends (...args: any[]) => any> = 
   T extends (...args: infer P) => any ? P : never
 
-// 过滤掉可选属性
-type ExcludeOption<T extends {}> = Pick<T, { [k in keyof T]-?: undefined extends T[k] ? never : K }[keyof T]>;
-// 过滤掉指定类型的属性
-type ExcludeType<T , N> = Pick<T, { [k in keyof T]: T[k] extends N ? never : K }[keyof T]>; 
+type ExcludeOptional<T> = {
+  [K in keyof T as T[K] extends Required<T>[K] ? K : never]: T[K]
+}
 ```
 
 ### any 类型

@@ -15,20 +15,17 @@ const hook = {
 首次渲染（mount）：按调用顺序创建 Hook 节点，串联成链表。
 
 1. 只能在顶层调用 Hooks:  
-2. 不要在条件循环语句中调用 Hooks:
+2. 不要在条件循环语句中调用 Hooks: 
 3. 不要在事件处理器中直接调用 Hooks:
 
 ### React Diff 的算法
 
 对虚拟 DOM 树做分层同层比较 + 基于 key 的元素复用 + 只做最小必要更新，
 
-1 只做同层比较
-
+1只做同层比较
 2类型不同：直接重建
 3类型相同：对比属性和文本
 4子列表：用 key 匹配复用节点
-
-
 
 ### fiber
 
@@ -109,6 +106,7 @@ useCallback 用于返回一个被优化过的函数引用，这个函数只有�
 
 
 ### 实现一个useState
+
 ```jsx
 const useState = defaultValue => {
     const value = useRef(defaultValue);
@@ -127,7 +125,6 @@ const useState = defaultValue => {
     return [value, setValue];
 }
 ```
-
 
 
 ## class react

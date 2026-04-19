@@ -48,14 +48,7 @@
 内联脚本加 defer，肯定优先于外部 defer 执行吗？ 👉 不是 “肯定”，是 “可能”：仅当外部 defer 脚本在 HTML 解析完后仍未加载完成时，内联 defer 才会先执行；若外部已加载完，还是按书写顺序执行
 内联脚本加 async，会立刻执行吗？ 👉 会（且和不加 async 的内联脚本几乎无区别）：async 对内联脚本无实际意义，解析到就立即执行
   
-
-## 从html到DOM
-
-1 字节解码：按编码把字节流转为字符流
-2 分词生成 Token：状态机识别标签、文本、属性等 Token
-3 语法分析构建 DOM：栈结构处理嵌套，节点挂树
-4 容错补全：自动修复错误、补全缺失标签，形成完整 DOM
-
++
 ## web性能
 
 Web 性能 = 用户感知性能
@@ -74,7 +67,7 @@ Core Web Vitals（三大核心网页指标）
    注：24 年 3 月起取代 FID（首次输入延迟）
 3. CLS (Cumulative Layout Shift) —— 累计布局偏移（视觉稳定性）
 
-提升体验性能的方法：
+提升体验的方法：
 
 1. 最小化初始加载
 2. 防止内容跳转和其他重排
@@ -142,7 +135,7 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 - 使用事件委托，及时移除监听
 - 减少DOM元素数量和深度，减少访问dom，避免直接修改样式，避免直接操作dom，React/vue避免重新渲染，重新计算
 
-5. 网络方面： cdn， http2.0， 减少HTTP请求，客户端预请求，客户端离线包
+5. 网络方面： cdn， http2.0，客户端预请求，客户端离线包
 
 6. 其他：service worker, SSR
 
@@ -190,7 +183,7 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 
 ## 强缓存与协商缓存
 
-### Expires 与 Cache-Control：max-age
+### Expires 与 Cache-Control
 HTTP/1.0 中的Expires 
 Expires 的值是一个绝对时间的 GMT 格式的时间字符串。比如 Expires 值是：`expires:Fri, 14 Apr 2017 10:47:02 GMT`。这个时间代表这这个资源的失效时间，只要发送请求时间是在 Expires 之前，那么本地缓存始终有效，则在缓存中读取数据。
 
@@ -269,8 +262,8 @@ JavaScript 对象是通过引用来传递的，创建的每个新对象实体中
 + 作用域： 就是变量、函数可以被访问的有效范围。
 函数的词法作用域，也叫静态作用域，变量的作用域在函数创建时就已经确定了，而不是在函数调用时确定。
 词法作用域保存到内部属性 [[Environment]] 中。无论函数未来在何处被调用，创建时确定，永不改变
-
 执行上下文会引用函数的 [[Environment]] 来构建作用域链。
+
 + 函数的this [[thisMode]] ，当函数没有明确调用者时，规定this 指向谁。
  私有属性有三个取值。
 lexical：表示从上下文中找this，这对应了箭头函数。
@@ -324,7 +317,7 @@ console.log('script end');
 
 ## MCP skill
   模型上下文协议，各种app，工具能接受的，大模型输入信息，统一大模型与外部工具的接口
-  skill是面向具体任务场景的可复用能力单元，、按需加载的离散专业单元，用于指导规范 AI 处理特定任务。
+  skill是面向具体任务场景的可复用能力单元，按需加载的离散专业单元，用于指导规范 AI 处理特定任务。
 
 # 面经
 ## LBA
@@ -448,10 +441,6 @@ word-wrap: break-word;//允许长单词换行
    处理 CSS 的输出格式，如缩进、注释等。
 
 
-### fiber原理
-
-### React diff算法
-
 
 ## DD
 
@@ -489,7 +478,7 @@ console.log("script end!");
 ### 状态码
 
 206 Partial Content
-200 from cache
+200 ok
 304 not modify
 
 ### 写findIndex
@@ -519,8 +508,6 @@ Array.prototype.findIndex = function (predicate) {
   return -1;
 };
 ```
-
-## 其他
 
 ### 面对大流量项目，前端的容灾措施
 

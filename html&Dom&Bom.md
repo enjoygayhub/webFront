@@ -1,5 +1,12 @@
 # HTML
 
+## 从html到DOM
+
+1 字节解码：按编码把字节流转为字符流
+2 分词生成 Token：状态机识别标签、文本、属性等 Token
+3 语法分析构建 DOM：栈结构处理嵌套，节点挂树
+4 容错补全：自动修复错误、补全缺失标签，形成完整 DOM
+
 # Dom & Bom
 
 ## window的screenX, screenY,outerHeight/innerHeight outerWidth/innerWidth

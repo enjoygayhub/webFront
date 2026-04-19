@@ -13,9 +13,9 @@
 代码更简洁： Proxy 的 API 更简洁，使得响应式系统的实现更加优雅
 
 get：
-当访问对象中的某个属性的时候，会触发track函数，这个track函数是用来收集依赖的，也就是收集被访问的key相关的副作用。
+当访问对象中的某个属性的时候，会触发track函数，这个track函数是用来收集依赖的。
 set：
-当对象中某个属性值发生变化的时候，就会触发trigger函数，这个函数主要是用来触发每个依赖对应副作用的执行。
+当对象中某个属性值发生变化的时候，就会触发trigger函数。
 
 
 ## v-if 和 v-show 的区别
@@ -26,16 +26,12 @@ set：
 
 因而 v-if 有较高的切换性能消耗，v-show 有较高的初始渲染消耗，适用于条件频繁改变的情况。
 
-## vue 中nextTick 的实现
+## vue 中nextTick 
 
 nextTick 会将传入的回调函数推入到一个微任务队列中。回调函数会在 DOM 更新完成后才会执行。
-确保 DOM 更新后操作: 需要在 DOM 更新完成后才能获取最新的 DOM 结构，或者执行一些依赖于 DOM 的操作。nextTick 就提供了这样的机制。
-避免数据和视图不同步: 如果在数据更新后立即操作 DOM，可能会导致数据和视图不同步的问题。
+确保在 DOM 更新完成后才能获取最新的 DOM 结构，或者执行一些依赖于 DOM 的操作。
+避免数据和视图不同步。
 
-不同环境的实现:
-Promise.resolve(): 利用 Promise 的特性，将回调函数包装成一个 Promise，然后调用 Promise.resolve()。
-MutationObserver: 创建一个 MutationObserver 实例，观察一个元素的变动，当变动发生时，触发回调函数。
-MessageChannel: 创建一个 MessageChannel，通过 postMessage 来传递消息，从而触发回调函数。
 
 ## 为什么 vue2.0中 组件中的 data 必须是函数
 
@@ -66,23 +62,22 @@ MessageChannel: 创建一个 MessageChannel，通过 postMessage 来传递消息
 
 key 的作用主要是为了高效的更新虚拟 DOM
 
-key 的特殊 attribute 主要用在 Vue 的虚拟 DOM 算法，在新旧 nodes 对比时辨识 VNodes。如果不使用 key，Vue 会使用一种最大限度减少动态元素并且尽可能的尝试就地修改/复用相同类型元素的算法。而使用 key 时，它会基于 key 的变化重新排列元素顺序，并且会移除 key 不存在的元素。
+不使用 key，Vue 会使用一种最大限度减少动态元素并且尽可能的尝试就地修改/复用相同类型元素的算法。而使用 key 时，它会基于 key 的变化重新排列元素顺序，并且会移除 key 不存在的元素。
 
 
 ## Vue的路由模式
 
-> hash模式 与 history模式
 
 - hash（即地址栏 URL 中的 # 符号）。
 
-特点： hash 虽然出现在 URL 中，但不会被包括在HTTP内，hash模式每次页面切换其实切换的是#之后的内容，而#后内容的改变并不会触发地址的改变，
+特点： hash 虽然出现在 URL 中，每次页面切换其实切换的是#之后的内容，不会触发地址的改变，
 因此改变 hash 不会重新加载页面。每次hash发生变化时都会调用 onhashchange事件
 
 优点：可以随意刷新
 
 - history（利用了浏览器的历史记录栈）
 
-特点：利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。
+特点：利用History的 pushState() 和 replaceState() 方法。
 在当前已有的 back、forward、go的前进 后退控制页面。
 
 
@@ -150,7 +145,7 @@ defineExpose({
 使用<component :is="tab[currentTab]"><component> 
 
 ### slot
-  用于渲染模板化内容
+  slot 就是让父组件可以往子组件里 “塞内容” 的口子，实现内容分发、模板复用。
   
 ### 异步组件 Suspense
   const Children = defineAsyncComponent(() => import('./Children.vue'))
@@ -176,6 +171,20 @@ const emit = defineEmits(['update:modelValue'])
 子组件内可以emit('update:modelValue', 'new')更新数据
 
 ### 自定义指令
+directives: {
+  myDir: {
+    // 1. 绑定（只执行一次）
+    created(el, binding) {},
+    // 2. 挂载到 DOM
+    mounted(el, binding) {},
+    // 3. 组件更新
+    updated(el, binding) {},
+    // 4. 卸载
+    unmounted(el, binding) {}
+  }
+}
+Vue3 钩子：created/mounted/updated/unmounted（更贴近生命周期）
+适合：聚焦、拖拽、权限、节流、复制、懒加载等
 
 ### 自定义hooks
 获取宽高
@@ -248,20 +257,49 @@ React：
 
 ### React、Vue2、Vue3的三种Diff算法
 
+都是同层比较，不跨层级 Diff（时间复杂度从 O (n³) → O (n)）
+都用 key 判定节点是否可复用
+都是虚拟 DOM 对比，只把差异更新到真实 DOM
+
 1. 基本原理
 虚拟 DOM： 将真实的 DOM 结构抽象成一个 JavaScript 对象，这个对象就是虚拟 DOM。
 差异对比： 比较新旧虚拟 DOM，找出其中的差异。
 最小化更新： 根据差异，对真实的 DOM 进行最小化的更新。
+
 2. React 的 Diff 算法
-只对同层级的组件进行比较。
-采用了一种类似于树形结构的递归算法，逐层比较子节点。
-使用 key 属性来标识唯一节点，从而提高 diff 效率。
-引入了 Fiber 架构，将 diff 过程分成多个子任务，使其能够在渲染过程中被打断和恢复。
-3. Vue2 的 Diff 算法
-双端比较： 从头尾两端同时进行比较，减少比较次数。
-静态节点优化： 对静态节点进行缓存，避免重复 diff。
-key 属性优化： 通过 key 属性来标识唯一节点，从而提高 diff 效率。
-4. Vue3 的 Diff 算法
-静态标记： 对静态节点进行缓存，避免重复 diff。
-PatchFlag： 标记需要更新的节点，从而减少不必要的更新。
-Block Tree： 将多个节点组成一个块，减少 diff 次数。
+单指针从左到右遍历 + key 索引表查找
+
+3. Vue2 的 双端比较
+
+核心策略：首尾双指针+ 4 种命中 + 查找复用
+
+过程：
+新旧数组各有 头指针、尾指针
+依次尝试 4 种匹配：
+旧头 ↔ 新头
+旧尾 ↔ 新尾
+旧头 ↔ 新尾
+旧尾 ↔ 新头
+命中一种就移动指针，继续比较
+都没命中：遍历旧列表查 key，能复用就移动，不能就新建
+最后处理剩余节点（新增 / 删除）
+
+优点：对逆序、首尾操作优化很好，移动次数少，DOM 操作较少
+缺点：中间乱序较多时，遍历查找 key 效率低 O (n²)
+
+
+4. Vue3 的 Diff 算法 最长递增子序列（最强）
+
+核心策略：前置相同节点 + 后置相同节点 + 中间乱序用 LIS 最小化移动
+
+步骤
+从前向后比，直到节点不同
+从后向前比，直到节点不同
+中间剩下的就是乱序片段 
+建立旧节点 key → index 的映射表
+生成新序列在旧序列中的位置序列
+求这个序列的 最长递增子序列 LIS
+LIS 里的节点不动，其他节点移动 / 新增
+
+优点
+乱序场景性能大幅提升，DOM 移动次数最少，理论最优，整体更稳定、高效
