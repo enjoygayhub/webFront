@@ -135,7 +135,7 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 - 使用事件委托，及时移除监听
 - 减少DOM元素数量和深度，减少访问dom，避免直接修改样式，避免直接操作dom，React/vue避免重新渲染，重新计算
 
-5. 网络方面： cdn， http2.0，客户端预请求，客户端离线包
+5. 网络方面： cdn， http2.0，客户端预请求，客户端离线包 
 
 6. 其他：service worker, SSR
 
@@ -173,7 +173,7 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 静态资源加载（img/CSS/ 字体 / 视频，仅渲染，JS 无法读取内容）；
 链接跳转 / 表单提交（浏览器直接处理，无 JS 读取响应）；
 嵌入型资源（iframe/object，仅展示，JS 无法跨域通信）；
-资源预加载（prefetch/preload，仅缓存，不读取内容）。
+
 
 核心判断规则：
 「JS 无法读取内容」的资源 / 操作 → 不受跨域影响；
@@ -237,7 +237,7 @@ classA = new Class();//小写classA为Class类的实例；Class为构造函数
 ```
 
 __proto__（隐式原型），非web标准却被大多数浏览器支持，指向它的构造函数的prototype。
-即class.__proto__ === Class.prototype; 
+即classA.__proto__ === Class.prototype; 
 prototype（显式原型）只有函数对象才有（普通对象没有，是构造函数的一个属性，存放所有实例共享的属性和方法
 
 prototype中一般包含2个属性，一个是constructor，指向Class函数自身，用于标识原型属于谁；一个是__proto__,指向更高一级的原型对象，层层向上直到一个对象的原型对象为 null。
@@ -273,9 +273,8 @@ strict：当严格模式时使用，this严格按照调用时传入的值，可�
 
 ## Event Loop 事件循环
 
-> 参考链接：[详解JavaScript中的Event Loop（事件循环）机制](https://zhuanlan.zhihu.com/p/33058983?utm_source=wechat_session&utm_medium=social&utm_oi=859347813597863936)
 
-```js
+
 微任务: Promise.then / catch / finally(不是promise，promise里是立即执行)
   async / await语法糖（本质就是 Promise 微任务） await 后面的代码全部塞进微任务队列
   MutationObserver的回调
@@ -283,7 +282,7 @@ strict：当严格模式时使用，this严格按照调用时传入的值，可�
   queueMicrotask()手动添加微任务
 宏任务: script(整体代码)  setTimeout  setInterval   I/O  setImmediate(Node.js 环境)   UI 交互事件
 同一次事件循环中:  微任务永远在宏任务之前执行
-```
+
 
 事件循环的过程：
 > 首先script脚本整体是一个大的异步任务，先执行script脚本。这个script脚本会包含同步任务和异步任务，同步任务会先在主线程上执行，异步任务（分为宏任务和微任务）会添加到任务队列中，任务队列分为宏任务队列和微任务队列。
@@ -513,7 +512,7 @@ Array.prototype.findIndex = function (predicate) {
 
 静态资源加 onerror 降级
 接口加 超时 + 重试 或者缓存兜底
-全局错误边界，防止崩溃
+全局错误边界，防止崩溃 
 关键页面做静态降级页
 高频接口加熔断 / 限流
 开启白屏监控 + 自动刷新
