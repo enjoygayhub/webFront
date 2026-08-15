@@ -28,7 +28,6 @@ overflow:hidden;
 
 ## flex 的属性有哪些
 
-
 一个元素的display属性值设置为flex从而使它成为一个flex容器，它的所有子元素都会成为它的项目。
 一个容器默认有两条轴，一个是水平的主轴
 
@@ -61,6 +60,7 @@ display: inline-flex,盒子容器本身表现与inline-block类似
 ## CSS 盒模型
 
 盒模型总共包括4个部分：
+
 - content：内容，容纳着元素的”真实“内容，例如文本
 - padding：内边距
 - border：边框
@@ -74,7 +74,6 @@ display: inline-flex,盒子容器本身表现与inline-block类似
 
   > 通过CSS样式设置的width的大小是content + padding + border的和
 
-
 ## 设置一个元素的背景颜色，背景颜色会填充哪些区域
 
 与background-clip属性有关:
@@ -86,33 +85,30 @@ content-box: 背景颜色仅填充内容区。
 
 总结：margin/padding设置百分比**都是**相对于**父盒子的宽度**(width属性)来计算量的
 
-
 ## CSS 选择器优先级
 
 选择器按优先级先后排列：!important>内联>id>class = 属性 = 伪类 >标签 = 伪元素 > 通配符 \*
 
-
 ## 常用css选择器
 
-
-| [类型选择器] | `h1 { }`         
-| [通配选择器] | `* { }`          
-| [类选择器] | `.box { }`        
-| [ID选择器] | `#unique { }`      
-| [标签属性选择器] | `a[title] { }` 
-| [伪类选择器]  | `p:first-child { }` 
-| [伪元素选择器]  | `p::first-line { }`
-| [后代选择器] | `article p`      
-| [子代选择器]  | `article > p`    
-| [相邻兄弟选择器] | `h1 + p`          
-| [通用兄弟选择器]  | `h1 ~ p`          
+| [类型选择器] | `h1 { }`  
+| [通配选择器] | `* { }`  
+| [类选择器] | `.box { }`  
+| [ID选择器] | `#unique { }`  
+| [标签属性选择器] | `a[title] { }`
+| [伪类选择器] | `p:first-child { }`
+| [伪元素选择器] | `p::first-line { }`
+| [后代选择器] | `article p`  
+| [子代选择器] | `article > p`  
+| [相邻兄弟选择器] | `h1 + p`  
+| [通用兄弟选择器] | `h1 ~ p`
 
 ## 伪类与伪元素的区别
 
 使用单冒号来表示伪类，用双冒号来表示伪元素。
 伪类一般匹配的是元素的一些特殊状态，如hover、link ，active等，
 而伪元素一般匹配的特殊的位置，比如after、before等。
- 伪元素默认行内元素，css中其必须有content属性，就算是content：""也必须写，否则无效。
+伪元素默认行内元素，css中其必须有content属性，就算是content：""也必须写，否则无效。
 css引入伪类和伪元素概念是为了格式化文档树以外的信息。修饰不在文档树中的部分，比如，一句话中的第一个字母，或者是列表中的第一个元素。
 
 ## CSS 中哪些属性可以继承
@@ -121,7 +117,6 @@ css引入伪类和伪元素概念是为了格式化文档树以外的信息。�
 表格的一些布局属性、列表属性如list-style等。还有光标属性cursor、元素可见性visibility。
 
 当一个属性不是继承属性的时候，通过将它的值设置为inherit来继承。
-
 
 ## BFC的概念
 
@@ -154,14 +149,13 @@ sticky
 平时元素根据正常文档流进行定位，然后相对它的最近滚动祖先和 最近块级祖先基于top, right, bottom, 和 left的值进行偏移。偏移值不会影响任何其他元素的位置。
 该值总是创建一个新的层叠上下文（stacking context）。平时正常，滚动到一定程度就fixed
 
-
 ## display 有哪些
 
 - block
   块类型。默认宽度为父元素宽度，可设置宽高，换行显示。
 - none
   元素不显示，并从文档流中移除。
-- inline 
+- inline
   行内元素类型。默认宽度为内容宽度，不可设置宽高，同行显示。
 - inline-block
   默认宽度为内容宽度，可以设置宽高，同行显示。
@@ -171,7 +165,7 @@ sticky
   此元素会作为块级表格来显示。
 - inherit
   规定应该从父元素继承display属性的值。
-inline-flex flex
+  inline-flex flex
 
 ## float 的元素，display 是什么
 
@@ -186,12 +180,10 @@ Inline：设置 width 和 height 无效
 
 Inline-block：能设置宽度高度，
 
-
 img 是可替换元素。
 在 CSS 中，可替换元素（replaced element）的展现效果不是由 CSS 来控制的。
 这些元素是一种外部对象，外观的渲染，是独立于 CSS 的。
 典型的可替换元素有： <iframe> <video> <embed> <img>
-
 
 ## `visibility: hidden`, `opacity: 0`，`display: none`
 
@@ -204,13 +196,11 @@ display: none，把元素删除，会改变文档流布局，不会触发事件�
 
 ```
 
-
 ## z-index 是干什么用的？默认值是什么？与 z-index: 0 的区别
 
 > z-index 属性设置元素的堆叠顺序，且只在属性position: relative/absolute/fixed 的时候才生效。
 > `z-index: auto` 是默认值，与`z-index: 0`是有区别的：
 > `z-index: 0` 会创建一个新的堆叠上下文，而 `z-index: auto` 不会创建新的堆叠上下文
-
 
 ## CSS 实现垂直居中
 
@@ -225,8 +215,6 @@ display: none，把元素删除，会改变文档流布局，不会触发事件�
 - display: table-cell+vertical-align：middle；
 
 - 高度确定情形下，绝对定位，margin：auto
-
-
 
 ## margin塌陷问题
 
@@ -262,40 +250,11 @@ vw（Viewport Width）、vh(Viewport Height)是基于视图窗口的单位
 - vmin: 选取 vw 和 vh 中最小的那个,即在手机竖屏时，1vmin=1vw
 - vmax:选取 vw 和 vh 中最大的那个 ,即在手机竖屏时，1vmax=1vh
 
-### js操作css样式
-
-1. 直接修改节点style属性
-
-```js
-// style属性名是驼峰语法
-const el = document.getElementById("test-div");
-el.style.backgroundColor = "red";
-el.style.fontSize = "30px";
-// style.cssText 批量赋值
-el.style.cssText = "background-color: green !important; font-size: 40px;";
-
-//style是一个只读属性，表面能赋值成功，但不会生效
-el.style = { color: "red" };
-```
-
-2. 节点className属性，classList
-
-```js
-// 修改class类名
-el.className = "classA";
-// classList下有add增, remove删, contains查, toggle转换
-el.classList.toggle("test-div");
-el.classList.add("class-add");
-```
-
-
 ## 控制继承的属性
 
 - inherit 设置该属性会使子元素属性和父元素相同。实际上，就是 "开启继承".
 - initial 设置属性值和浏览器默认样式相同。
 - unset 将属性重置为自然值，如果属性是自然继承那么就是 `inherit`，否则和 `initial`一样
-
-
 
 ## 常见的元素隐藏方式
 
@@ -316,7 +275,7 @@ el.classList.add("class-add");
 ## CSS3 @font-face
 
 ```css
-@font-face { 
+@font-face {
   font-family: myFirstFont;
   src: url("Sansation_Light.ttf");
 }
@@ -397,7 +356,6 @@ div {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
   background-color: white;
 }
-
 ```
 
 ## 图片 base64 编码的优点和缺点
