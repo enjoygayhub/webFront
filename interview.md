@@ -1,6 +1,5 @@
 # 面试必备
 
-
 ## HTML 页面加载过程
 
 ### 1导航
@@ -15,8 +14,10 @@
 - 拥塞控制 / TCP 慢启动
 
 ### 3解析
+
 图片和css下载不会阻塞解析，但同步脚本执行会。
 等待获取 CSS 不会阻塞 HTML 的解析或者下载，但是会阻塞 JavaScript
+
 - 构建Dom树
 - 预加载扫描器会解析可用的内容并请求高优先级的资源，如 CSS、JavaScript 和 web 字体。不用等主线程解析器找到对外部资源的引用时才去请求。
 - 构建 CSSOM 树 (与html构建dom的流程类似)
@@ -29,8 +30,8 @@
 - 绘制（生成各层的位图（像素数据，不考虑层叠、位置、顺序）
 - 合成（GPU 把多层位图合并成一张完整画面 排序所有图层
 
-
 ### 5交互
+
 - 可交互时间（TTI）是测量从第一个请求导致 DNS 查询和 SSL 连接到页面可交互时所用的时间——可交互是在首次内容绘制之后页面在 50ms 内响应用户的交互。
 
 ## defer, async 和 同步脚本执行顺序
@@ -42,13 +43,15 @@
 - async 异步加载，加载好，立即执行。执行仍然会阻塞文档的解析，只是它的加载过程不会阻塞。
 
   多个脚本的执行顺序无法保证。
+
 - 内联脚本 同步顺序执行
 
-同为 defer 的两个脚本，前一个没加载完，后一个会先执行吗？ 👉 两个都是外部 defer 脚本：不会，浏览器会等前一个加载完再按顺序执行；👉 一个外部 defer + 一个内联 defer：会，内联 defer 会先执行 
+同为 defer 的两个脚本，前一个没加载完，后一个会先执行吗？ 👉 两个都是外部 defer 脚本：不会，浏览器会等前一个加载完再按顺序执行；👉 一个外部 defer + 一个内联 defer：会，内联 defer 会先执行
 内联脚本加 defer，肯定优先于外部 defer 执行吗？ 👉 不是 “肯定”，是 “可能”：仅当外部 defer 脚本在 HTML 解析完后仍未加载完成时，内联 defer 才会先执行；若外部已加载完，还是按书写顺序执行
 内联脚本加 async，会立刻执行吗？ 👉 会（且和不加 async 的内联脚本几乎无区别）：async 对内联脚本无实际意义，解析到就立即执行
-  
-+
+
+-
+
 ## web性能
 
 Web 性能 = 用户感知性能
@@ -114,11 +117,13 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 - 加载优先级（img的fetchPriority 属性
 
 2. HTML角度
+
 - 嵌入内容过大（响应式资源提供多种格式尺寸，懒加载，不使用iframe）
 - 资源加载（rel="preload"：提前加载首屏必需资源，dns-prefetch / preconnect）
 - 减小阻塞 HTML 解析与渲染：（非关键JavaScript 异步加载）
 
 3. css角度
+
 - 压缩、最小化 CSS 并开启 gzip
 - 拆分 CSS，首屏样式内联
 - 简化选择器，避免复杂嵌套与冗余匹配，删除无用 CSS，
@@ -129,13 +134,14 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 - contain属性，限定布局 / 绘制 / 样式重算范围，content-visibility: auto指定浏览器在需要之前不要布局和渲染
 
 4. js角度
+
 - 减小js体积：terser压缩混淆代码，gzip压缩，Tree Shaking，依赖按需引用,使用体积小的第三方依赖，设置编译目标target最小化polyfill，peerDependencies解决重复包，Code Split + 基于路由的按需加载(减小关键路径js)
 - JS加载顺序： 默认阻塞 HTML 解析与渲染，非关键Js 异步加载）
 - 长任务拆分，计算任务放web worker
 - 使用事件委托，及时移除监听
 - 减少DOM元素数量和深度，减少访问dom，避免直接修改样式，避免直接操作dom，React/vue避免重新渲染，重新计算
 
-5. 网络方面： cdn， http2.0，客户端预请求，客户端离线包 
+5. 网络方面： cdn， http2.0，客户端预请求，客户端离线包
 
 6. 其他：service worker, SSR
 
@@ -157,11 +163,11 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 1. JSONP (JSON with Padding) 通过动态创建 script，再请求一个带参网址实现跨域通信，目前已过时。
 
 2. CORS (跨域资源共享)
-    CORS的基本思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。
-    简单请求：只需服务端设置 `Access-Control-Allow-Origin：*` 即可，若要带 cookie 前端设置`withCredentials`为true,后端设置`Access-Control-Allow-Credentials`为true,同时`Access-Control-Allow-Origin`不能设置为`*`
-    复杂请求：使用 OPTIONS 方法发起一个预检请求到服务器，告知服务器实际请求使用方法和首部自定义字段，服务端响应返回实际请求接受的域和方法，头部。如果要携带cookie，Access-Control-Allow-Origin，Access-Control-Allow-Headers，Access-Control-Allow-Methods 均不能设置为*。
+   CORS的基本思想就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。
+   简单请求：只需服务端设置 `Access-Control-Allow-Origin：*` 即可，若要带 cookie 前端设置`withCredentials`为true,后端设置`Access-Control-Allow-Credentials`为true,同时`Access-Control-Allow-Origin`不能设置为`*`
+   复杂请求：使用 OPTIONS 方法发起一个预检请求到服务器，告知服务器实际请求使用方法和首部自定义字段，服务端响应返回实际请求接受的域和方法，头部。如果要携带cookie，Access-Control-Allow-Origin，Access-Control-Allow-Headers，Access-Control-Allow-Methods 均不能设置为\*。
 3. nginx反向代理,服务端请求不受浏览器限制，既访问同源服务端，服务端再去寻找正在的地址拿到数据再返回
-4. 本地开发启动正向代理服务     
+4. 本地开发启动正向代理服务
 5. 跨域属于浏览器行为，可以通过浏览器设置关闭
 6. 浏览器插件可以拦截请求，修改responce 的body
 
@@ -170,27 +176,27 @@ observer.observe({ type: 'largest-contentful-paint', buffered: true });
 核心差异：复杂请求多了 OPTIONS 预检步骤，服务端需额外配置允许的方法 / 首部。
 
 ### 不受跨域影响的核心场景：
+
 静态资源加载（img/CSS/ 字体 / 视频，仅渲染，JS 无法读取内容）；
 链接跳转 / 表单提交（浏览器直接处理，无 JS 读取响应）；
 嵌入型资源（iframe/object，仅展示，JS 无法跨域通信）；
-
 
 核心判断规则：
 「JS 无法读取内容」的资源 / 操作 → 不受跨域影响；
 「JS 可读取 / 修改内容」的资源 / 接口 → 受跨域限制（需 CORS/JSONP 解决）。
 比如：canvas 操作跨域图片、跨域字体加载需特殊处理，但本质不是「跨域读取限制」，而是「内容访问授权」。
 
-
 ## 强缓存与协商缓存
 
 ### Expires 与 Cache-Control
-HTTP/1.0 中的Expires 
+
+HTTP/1.0 中的Expires
 Expires 的值是一个绝对时间的 GMT 格式的时间字符串。比如 Expires 值是：`expires:Fri, 14 Apr 2017 10:47:02 GMT`。这个时间代表这这个资源的失效时间，只要发送请求时间是在 Expires 之前，那么本地缓存始终有效，则在缓存中读取数据。
 
 HTTP/1.1 中，Cache-Control指定 max-age——代表经过的时间后缓存过期。
 同时启用的时候 Cache-Control 优先级高。
 
-### 缓存重新验证响应 
+### 缓存重新验证响应
 
 `Etag/If-None-Match`返回的是一个校验码。`Etag`可以保证每一个资源是唯一的，资源变化都会导致`Etag`变化。服务器根据浏览器发送的`If-None-Match`值来判断是否命中缓存。
 
@@ -212,7 +218,6 @@ ES6 Module 是解析时加载、导出动态引用、支持异步、this 为 und
 ## 闭包
 
 闭包是由捆绑起来（封闭的）的函数和函数周围状态（词法环境）的引用组合而成。闭包让函数能访问它的外部作用域。在 JavaScript 中，闭包会随着函数的创建而同时创建。
-
 
 闭包的优点：
 
@@ -236,13 +241,13 @@ classA = new Class();//小写classA为Class类的实例；Class为构造函数
 
 ```
 
-__proto__（隐式原型），非web标准却被大多数浏览器支持，指向它的构造函数的prototype。
-即classA.__proto__ === Class.prototype; 
+**proto**（隐式原型），非web标准却被大多数浏览器支持，指向它的构造函数的prototype。
+即classA.**proto** === Class.prototype;
 prototype（显式原型）只有函数对象才有（普通对象没有，是构造函数的一个属性，存放所有实例共享的属性和方法
 
-prototype中一般包含2个属性，一个是constructor，指向Class函数自身，用于标识原型属于谁；一个是__proto__,指向更高一级的原型对象，层层向上直到一个对象的原型对象为 null。
+prototype中一般包含2个属性，一个是constructor，指向Class函数自身，用于标识原型属于谁；一个是**proto**,指向更高一级的原型对象，层层向上直到一个对象的原型对象为 null。
 
-Object.prototype.__proto__ === null;
+Object.prototype.**proto** === null;
 
 ES5 中Object.getPrototypeOf() 方法来获取对象的原型。
 
@@ -255,36 +260,33 @@ JavaScript 对象是通过引用来传递的，创建的每个新对象实体中
 
 ### 执行上下文 调用栈，作用域
 
-+ 执行上下文 是函数调用时创建的运行环境，每次调用都不同。比如变量对象的定义、作用域链的扩展、提供调用者的对象引用等信息。
-包括this，变量环境var，词法环境（let， const），外部环境
+- 执行上下文 是函数调用时创建的运行环境，每次调用都不同。比如变量对象的定义、作用域链的扩展、提供调用者的对象引用等信息。
+  包括this，变量环境var，词法环境（let， const），外部环境
 
-+ 调用栈 call stack负责管理执行上下文的进出顺序。
-+ 作用域： 就是变量、函数可以被访问的有效范围。
-函数的词法作用域，也叫静态作用域，变量的作用域在函数创建时就已经确定了，而不是在函数调用时确定。
-词法作用域保存到内部属性 [[Environment]] 中。无论函数未来在何处被调用，创建时确定，永不改变
-执行上下文会引用函数的 [[Environment]] 来构建作用域链。
+- 调用栈 call stack负责管理执行上下文的进出顺序。
+- 作用域： 就是变量、函数可以被访问的有效范围。
+  函数的词法作用域，也叫静态作用域，变量的作用域在函数创建时就已经确定了，而不是在函数调用时确定。
+  词法作用域保存到内部属性 [[Environment]] 中。无论函数未来在何处被调用，创建时确定，永不改变
+  执行上下文会引用函数的 [[Environment]] 来构建作用域链。
 
-+ 函数的this [[thisMode]] ，当函数没有明确调用者时，规定this 指向谁。
- 私有属性有三个取值。
-lexical：表示从上下文中找this，这对应了箭头函数。
-global：表示当this为undefined时，取全局对象，对应了普通函数。
-strict：当严格模式时使用，this严格按照调用时传入的值，可能为nul或者undefined。
-
+- 函数的this [[thisMode]] ，当函数没有明确调用者时，规定this 指向谁。
+  私有属性有三个取值。
+  lexical：表示从上下文中找this，这对应了箭头函数。
+  global：表示当this为undefined时，取全局对象，对应了普通函数。
+  strict：当严格模式时使用，this严格按照调用时传入的值，可能为nul或者undefined。
 
 ## Event Loop 事件循环
 
-
-
 微任务: Promise.then / catch / finally(不是promise，promise里是立即执行)
-  async / await语法糖（本质就是 Promise 微任务） await 后面的代码全部塞进微任务队列
-  MutationObserver的回调
-  process.nextTick(Node.js 环境)
-  queueMicrotask()手动添加微任务
-宏任务: script(整体代码)  setTimeout  setInterval   I/O  setImmediate(Node.js 环境)   UI 交互事件
-同一次事件循环中:  微任务永远在宏任务之前执行
-
+async / await语法糖（本质就是 Promise 微任务） await 后面的代码全部塞进微任务队列
+MutationObserver的回调
+process.nextTick(Node.js 环境)
+queueMicrotask()手动添加微任务
+宏任务: script(整体代码) setTimeout setInterval I/O setImmediate(Node.js 环境) UI 交互事件
+同一次事件循环中: 微任务永远在宏任务之前执行
 
 事件循环的过程：
+
 > 首先script脚本整体是一个大的异步任务，先执行script脚本。这个script脚本会包含同步任务和异步任务，同步任务会先在主线程上执行，异步任务（分为宏任务和微任务）会添加到任务队列中，任务队列分为宏任务队列和微任务队列。
 >
 > 当同步任务执行完毕后，此时的执行栈已经被清空，会去执行异步任务。此时会先从微任务队列中取一个微任务放到执行栈中执行，若有新的微任务或宏任务产生，添加到相应的任务队列中，循环往复，直至微任务队列清空。
@@ -292,18 +294,25 @@ strict：当严格模式时使用，this严格按照调用时传入的值，可�
 > 紧接着会从宏任务队列取一个宏任务放到执行栈中执行，此时可能会产生新的微任务，将微任务放到微任务队列中，当这个宏任务执行完后会继续执行微任务队列，如果没有产生就继续执行下一个宏任务。循环往复，直至所有任务执行完毕。
 
 ```js
-async function async1(){
-    console.log('asy1 start');
-    await async2();
-    console.log("asy1 end");}
-async function async2(){console.log("async2");}
+async function async1() {
+  console.log("asy1 start");
+  await async2();
+  console.log("asy1 end");
+}
+async function async2() {
+  console.log("async2");
+}
 async1();
-setTimeout(()=>{console.log('timeout')},0);
-new Promise(function(resolve){
-    console.log("promise1");
-    resolve();})
-    .then(function(){console.log('promise2')});
-console.log('script end');
+setTimeout(() => {
+  console.log("timeout");
+}, 0);
+new Promise(function (resolve) {
+  console.log("promise1");
+  resolve();
+}).then(function () {
+  console.log("promise2");
+});
+console.log("script end");
 //结果
 //asy1 start
 //async2
@@ -315,10 +324,12 @@ console.log('script end');
 ```
 
 ## MCP skill
-  模型上下文协议，各种app，工具能接受的，大模型输入信息，统一大模型与外部工具的接口
-  skill是面向具体任务场景的可复用能力单元，按需加载的离散专业单元，用于指导规范 AI 处理特定任务。
+
+模型上下文协议，各种app，工具能接受的，大模型输入信息，统一大模型与外部工具的接口
+skill是面向具体任务场景的可复用能力单元，按需加载的离散专业单元，用于指导规范 AI 处理特定任务。
 
 # 面经
+
 ## LBA
 
 1. 如何处理前后端跨域问题,
@@ -345,7 +356,6 @@ CORS：
 async 属性 使得脚本异步加载和执行，执行顺序不确定。
 defer 属性 使得脚本异步加载，但在文档解析完成，在 DOMContentLoaded 事件触发之前执行。后按顺序执行。
 内联脚本 按照在文档中的顺序执行。
-
 
 4. /\d{1,6}?/ ​匹配000000,结果是什么​
 
@@ -411,6 +421,7 @@ word-wrap: break-word;//允许长单词换行
 ## 贝壳
 
 ### setState后发生了什么
+
 调用 setState 后，React 会创建更新对象并加入当前组件的 Fiber 更新队列，进入调度系统；随后在 Render 阶段进行 Fiber 树的构建与 Diff 算法对比，标记 DOM 变更；最后在 Commit 阶段统一执行真实 DOM 更新、执行副作用与回调，完成视图渲染。整个过程在合成事件与生命周期中是异步批量处理的。
 
 ### webpack流程
@@ -438,8 +449,6 @@ word-wrap: break-word;//允许长单词换行
 6. 生成 CSS
    根据处理后的 AST，生成符合 CSS 语法的字符串。
    处理 CSS 的输出格式，如缩进、注释等。
-
-
 
 ## DD
 
@@ -474,12 +483,6 @@ async1().then(res=>{
 console.log("script end!");
 ```
 
-### 状态码
-
-206 Partial Content
-200 ok
-304 not modify
-
 ### 写findIndex
 
 ```js
@@ -512,7 +515,35 @@ Array.prototype.findIndex = function (predicate) {
 
 静态资源加 onerror 降级
 接口加 超时 + 重试 或者缓存兜底
-全局错误边界，防止崩溃 
+全局错误边界，防止崩溃
 关键页面做静态降级页
 高频接口加熔断 / 限流
 开启白屏监控 + 自动刷新
+
+## shopee
+
+为什么 JS/CSS 放 CDN
+静态、不变、可长缓存：文件名带 hash（contenthash），内容变了名字就变，可以设置一年强缓存，CDN 边缘节点命中率极高
+带宽大头：资源体积占页面传输量 90%+，卸载到边缘节点能大幅降低源站带宽成本和延迟
+就近访问：用户从最近节点拿资源，尤其对国际业务（跨地域）收益明显
+
+### 为什么 HTML 不放 CDN
+
+HTML 是“版本入口”，必须保证新鲜：HTML 里引用的是带 hash 的资源地址。如果 HTML 被边缘缓存，发布新版本时用户拿到旧 HTML → 引用的旧资源已被清理 → 白屏。所以 HTML 通常 Cache-Control: no-cache（或短 TTL + 协商缓存），每次回源校验，保证入口永远指向正确的资源版本
+HTML 往往不是纯静态：可能含 SSR/个性化内容、登录态、运行时注入的配置（灰度开关、AB 实验、多语言），CDN 盲缓存会导致串数据或内容过期
+发布回滚与应急能力：HTML 在自己服务器上，灰度发布、紧急下线、安全补丁秒级生效；放 CDN 需要刷新/预热，有传播延迟
+管控与合规：自持 HTML 可以灵活控制响应头（CSP、Cookie 域）、重定向、限流兜底页；国内业务还有备案与内容管控要求
+
+CDN设置 短 TTL（如 60s）也是可以的
+
+### 请求 GET /index.html 到达后的分层处理：
+
+层 组件 做什么
+安全层 DDoS 清洗、WAF、防火墙 流量清洗、拦截恶意请求
+四层LB LVS/DPVS/云 SLB 只看 IP+端口，高性能分发到后面的 nginx 集群，做健康检查
+七层网关 nginx TLS 终结（解密）、按 Host + location 匹配路由、gzip/brotli、限流、灰度分流
+源 nginx 本地磁盘 或 上游应用 见下
+拓展：
+为什么 nginx 前还要四层 LB？ 四层不解析协议、性能高扛大流量，且 nginx 集群扩缩容时对外 IP 不变
+nginx 网关和业务网关的区别？ 接入层管协议/流量（TLS、压缩、路由），业务网关管鉴权、限流、服务路由
+HTML no-cache 每次回源，慢吗？ 不慢——协商缓存 304 无 body，只有几十字节；且握手可复用

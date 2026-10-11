@@ -1,0 +1,249 @@
+# 前端经典架构面试题要点
+
+---
+
+## 1. 部署与缓存
+
+### 强缓存 / 协商缓存
+
+- 强缓存：`Cache-Control: max-age` / `Expires`，不发请求，直接用本地副本
+- 协商缓存：`ETag / If-None-Match`、`Last-Modified / If-Modified-Since`，回源校验，未变返回 304（无 body）
+- 优先级：`Cache-Control` > `Expires`；`ETag` > `Last-Modified`
+
+### hash 类型区别
+
+- `hash`：项目级，任一文件变化所有文件 hash 变 → 缓存全失效
+- `chunkhash`：chunk 级，同 chunk 内变化相互影响
+- `contenthash`：文件内容级，**推荐用于 js/css**；css 单独抽离时必须用 contenthash，避免 JS 改动导致 css 缓存失效
+
+### 灰度发布
+
+- nginx 按权重分流（`split_clients`）、按 cookie/header 定向（内部员工先行）
+- AB 实验平台统一调度；注意会话粘性（同一用户始终命中同一版本）
+
+### CDN
+
+- 强制刷新：目录刷新 / URL 刷新，注意有配额与传播延迟
+- 回源鉴权：回源带签名 header（时间戳 + secret），源站校验防盗刷
+- 架构：HTML 在公司服务器（必须新鲜、版本可控），JS/CSS 放 CDN（immutable 长缓存）——静态资源追求缓存最大化，HTML 追求实时可控
+
+---
+
+## 2. 性能优化
+
+### 首屏优化方法论（完整链路）
+
+- 网络：DNS 预解析、preconnect、CDN、HTTP/2、资源压缩（brotli > gzip）
+- 资源：关键 CSS 内联、JS defer/async、代码分割、图片懒加载 + 现代格式（webp/avif）
+- 渲染：SSR / 流式 SSR、骨架屏、骨架屏 vs SSR trade-off（开发成本 vs 收益）
+- 运行时：长任务拆分（`scheduler.yield`）、requestIdleCallback
+
+### SSR
+
+- 为什么快：首屏 HTML 直出，省去"下载 JS → 执行 → 渲染"的串行等待；利于 SEO
+- 代价：服务器开销、hydration 成本、双端代码约束
+- 流式 SSR：`renderToPipeableStream`，先吐壳后吐数据，TTFB 更早
+- 追问准备：React 18 的 RSC / Suspense 边界
+
+### Web Vitals
+
+- LCP：最大内容绘制，≤2.5s；采集 `PerformanceObserver` + `largest-contentful-paint` entry
+- CLS：累积布局偏移，≤0.1；图片/广告位提前占位
+- INP：交互到下次绘制延迟，≤200ms（替代 FID）
+- 上报：`web-vitals` 库，注意 SPA 中 LCP 元素可能多次更新（key 变化后重新记录）
+
+### 长列表 / 虚拟滚动
+
+- 原理：只渲染可视区 ± buffer 的条目，用总高度撑开滚动容器，startIndex 根据 scrollTop 动态计算，`transform` 偏移补位
+- 变长行高：预估高度 + 渲染后实测修正（缓存位置数组）
+- 无限滚动与虚拟滚动结合：分页加载 + 窗口化渲染
+
+### preload / prefetch / preconnect / dns-prefetch
+
+- `preload`：当前页面必需资源，高优先级提前加载（字体、首屏图）
+- `prefetch`：未来可能用的资源，空闲时低优先级加载（下一页 chunk）
+- `preconnect`：提前完成 DNS + TCP + TLS（第三方域名关键资源）
+- `dns-prefetch`：只提前 DNS 解析（preconnect 的降级兜底）
+
+### 白屏排查与监控
+
+- 排查思路：资源加载失败 → JS 报错中断渲染 → 根节点为空 → 网络/CDN 异常
+- 监控：
+  `PerformanceObserver` 检查 FCP；
+  采样检查根容器 DOM 节点数是否为 0；
+  结合 error 上报聚合归因
+
+---
+
+## 3. 工程化与构建
+
+### Tree-shaking 原理（简历重点，必须滚瓜烂熟）
+
+- 前提：**ESM 静态结构**（import/export 在编译期可分析），CJS 动态 require 无法 shake
+- 流程：parser 标记模块导出 → 联通 ESM 的 `usedExports` 标记未使用导出 → Terser/SWC 删除
+- `sideEffects: false`：告知打包器所有模块无副作用，未被引用的模块（含未使用的 CSS 文件导入需例外配置）整体跳过
+- **实战案例口径**（简历）：组件库按需引用失效 → 打包可视化插件（如 webpack-bundle-analyzer）观察 → 排除法定位到模块顶层 effect 副作用导致 sideEffects 失效 → 消除副作用修复
+
+### Webpack vs Vite
+
+- Webpack：先 bundle 后启动，dev 冷启动慢，但生态成熟、精细控制
+- Vite dev：基于浏览器原生 ESM，按需编译，esbuild 预构建依赖（CJS→ESM、合并请求）；生产仍走 Rollup 打包（保证兼容性与优化）
+- 本质区别：**bundle-based vs unbundled dev**；追问 Vite 生产为何不用原生 ESM：请求瀑布、无法充分 tree-shaking/合并优化
+
+### Loader 与 Plugin
+
+- Loader：文件转换器，管道式串行处理（less → css），作用于模块内容
+- Plugin：基于 `compiler`/`compilation` 钩子介入整个构建生命周期，能改产物、发资源（HtmlWebpackPlugin、MiniCssExtractPlugin）
+- NormalModuleReplacementPlugin 触发时机：`normalModuleFactory` 创建模块时替换路径——多语言/环境差异化包替换
+
+### Babel 编译流程
+
+- parse（@babel/parser 生成 AST）→ transform（@babel/traverse 遍历改写 AST，插件做语法转换）→ generate（@babel/generator 输出代码 + sourcemap）
+- 追问：preset-env 按浏览器目标裁剪语法转换；core-js polyfill 按使用引入（`useBuiltIns: 'usage'`）
+
+### Monorepo
+
+- pnpm workspace：硬链接省磁盘、严格依赖（杜绝幽灵依赖）、`workspace:*` 协议
+- 任务编排：turbo/nx 按依赖图并行 + 缓存构建产物
+- 注意：版本策略（changesets）、公共配置共享（eslint/tsconfig 提包）
+
+---
+
+## 4. 微前端
+
+### 方案对比
+
+| 方案              | 优点                            | 缺点                               |
+| ----------------- | ------------------------------- | ---------------------------------- |
+| iframe            | 天然隔离、零改造成本            | 弹窗/通信/路由割裂、体验差         |
+| qiankun           | 生态成熟、沙箱+样式隔离开箱即用 | 基于 single-spa、和维护者弃坑风险  |
+| Module Federation | 依赖共享、构建期集成、性能好    | 构建绑定（Webpack5）、版本协同复杂 |
+| Web Components    | 标准化、天然样式隔离            | 兼容成本、生态弱                   |
+
+### JS 沙箱
+
+- 快照沙箱（qiankun 降级）：遍历 window 存 diff，激活/失活还原——不支持并发多实例
+- Proxy 沙箱：`new Proxy(fakeWindow)` 拦截读写，未声明变量落在沙箱内；配合 `with` 修改代码作用域
+- 追问：why Proxy 优于快照（支持多实例、性能）；eval/Function 执行代码的安全风险
+
+### 样式隔离
+
+- Shadow DOM：天然隔离，但弹窗挂 body 会逃逸、全局样式不生效
+- 动态 scoped：加载时改写选择器加前缀（qiankun `experimentalStyleIsolation`）
+- CSS Modules / BEM：约定式隔离，成本低
+
+### 依赖共享与通信
+
+- 共享：Module Federation `shared`（singleton + requiredVersion）；或 externals + 运行时注入
+- 通信：props/回调（父子）、全局状态（初始化时注入 store）、CustomEvent——优先简单方案，避免过度设计
+
+### 动机题（必被问）
+
+- "你们为什么需要/不需要微前端？"——按团队规模答：多团队多技术栈并行、巨石应用拆分才有收益；小团队用 monorepo + 模块化就够了，微前端的隔离成本不划算
+
+---
+
+## 5. 组件库设计
+
+### 按需加载与主题定制
+
+- 按需：ESM + `sideEffects` 标注 + babel-plugin-import（或直接依赖打包器 tree-shaking）
+- 主题：CSS 变量（`--primary-color`，运行时可改、支持暗色模式）> less 变量（编译期替换）
+- 组件样式单文件拆分，与 JS 同名导入对齐
+
+### 质量保障
+
+- 单测（Jest/Vitest + Testing Library：测行为不测实现）
+- 视觉回归（Storybook + Chromatic/loki：截图 diff）
+- semver + changelog（changesets）；破坏性变更走 major + 迁移指南
+- CI：lint + typecheck + test + 构建产物体积监控（size-limit）
+
+### 类型提示
+
+- `.d.ts` 随包发布（`types` 字段）；tsc 直接产出或 `dts` 工具聚合
+- 泛型组件类型（如 Table 列的 dataSource 推导）
+
+---
+
+## 6. 前端监控体系
+
+### 错误捕获
+
+- 同步错误：`window.onerror`
+- Promise 未处理：`unhandledrejection`
+- 资源加载错误：`window.addEventListener('error', ..., true)`（捕获阶段）
+- 跨域脚本报错显示 Script error：脚本标签加 `crossorigin` + CDN 响应 CORS 头
+- React：ErrorBoundary；Vue：`errorCaptured` / `app.config.errorHandler`
+- 接口错误：统一封装请求库拦截器上报（状态码 + 耗时 + traceId）
+
+### 埋点系统
+
+- 三种：代码埋点（精确、有侵入）、可视化埋点（圈选配置）、无痕/全埋点（事件委托自动采集点击/曝光）
+- 曝光：IntersectionObserver + 去重（ sessionStorage key）
+- 上报策略：批量合并（队列 + 定时/定量 flush）、`sendBeacon`（页面卸载不丢）、失败重试（有限次 + 退避）、节流采样
+
+### 性能采集与还原
+
+- 指标：web-vitals + `performance.getEntriesByType('navigation')`（DNS/TCP/TTFB 细分）
+- 看板聚合：P90/P99、按地域/机型/版本维度
+- sourceMap 还原：**sourcemap 只存内部平台不上公网**，错误上报带 stack → 服务端用 `source-map` 库定位原始位置
+
+### 日志量控制
+
+- 采样率（按错误类型分级：JS 错误全量、行为日志 10%）
+- 上报前聚合（同类错误 stack 指纹 hash 去重计数）
+- 分级存储：热数据 ES，冷数据对象存储离线分析
+
+---
+
+## 7. 安全
+
+### XSS
+
+- 类型：存储型（入库）、反射型（URL 参数）、DOM 型（前端拼接）
+- 防御：输出转义（尤其富文本走白名单过滤如 DOMPurify）、CSP 响应头（限制脚本源）、`HttpOnly` cookie 防 JS 读、避免 `innerHTML`/`v-html`/`dangerouslySetInnerHTML` 滥用
+
+### CSRF
+
+- 原理：借用户已登录态在第三方页面伪造跨站请求
+- 防御：CSRF token（服务端下发校验）、`SameSite: Lax/Strict` cookie、校验 Origin/Referer、敏感操作二次验证
+- 与 XSS 组合题：为什么有 SameSite 还要 token（兼容旧浏览器、Strict 影响外链跳转体验）
+
+### Token 存储选择（结合海外业务场景准备）
+
+- localStorage：不受 CSRF，但 XSS 可读
+- cookie（HttpOnly + Secure + SameSite）：XSS 读不到，但受 CSRF 影响、需 token 配合
+- 实践：短期 access token 内存/cookie HttpOnly + refresh token 严格 HttpOnly；配合 CSP 降 XSS 概率——没有完美方案，讲 trade-off
+
+---
+
+## 8. 开放 / 系统设计题
+
+### 设计脚手架 CLI
+
+- 能力：模板仓库拉取（远程 registry + 缓存）、交互式问答（inquirer）、依赖安装、版本更新提示
+- 进阶：模板插件化（renderer 抽象）、monorepo 适配、埋点统计使用率
+- 叙事结构：先问场景（团队规模/模板数量），再分层讲（命令层/模板层/工具层）
+
+### 设计 i18n 方案（简历优势，主动引导）
+
+- 文案管理：key 组织按【页面.模块.语义】命名；翻译平台统一维护，避免散落代码
+- 运行时：`t('key', {count})`，语言包按 namespace 懒加载（你简历的"多语言文件懒加载"就是这个）
+- 更新生效：语言包走 CDN + 版本号/短缓存，切换语言免刷新（缓存刷新或 runtime 重载）
+- 难点：复数/性别规则（ICU MessageFormat）、占位符翻译顺序差异、RTL 布局、翻译缺失兜底（回退到默认语言 + 上报）
+- 配套：VS Code 悬浮插件（你做过）解决"key 难读"痛点
+
+### Agent + RAG 应用架构（差异化武器，一定主动讲）
+
+- 知识库构建：仓库结构化提取（接口定义、页面路由、组件关系）→ 文档切片 → embedding 入库
+- 检索：向量检索 + 关键词混合，rerank 提升准确率；切片粒度与 overlap 是效果关键
+- Agent 层：工具调用（查询知识库/查代码）、上下文管理、兜底策略（拒答 + 转人工）
+- 评测：构建问答测试集，持续回归（回答准确率/覆盖率）——面试官关心"怎么知道它答得对不对"
+
+### 千万级流量页面设计
+
+- 分层答：接入层（多 CDN、多机房容灾）→ 应用层（静态化/SSR 缓存、降级开关）→ 数据层（接口聚合、缓存、限流）
+- 前端侧：资源最小化、接口合并与预取、异常降级（非核心接口失败不影响主流程）、监控大盘 + 告警
+- 收尾：容量预估 + 压测预案 + 发布回滚预案
+
+---

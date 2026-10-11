@@ -7,15 +7,16 @@
 初始化: 启动构建，读取webpack.config.js与合并配置参数，加载 Plugin，实例化 Compiler。
 compile: 从 Entry 出发，编译。
 转换模块：
+
 1. resolve 解析路径
-根据 resolve 配置找文件真实路径
+   根据 resolve 配置找文件真实路径
 2. 加载模块内容（readFile）
-读取文件源代码字符串
+   读取文件源代码字符串
 3. 调用 Loader 链进行编译，从右往左、从下往上执行
 4. 解析依赖，代码生成 AST，遍历并收集所有依赖路径，存入依赖列表
 5. 递归所有抵赖，重复转换
-编译完成seal：代码优化，生成chunk和资源
-输出emit: 根据output配置确定的路径与文件名，把文件写入到文件系统。
+   编译完成seal：代码优化，生成chunk和资源
+   输出emit: 根据output配置确定的路径与文件名，把文件写入到文件系统。
 
 # vite
 
@@ -42,7 +43,6 @@ Vite 服务器会通过websocket发送更新信号给浏览器，通知浏览器
 新的模块文件会替换旧的模块文件，而不会刷新整个页面。
 浏览器会重新执行已更改的模块，并更新相关状态。
 
-
 ## 代码还原sourmap
 
 快速还原 / 定位：用在线工具（Source Map Explorer）或浏览器开发者工具，开箱即用；
@@ -66,7 +66,6 @@ AST -> Code (Generate)
 
 AST 的生成这一步骤被称为解析(Parser)，而该步骤也有两个阶段: 词法分析(Lexical Analysis)和语法分析(Syntactic Analysis)
 
-
 ### 如何分包
 
 webpackoptimization.splitChunks
@@ -75,7 +74,6 @@ vite中配置build.rollupOptions.output.manualChunks
 ### 为啥能实现按需引用
 
 库采用 ESM 规范开发，每个组件独立拆分、独立导出，import/export 是编译时（静态）分析。Tree Shaking 是实现按需引入的核心，基于静态分析，剔除打包产物中「未被引用的死代码」。配合sideEffects标识副作用，。
-
 
 ## 什么是服务器渲染 (SSR)
 
@@ -96,18 +94,3 @@ SEO 友好： 搜索引擎可以抓取到完整的 HTML，有利于 SEO。
 ## peerDependency 是为了解决什么问题
 
 peerDependencies 是为了解决依赖冲突的问题，重复安装。在 npm 中，如果一个包 A 依赖于包 B，那么包 A 的用户在安装包 A 时，npm 会自动安装包 B。但是，如果包 A 和包 B 的版本不兼容，就会导致依赖冲突。
-
-
-## js 的几种模块规范
-
-```txt
-
-第一种是 CommonJS 方案，它通过 require 来引入模块，通过 module.exports 定义模块的输出接口。这种模块加载方案是服务端的解决方案， Node.js 就是基于 CommonJS 规范的。
-
-第二种是 AMD 方案
-
-第三种是 CMD 方案（AMD 和 CMD 过时，基本没见过）
-
-第四种是 ES6 Modules，使用 import 和 export 的形式来导入导出模块
-
-```
